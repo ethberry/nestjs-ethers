@@ -1,0 +1,4 @@
+{
+  "extends": ["github>gemunion/renovate-config"],
+  "baseBranches": ["master"]
+}

@@ -1,0 +1,9 @@
+{
+  "extends": [
+    "@gemunion/eslint-config/presets/ts"
+  ],
+  "parserOptions": {
+    "project": "./tsconfig.test.json"
+  },
+  "root": true
+}
