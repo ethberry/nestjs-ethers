@@ -35,7 +35,8 @@ export class EthersContractServer extends Server implements CustomTransportStrat
       // https://ethereum.stackexchange.com/questions/91966/get-number-of-all-the-past-events-using-ethers-v5
       contractOption.eventNames.forEach(eventName => {
         contract.on(eventName, (...data: Array<any>) => {
-          void this.call({ contract: contractOption.name, event: eventName }, data.slice(0, data.length - 1));
+          const { args } = contract.interface.parseLog(data[data.length - 1]);
+          void this.call({ contract: contractOption.name, event: eventName }, { ...args });
         });
       });
     });
