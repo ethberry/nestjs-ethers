@@ -9,7 +9,7 @@
     "@ethersproject/abstract-provider": "5.4.1",
     "@ethersproject/networks": "5.4.2"
   },
-  "description": "Web3 transport for NestJS",
+  "description": "Ethers transport for NestJS",
   "devDependencies": {
     "@gemunion/eslint-config": "0.1.10",
     "@nestjs/core": "8.1.0",
@@ -46,7 +46,7 @@
   },
   "license": "UNLICENSED",
   "main": "./dist/index.js",
-  "name": "@gemunion/nestjs-web3",
+  "name": "@gemunion/nestjs-ethers",
   "peerDependencies": {
     "@nestjs/common": "8.1.0",
     "@nestjs/core": "8.1.0",
@@ -58,7 +58,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gemunion/nestjs-web3"
+    "url": "https://github.com/gemunion/nestjs-ethers"
   },
   "scripts": {
     "build": "tsc",
