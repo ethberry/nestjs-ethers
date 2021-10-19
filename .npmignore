@@ -5,3 +5,4 @@
 /tsconfig.test.json
 /jest.config.json
 **/*.spec.ts
+.idea
