@@ -21,6 +21,10 @@ export class EthersContractServer extends Server implements CustomTransportStrat
 
     // https://github.com/ethers-io/ethers.js/issues/1053
     this.provider = new ethers.providers.WebSocketProvider(url, options);
+
+    this.provider._websocket.on("error", (e: Error) => {
+      this.logger.error(e.message, e.stack, EthersContractServer.name);
+    });
   }
 
   public listen(callback: (e?: Error) => void): void {
