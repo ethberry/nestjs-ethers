@@ -23,6 +23,10 @@ export class EthersTransactionServer extends Server implements CustomTransportSt
     // https://github.com/ethers-io/ethers.js/issues/1053
     // https://ethereum.stackexchange.com/questions/87643/how-to-listen-to-contract-events-using-ethers-js
     this.provider = new ethers.providers.WebSocketProvider(url, options);
+
+    this.provider._websocket.on("error", (e: Error) => {
+      this.logger.error(e.message, e.stack, EthersTransactionServer.name);
+    });
   }
 
   public listen(callback: (e?: Error) => void): void {
