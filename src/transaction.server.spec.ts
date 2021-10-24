@@ -2,8 +2,7 @@ import { Controller, INestApplication, Injectable, Module } from "@nestjs/common
 import { ConfigService, ConfigModule } from "@nestjs/config";
 import { Test, TestingModule } from "@nestjs/testing";
 import { EventPattern, Payload } from "@nestjs/microservices";
-import { Transaction } from "ethers";
-import { Block } from "@ethersproject/abstract-provider";
+import { Block, TransactionResponse } from "@ethersproject/abstract-provider";
 
 import { EthersTransactionServer } from "./transaction.server";
 import { EventTypes } from "./interfaces";
@@ -14,7 +13,7 @@ class EthersTransactionService {
     await Promise.resolve(block);
   }
 
-  public async transaction(transaction: Transaction): Promise<void> {
+  public async transaction(transaction: TransactionResponse): Promise<void> {
     await Promise.resolve(transaction);
   }
 }
@@ -29,7 +28,7 @@ class EthersTransactionController {
   }
 
   @EventPattern(EventTypes.TRANSACTION)
-  public transaction(@Payload() data: Transaction): Promise<void> {
+  public transaction(@Payload() data: TransactionResponse): Promise<void> {
     return this.ethersTransactionService.transaction(data);
   }
 }

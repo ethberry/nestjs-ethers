@@ -1,8 +1,8 @@
 import { EMPTY, Observable } from "rxjs";
 import { Injectable, Logger } from "@nestjs/common";
 import { CustomTransportStrategy, Server } from "@nestjs/microservices";
-import { ethers, Transaction } from "ethers";
-import { Block } from "@ethersproject/abstract-provider";
+import { ethers } from "ethers";
+import { Block, TransactionResponse } from "@ethersproject/abstract-provider";
 
 import { EventTypes, ITransactionServerOptions } from "./interfaces";
 
@@ -59,7 +59,7 @@ export class EthersTransactionServer extends Server implements CustomTransportSt
   private processTransaction(txHash: string): Promise<void> {
     return this.provider
       .getTransaction(txHash)
-      .then((transaction: Transaction) => {
+      .then((transaction: TransactionResponse) => {
         void this.call(EventTypes.TRANSACTION, transaction);
       })
       .catch(e => {
