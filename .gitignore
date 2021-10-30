@@ -2,6 +2,7 @@
 dist/
 coverage/
 code/
+besu/
 
 # IDE
 .idea
