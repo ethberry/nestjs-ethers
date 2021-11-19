@@ -12,14 +12,14 @@
   "description": "Ethers transport for NestJS",
   "devDependencies": {
     "@gemunion/eslint-config": "0.1.10",
-    "@nestjs/core": "8.2.0",
-    "@nestjs/common": "8.2.0",
+    "@nestjs/core": "8.2.2",
+    "@nestjs/common": "8.2.2",
     "@nestjs/config": "1.1.0",
-    "@nestjs/microservices": "8.2.0",
-    "@nestjs/platform-express": "8.2.0",
-    "@nestjs/testing": "8.2.0",
-    "@types/jest": "27.0.2",
-    "@types/node": "14.17.33",
+    "@nestjs/microservices": "8.2.2",
+    "@nestjs/platform-express": "8.2.2",
+    "@nestjs/testing": "8.2.2",
+    "@types/jest": "27.0.3",
+    "@types/node": "14.17.34",
     "@typescript-eslint/eslint-plugin": "4.33.0",
     "@typescript-eslint/parser": "4.33.0",
     "eslint": "7.32.0",
@@ -39,7 +39,7 @@
     "reflect-metadata": "0.1.13",
     "rimraf": "3.0.2",
     "ts-jest": "27.0.7",
-    "typescript": "4.4.4"
+    "typescript": "4.5.2"
   },
   "engines": {
     "node": ">=12.13"
@@ -48,9 +48,9 @@
   "main": "./dist/index.js",
   "name": "@gemunion/nestjs-ethers",
   "peerDependencies": {
-    "@nestjs/common": "8.2.0",
-    "@nestjs/core": "8.2.0",
-    "@nestjs/microservices": "8.2.0",
+    "@nestjs/common": "8.2.2",
+    "@nestjs/core": "8.2.2",
+    "@nestjs/microservices": "8.2.2",
     "rxjs": "7.4.0"
   },
   "publishConfig": {
