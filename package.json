@@ -5,9 +5,9 @@
     "url": "https://trejgun.github.io/"
   },
   "dependencies": {
-    "ethers": "5.5.1",
+    "ethers": "5.5.2",
     "@ethersproject/abstract-provider": "5.5.1",
-    "@ethersproject/networks": "5.5.0"
+    "@ethersproject/networks": "5.5.1"
   },
   "description": "Ethers transport for NestJS",
   "devDependencies": {
@@ -19,7 +19,7 @@
     "@nestjs/platform-express": "8.2.3",
     "@nestjs/testing": "8.2.3",
     "@types/jest": "27.0.3",
-    "@types/node": "14.17.34",
+    "@types/node": "14.18.0",
     "@typescript-eslint/eslint-plugin": "4.33.0",
     "@typescript-eslint/parser": "4.33.0",
     "eslint": "7.32.0",
@@ -30,11 +30,11 @@
     "eslint-plugin-jest": "24.7.0",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-prettier": "4.0.0",
-    "eslint-plugin-promise": "5.1.1",
+    "eslint-plugin-promise": "5.2.0",
     "eslint-plugin-standard": "4.1.0",
     "husky": "4.3.8",
-    "jest": "27.3.1",
-    "lint-staged": "11.2.3",
+    "jest": "27.4.3",
+    "lint-staged": "11.2.6",
     "prettier": "2.5.0",
     "reflect-metadata": "0.1.13",
     "rimraf": "3.0.2",
