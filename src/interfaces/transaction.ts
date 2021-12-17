@@ -11,6 +11,7 @@ export interface ITransactionServerOptions {
   customClass: Type<ClientProxy>;
   options: {
     url: string;
+    includeChainId?: boolean;
     providerOptions?: Networkish;
     events: Array<EventTypes>;
   };

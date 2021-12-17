@@ -6,8 +6,8 @@ import { ethers } from "ethers";
 import { IContractServerOptions } from "./interfaces";
 
 @Injectable()
-export class EthersContractServer extends Server implements CustomTransportStrategy {
-  protected readonly logger = new Logger(EthersContractServer.name);
+export class EthersEventServer extends Server implements CustomTransportStrategy {
+  protected readonly logger = new Logger(EthersEventServer.name);
 
   private provider: ethers.providers.WebSocketProvider;
 
@@ -23,7 +23,7 @@ export class EthersContractServer extends Server implements CustomTransportStrat
     this.provider = new ethers.providers.WebSocketProvider(url, options);
 
     this.provider._websocket.on("error", (e: Error) => {
-      this.logger.error(e.message, e.stack, EthersContractServer.name);
+      this.logger.error(e.message, e.stack, EthersEventServer.name);
     });
   }
 
@@ -33,13 +33,21 @@ export class EthersContractServer extends Server implements CustomTransportStrat
     const contractOptions = this.getOptionsProp(this.options, "contractOptions");
 
     contractOptions.forEach(contractOption => {
-      const contract = new ethers.Contract(contractOption.address, contractOption.abi, this.provider);
+      const { contractAddress, contractInterface, contractName, eventNames = [], filters = {} } = contractOption;
 
-      // https://ethereum.stackexchange.com/questions/87643/how-to-listen-to-contract-events-using-ethers-js
-      // https://ethereum.stackexchange.com/questions/91966/get-number-of-all-the-past-events-using-ethers-v5
-      contractOption.eventNames.forEach(eventName => {
+      const contract = new ethers.Contract(contractAddress, contractInterface, this.provider);
+
+      // https://docs.ethers.io/v5/api/contract/contract/#Contract--events
+      eventNames.forEach(eventName => {
         contract.on(eventName, (...data: Array<any>) => {
-          void this.call({ contract: contractOption.name, event: eventName }, data[data.length - 1]);
+          void this.call({ contractName, eventName }, data[data.length - 1]);
+        });
+      });
+
+      // https://docs.ethers.io/v5/concepts/events/
+      Object.keys(filters).forEach(filterName => {
+        contract.on(filters[filterName], (...data: Array<any>) => {
+          void this.call({ contractName, filterName }, data[data.length - 1]);
         });
       });
     });
@@ -47,8 +55,16 @@ export class EthersContractServer extends Server implements CustomTransportStrat
     callback();
   }
 
-  private call(pattern: any, data: any): Promise<Observable<any>> {
-    const handler = this.getHandlerByPattern(this.normalizePattern(pattern));
+  private call(
+    pattern: { contractName: string; eventName?: string; filterName?: string },
+    data: any,
+  ): Promise<Observable<any>> {
+    const includeChainId = this.getOptionsProp(this.options, "includeChainId", false);
+    const handler = this.getHandlerByPattern(
+      this.normalizePattern(
+        includeChainId ? Object.assign(pattern, { chainId: this.provider.network.chainId }) : pattern,
+      ),
+    );
 
     if (!handler) {
       return Promise.resolve(EMPTY);

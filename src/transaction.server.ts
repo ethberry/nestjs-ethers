@@ -18,11 +18,10 @@ export class EthersTransactionServer extends Server implements CustomTransportSt
 
   public createClient(): void {
     const url = this.getOptionsProp(this.options, "url");
-    const options = this.getOptionsProp(this.options, "providerOptions");
+    const providerOptions = this.getOptionsProp(this.options, "providerOptions");
 
     // https://github.com/ethers-io/ethers.js/issues/1053
-    // https://ethereum.stackexchange.com/questions/87643/how-to-listen-to-contract-events-using-ethers-js
-    this.provider = new ethers.providers.WebSocketProvider(url, options);
+    this.provider = new ethers.providers.WebSocketProvider(url, providerOptions);
 
     this.provider._websocket.on("error", (e: Error) => {
       this.logger.error(e.message, e.stack, EthersTransactionServer.name);
@@ -31,7 +30,7 @@ export class EthersTransactionServer extends Server implements CustomTransportSt
 
   public listen(callback: (e?: Error) => void): void {
     this.createClient();
-    this.provider.on("block", (blockNumber: any) => {
+    this.provider.on("block", (blockNumber: number) => {
       void this.processBlock(blockNumber);
     });
     callback();
@@ -43,7 +42,7 @@ export class EthersTransactionServer extends Server implements CustomTransportSt
       .then((block: Block) => {
         const events = this.getOptionsProp(this.options, "events");
         if (events.includes(EventTypes.BLOCK)) {
-          void this.call(EventTypes.BLOCK, block);
+          void this.call({ eventName: EventTypes.BLOCK }, block);
         }
         if (events.includes(EventTypes.TRANSACTION)) {
           for (const txHash of block.transactions) {
@@ -60,15 +59,20 @@ export class EthersTransactionServer extends Server implements CustomTransportSt
     return this.provider
       .getTransaction(txHash)
       .then((transaction: TransactionResponse) => {
-        void this.call(EventTypes.TRANSACTION, transaction);
+        void this.call({ eventName: EventTypes.TRANSACTION }, transaction);
       })
       .catch(e => {
         this.logger.error(e.message, e.stack, EthersTransactionServer.name);
       });
   }
 
-  private call(pattern: string, data: any): Promise<Observable<any>> {
-    const handler = this.getHandlerByPattern(pattern);
+  private call(pattern: { eventName: EventTypes }, data: any): Promise<Observable<any>> {
+    const includeChainId = this.getOptionsProp(this.options, "includeChainId", false);
+    const handler = this.getHandlerByPattern(
+      this.normalizePattern(
+        includeChainId ? Object.assign(pattern, { chainId: this.provider.network.chainId }) : pattern,
+      ),
+    );
 
     if (!handler) {
       return Promise.resolve(EMPTY);
