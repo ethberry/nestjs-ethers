@@ -163,7 +163,7 @@ describe("EthersServer", () => {
         to: "f17f52151EbEF6C7334FAD080c5704D77216b732",
         value: ethers.utils.parseEther("0.01"),
       });
-      await new Promise(resolve => setTimeout(resolve, 12000));
+      await new Promise(resolve => setTimeout(resolve, 6000));
       expect(logSpyBlock).toBeCalled();
       expect(logSpyTransaction).toBeCalled();
     });
