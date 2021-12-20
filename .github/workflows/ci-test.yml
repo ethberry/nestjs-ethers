@@ -36,12 +36,12 @@ jobs:
           - "9202:8546"
           - "9203:8547"
           - "9204:30303"
-#        options: >-
-#          --health-cmd "curl -f http://besu:8545"
-#          --health-start-period 20s
-#          --health-interval 10s
-#          --health-timeout 5s
-#          --health-retries 5
+        options: >-
+          --health-cmd "ping 127.0.0.1"
+          --health-start-period 20s
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: checkout
