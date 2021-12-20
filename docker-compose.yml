@@ -24,22 +24,17 @@ services:
       - $PWD/besu/besu-mainnet:/var/lib/besu
       - $PWD/besu/gen-besu.json:/var/lib/besu/gen-besu.json
     ports:
-      - "9201:8545"
-      - "9202:8546"
-      - "9203:8547"
-      - "9204:30303"
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8545" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      - "8545:8545"
+      - "8546:8546"
+      - "8547:8547"
+      - "30303:30303"
 
   mainnet-explorer:
     container_name: mainnet-explorer
     restart: "on-failure"
     image: alethio/ethereum-lite-explorer
     environment:
-      APP_NODE_URL: "http://127.0.0.1:9201"
+      APP_NODE_URL: "http://127.0.0.1:30303"
     ports:
       - 8081:80
     depends_on:

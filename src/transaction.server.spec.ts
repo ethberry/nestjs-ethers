@@ -51,7 +51,7 @@ describe("EthersServer", () => {
   let ethersWsProvider: WebSocketProvider;
 
   beforeEach(async () => {
-    ethersWsProvider = new ethers.providers.WebSocketProvider("ws://0.0.0.0:9202/");
+    ethersWsProvider = new ethers.providers.WebSocketProvider("ws://127.0.0.1:8546/");
     await ethersWsProvider.send("miner_start");
     logSpyBlock = jest.spyOn(ethersTransactionService, "block");
     logSpyTransaction = jest.spyOn(ethersTransactionService, "transaction");
@@ -74,7 +74,7 @@ describe("EthersServer", () => {
       }).compile();
       app = module.createNestApplication();
       const configService = app.get(ConfigService);
-      const wsUrl = configService.get<string>("WEBSOCKET_ADDR", "ws://0.0.0.0:9202/");
+      const wsUrl = configService.get<string>("WEBSOCKET_ADDR", "ws://127.0.0.1:8546/");
       app.connectMicroservice({
         strategy: new EthersTransactionServer({
           url: wsUrl,
@@ -103,7 +103,7 @@ describe("EthersServer", () => {
       }).compile();
       app = module.createNestApplication();
       const configService = app.get(ConfigService);
-      const wsUrl = configService.get<string>("WEBSOCKET_ADDR", "ws://0.0.0.0:9202/");
+      const wsUrl = configService.get<string>("WEBSOCKET_ADDR", "ws://127.0.0.1:8546/");
       app.connectMicroservice({
         strategy: new EthersTransactionServer({
           url: wsUrl,
@@ -119,12 +119,11 @@ describe("EthersServer", () => {
     });
 
     it("should receive Transaction", async () => {
-      const provider = new ethers.providers.JsonRpcProvider("http://0.0.0.0:9201/");
-      // Besu 1st wallet
+      const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545/");
       const wallet = new ethers.Wallet("0x8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63");
 
       await wallet.connect(provider).sendTransaction({
-        to: "f17f52151EbEF6C7334FAD080c5704D77216b732", // Besu 3rd wallet
+        to: "0x61284003E50b2D7cA2B95F93857abB78a1b0F3Ca",
         value: ethers.utils.parseEther("0.01"),
       });
       await new Promise(resolve => setTimeout(resolve, 5000));
@@ -140,7 +139,7 @@ describe("EthersServer", () => {
       }).compile();
       app = module.createNestApplication();
       const configService = app.get(ConfigService);
-      const wsUrl = configService.get<string>("WEBSOCKET_ADDR", "ws://0.0.0.0:9202/");
+      const wsUrl = configService.get<string>("WEBSOCKET_ADDR", "ws://127.0.0.1:8546/");
       app.connectMicroservice({
         strategy: new EthersTransactionServer({
           url: wsUrl,
@@ -156,14 +155,14 @@ describe("EthersServer", () => {
     });
 
     it("should receive Block & Transaction", async () => {
-      const provider = new ethers.providers.JsonRpcProvider("http://0.0.0.0:9201/");
+      const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545/");
       const wallet = new ethers.Wallet("0x8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63");
 
       await wallet.connect(provider).sendTransaction({
-        to: "f17f52151EbEF6C7334FAD080c5704D77216b732",
+        to: "0x61284003E50b2D7cA2B95F93857abB78a1b0F3Ca",
         value: ethers.utils.parseEther("0.01"),
       });
-      await new Promise(resolve => setTimeout(resolve, 6000));
+      await new Promise(resolve => setTimeout(resolve, 5000));
       expect(logSpyBlock).toBeCalled();
       expect(logSpyTransaction).toBeCalled();
     });
