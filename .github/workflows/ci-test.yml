@@ -38,7 +38,7 @@ jobs:
           - "9204:30303"
         options: >-
           --health-cmd "curl -f http://besu:9201"
-          --start-period 30s
+          --health-start-period 20s
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
