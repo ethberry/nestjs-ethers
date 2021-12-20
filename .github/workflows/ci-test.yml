@@ -30,7 +30,7 @@ jobs:
           BESU_MINER_ENABLED: "true"
           BESU_MINER_COINBASE: fe3b557e8fb62b89f4916b721be55ceb828dbd73
         volumes:
-            - $PWD/besu/gen-besu.json:/var/lib/besu/gen-besu.json
+            - ${{ github.workspace }}/besu/gen-besu.json:/var/lib/besu/gen-besu.json
 
         ports:
           - "9201:8545"
