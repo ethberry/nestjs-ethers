@@ -2,7 +2,6 @@
 dist/
 coverage/
 code/
-besu/
 
 # IDE
 .idea
@@ -20,3 +19,6 @@ yarn.lock
 
 # ENV
 .env
+
+# besu
+besu/besu-mainnet/

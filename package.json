@@ -7,11 +7,13 @@
   "dependencies": {
     "ethers": "5.5.2",
     "@ethersproject/abstract-provider": "5.5.1",
+    "@ethersproject/providers": "5.5.1",
     "@ethersproject/networks": "5.5.1",
-    "@ethersproject/contracts": "5.5.0"
+    "@ethersproject/contracts": "5.5.1"
   },
   "description": "Ethers transport for NestJS",
   "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "2.0.2",
     "@gemunion/eslint-config": "0.1.10",
     "@nestjs/core": "8.2.4",
     "@nestjs/common": "8.2.4",
