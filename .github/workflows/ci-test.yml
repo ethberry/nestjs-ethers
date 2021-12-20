@@ -37,7 +37,7 @@ jobs:
           - "9203:8547"
           - "9204:30303"
         options: >-
-          --health-start-period 20s
+          --health-start-period 60s
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
