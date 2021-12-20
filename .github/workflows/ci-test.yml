@@ -43,12 +43,13 @@ jobs:
 #          --health-retries 5
 
     steps:
-      - name: besu start
-        run: docker-compose -f /home/runner/work/nestjs-ethers/nestjs-ethers/docker-compose-git.yml up -d
       - name: checkout
         uses: actions/checkout@v2
         with:
           ref: ${{ github.head_ref }}
+
+      - name: besu start
+        run: docker-compose -f /home/runner/work/nestjs-ethers/nestjs-ethers/docker-compose-git.yml up -d
 
       - name: Add @scope & token to npmrc
         run: |
