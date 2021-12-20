@@ -28,6 +28,11 @@ services:
       - "9202:8546"
       - "9203:8547"
       - "9204:30303"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8545" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   mainnet-explorer:
     container_name: mainnet-explorer

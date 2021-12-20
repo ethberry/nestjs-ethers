@@ -44,7 +44,7 @@ jobs:
 
     steps:
       - name: besu start
-        run: docker-compose -f docker-compose-git.yml up -d
+        run: docker-compose -f /home/runner/work/nestjs-ethers/nestjs-ethers/docker-compose-git.yml up -d
       - name: checkout
         uses: actions/checkout@v2
         with:

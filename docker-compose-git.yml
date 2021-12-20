@@ -22,7 +22,7 @@ services:
       BESU_MINER_COINBASE: fe3b557e8fb62b89f4916b721be55ceb828dbd73
     volumes:
 #      - $PWD/besu/besu-mainnet:/var/lib/besu
-      - $PWD/besu/gen-besu.json:/var/lib/besu/gen-besu.json
+      - /home/runner/work/nestjs-ethers/nestjs-ethers/besu/gen-besu.json:/var/lib/besu/gen-besu.json
     ports:
       - "9201:8545"
       - "9202:8546"
