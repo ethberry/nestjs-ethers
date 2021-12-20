@@ -25,12 +25,12 @@ class EthersTransactionService {
 class EthersTransactionController {
   constructor(private readonly ethersTransactionService: EthersTransactionService) {}
 
-  @EventPattern(EventTypes.BLOCK)
+  @EventPattern({ eventName: EventTypes.BLOCK })
   public block(@Payload() data: Block): Promise<void> {
     return this.ethersTransactionService.block(data);
   }
 
-  @EventPattern(EventTypes.TRANSACTION)
+  @EventPattern({ eventName: EventTypes.TRANSACTION })
   public transaction(@Payload() data: TransactionResponse): Promise<void> {
     return this.ethersTransactionService.transaction(data);
   }
