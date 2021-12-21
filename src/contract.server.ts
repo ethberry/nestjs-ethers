@@ -6,8 +6,8 @@ import { ethers } from "ethers";
 import { IContractServerOptions } from "./interfaces";
 
 @Injectable()
-export class EthersEventServer extends Server implements CustomTransportStrategy {
-  protected readonly logger = new Logger(EthersEventServer.name);
+export class EthersContractServer extends Server implements CustomTransportStrategy {
+  protected readonly logger = new Logger(EthersContractServer.name);
 
   private provider: ethers.providers.WebSocketProvider;
 
@@ -23,7 +23,7 @@ export class EthersEventServer extends Server implements CustomTransportStrategy
     this.provider = new ethers.providers.WebSocketProvider(url, options);
 
     this.provider._websocket.on("error", (e: Error) => {
-      this.logger.error(e.message, e.stack, EthersEventServer.name);
+      this.logger.error(e.message, e.stack, EthersContractServer.name);
     });
   }
 
