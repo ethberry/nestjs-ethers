@@ -12,6 +12,6 @@ export interface ITransactionServerOptions {
   options: {
     url: string;
     providerOptions?: Networkish;
-    events: Array<EventTypes>;
+    eventNames: Array<EventTypes>;
   };
 }

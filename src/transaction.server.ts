@@ -40,11 +40,11 @@ export class EthersTransactionServer extends Server implements CustomTransportSt
     return this.provider
       .getBlock(blockNumber)
       .then((block: Block) => {
-        const events = this.getOptionsProp(this.options, "events");
-        if (events.includes(EventTypes.BLOCK)) {
+        const eventNames = this.getOptionsProp(this.options, "eventNames");
+        if (eventNames.includes(EventTypes.BLOCK)) {
           void this.call({ eventName: EventTypes.BLOCK }, block);
         }
-        if (events.includes(EventTypes.TRANSACTION)) {
+        if (eventNames.includes(EventTypes.TRANSACTION)) {
           for (const txHash of block.transactions) {
             void this.processTransaction(txHash);
           }

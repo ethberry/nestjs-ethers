@@ -78,7 +78,7 @@ describe("EthersServer", () => {
       app.connectMicroservice({
         strategy: new EthersTransactionServer({
           url: wsUrl,
-          events: [EventTypes.BLOCK],
+          eventNames: [EventTypes.BLOCK],
         }),
       });
       await app.startAllMicroservices();
@@ -107,7 +107,7 @@ describe("EthersServer", () => {
       app.connectMicroservice({
         strategy: new EthersTransactionServer({
           url: wsUrl,
-          events: [EventTypes.TRANSACTION],
+          eventNames: [EventTypes.TRANSACTION],
         }),
       });
       await app.startAllMicroservices();
@@ -143,7 +143,7 @@ describe("EthersServer", () => {
       app.connectMicroservice({
         strategy: new EthersTransactionServer({
           url: wsUrl,
-          events: [EventTypes.BLOCK, EventTypes.TRANSACTION],
+          eventNames: [EventTypes.BLOCK, EventTypes.TRANSACTION],
         }),
       });
       await app.startAllMicroservices();
