@@ -16,7 +16,6 @@ export interface IContractServerOptions {
   customClass: Type<ClientProxy>;
   options: {
     url: string;
-    includeChainId?: boolean;
     providerOptions?: Networkish;
     contractOptions: Array<IContractOptions>;
   };

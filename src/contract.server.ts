@@ -59,18 +59,13 @@ export class EthersContractServer extends Server implements CustomTransportStrat
     pattern: { contractName: string; eventName?: string; filterName?: string },
     data: any,
   ): Promise<Observable<any>> {
-    const includeChainId = this.getOptionsProp(this.options, "includeChainId", false);
-    const handler = this.getHandlerByPattern(
-      this.normalizePattern(
-        includeChainId ? Object.assign(pattern, { chainId: this.provider.network.chainId }) : pattern,
-      ),
-    );
+    const handler = this.getHandlerByPattern(this.normalizePattern(pattern));
 
     if (!handler) {
       return Promise.resolve(EMPTY);
     }
 
-    return handler(data);
+    return handler(data, this.provider.network);
   }
 
   public close(): void {
