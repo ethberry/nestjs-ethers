@@ -13,7 +13,7 @@
   },
   "description": "Ethers transport for NestJS",
   "devDependencies": {
-    "@nomiclabs/hardhat-ethers": "2.0.2",
+    "@nomiclabs/hardhat-ethers": "2.0.3",
     "@gemunion/eslint-config": "0.1.10",
     "@nestjs/core": "8.2.4",
     "@nestjs/common": "8.2.4",
@@ -22,7 +22,7 @@
     "@nestjs/platform-express": "8.2.4",
     "@nestjs/testing": "8.2.4",
     "@types/jest": "27.0.3",
-    "@types/node": "14.18.1",
+    "@types/node": "14.18.2",
     "@typescript-eslint/eslint-plugin": "4.33.0",
     "@typescript-eslint/parser": "4.33.0",
     "eslint": "7.32.0",
