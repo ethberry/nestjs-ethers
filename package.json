@@ -15,12 +15,12 @@
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "2.0.4",
     "@gemunion/eslint-config": "0.1.10",
-    "@nestjs/core": "8.2.4",
-    "@nestjs/common": "8.2.4",
+    "@nestjs/core": "8.2.5",
+    "@nestjs/common": "8.2.5",
     "@nestjs/config": "1.1.6",
-    "@nestjs/microservices": "8.2.4",
-    "@nestjs/platform-express": "8.2.4",
-    "@nestjs/testing": "8.2.4",
+    "@nestjs/microservices": "8.2.5",
+    "@nestjs/platform-express": "8.2.5",
+    "@nestjs/testing": "8.2.5",
     "@types/jest": "27.4.0",
     "@types/node": "14.18.5",
     "@typescript-eslint/eslint-plugin": "4.33.0",
@@ -51,10 +51,10 @@
   "main": "./dist/index.js",
   "name": "@gemunion/nestjs-ethers",
   "peerDependencies": {
-    "@nestjs/common": "8.2.4",
-    "@nestjs/core": "8.2.4",
-    "@nestjs/microservices": "8.2.4",
-    "rxjs": "7.5.1"
+    "@nestjs/common": "8.2.5",
+    "@nestjs/core": "8.2.5",
+    "@nestjs/microservices": "8.2.5",
+    "rxjs": "7.5.2"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
