@@ -4,7 +4,7 @@
     "petersburgBlock": 0,
     "contractSizeLimit": 2147483647,
     "ethash": {
-      "fixeddifficulty": 100
+      "fixeddifficulty": 10
     }
   },
   "nonce": "0x42",
