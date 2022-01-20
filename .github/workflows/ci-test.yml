@@ -37,7 +37,6 @@ jobs:
           NAT_METHOD: "DOCKER"
 #        volumes:
 #            - ${{ github.workspace }}/besu/gen-besu.json:/var/lib/besu/gen-besu.json
-        options: --nat-method=DOCKER
         ports:
           - "8545:8545"
           - "8546:8546"
@@ -71,4 +70,4 @@ jobs:
         run: npm run test
         env:
           WEBSOCKET_ADDR: 'ws://0.0.0.0:8546/'
-          RPC_ADDR: 'http://0.0.0.0:8546/'
+          RPC_ADDR: 'http://0.0.0.0:8545/'
