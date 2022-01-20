@@ -34,6 +34,7 @@ jobs:
           BESU_MINER_ENABLED: "true"
           BESU_MINER_COINBASE: fe3b557e8fb62b89f4916b721be55ceb828dbd73
           NETWORK: "dev"
+          NAT_METHOD: "DOCKER"
 #        volumes:
 #            - ${{ github.workspace }}/besu/gen-besu.json:/var/lib/besu/gen-besu.json
         ports:
@@ -68,5 +69,5 @@ jobs:
 #        run: bash -c 'while [[ "$$(curl --connect-timeout 2 -s -o /dev/null -w ''%{http_code}'' http://0.0.0.0:8545)" != "201" ]]; do echo ..; sleep 5; done; echo besu is up; npm run test'
         run: npm run test
         env:
-          WEBSOCKET_ADDR: 'ws://127.0.0.1:8546'
-          RPC_ADDR: 'http://127.0.0.1:8546'
+          WEBSOCKET_ADDR: 'ws://0.0.0.0:8546/'
+          RPC_ADDR: 'http://0.0.0.0:8546/'
