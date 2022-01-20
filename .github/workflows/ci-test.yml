@@ -37,6 +37,7 @@ jobs:
           NAT_METHOD: "DOCKER"
 #        volumes:
 #            - ${{ github.workspace }}/besu/gen-besu.json:/var/lib/besu/gen-besu.json
+        options: --nat-method=DOCKER
         ports:
           - "8545:8545"
           - "8546:8546"
