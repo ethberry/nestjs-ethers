@@ -29,8 +29,8 @@ jobs:
           BESU_RPC_HTTP_HOST: 0.0.0.0
           BESU_RPC_HTTP_ENABLED: "true"
           BESU_RPC_HTTP_CORS_ORIGINS: "*"
-          BESU_RPC_HTTP_API: "ETH,NET,WEB3,MINER"
-          BESU_RPC_WS_API: "ETH,NET,WEB3,MINER"
+          BESU_RPC_HTTP_API: "ADMIN,ETH,NET,WEB3,MINER"
+          BESU_RPC_WS_API: "ADMIN,ETH,NET,WEB3,MINER"
           BESU_MINER_ENABLED: "true"
           BESU_MINER_COINBASE: fe3b557e8fb62b89f4916b721be55ceb828dbd73
           NETWORK: "dev"
@@ -67,7 +67,8 @@ jobs:
 
 #        run: curl --connect-timeout 2 -w ''%{http_code}'' http://0.0.0.0:8545
 #        run: bash -c 'while [[ "$$(curl --connect-timeout 2 -s -o /dev/null -w ''%{http_code}'' http://0.0.0.0:8545)" != "201" ]]; do echo ..; sleep 5; done; echo besu is up; npm run test'
-        run: npm run test
+        run: curl -X POST --data ''{"jsonrpc":"2.0","method":"admin_nodeInfo","params":[],"id":1}'' http://0.0.0.0:8545
+#        run: npm run test
         env:
           WEBSOCKET_ADDR: 'ws://0.0.0.0:8546/'
           RPC_ADDR: 'http://0.0.0.0:8545/'
