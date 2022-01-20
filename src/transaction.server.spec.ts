@@ -42,16 +42,17 @@ class EthersTransactionController {
 })
 class EthersTransactionModule {}
 
-describe("EthersServer", () => {
+describe.only("EthersServer", () => {
   let app: INestApplication;
   let ethersTransactionService: EthersTransactionService;
   let logSpyBlock: jest.SpyInstance;
   let logSpyTransaction: jest.SpyInstance;
 
   let ethersWsProvider: WebSocketProvider;
-
   beforeEach(async () => {
-    ethersWsProvider = new ethers.providers.WebSocketProvider("ws://127.0.0.1:8546/");
+    ethersWsProvider = new ethers.providers.WebSocketProvider(
+      process.env.WEBSOCKET_ADDR ? process.env.WEBSOCKET_ADDR : "ws://127.0.0.1:8546/",
+    );
     await ethersWsProvider.send("miner_start");
     logSpyBlock = jest.spyOn(ethersTransactionService, "block");
     logSpyTransaction = jest.spyOn(ethersTransactionService, "transaction");
@@ -119,7 +120,9 @@ describe("EthersServer", () => {
     });
 
     it("should receive Transaction", async () => {
-      const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545/");
+      const provider = new ethers.providers.JsonRpcProvider(
+        process.env.RPC_ADDR ? process.env.RPC_ADDR : "http://127.0.0.1:8545/",
+      );
       const wallet = new ethers.Wallet("0x8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63");
 
       await wallet.connect(provider).sendTransaction({
@@ -155,7 +158,9 @@ describe("EthersServer", () => {
     });
 
     it("should receive Block & Transaction", async () => {
-      const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545/");
+      const provider = new ethers.providers.JsonRpcProvider(
+        process.env.RPC_ADDR ? process.env.RPC_ADDR : "http://127.0.0.1:8545/",
+      );
       const wallet = new ethers.Wallet("0x8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63");
 
       await wallet.connect(provider).sendTransaction({
