@@ -70,5 +70,5 @@ jobs:
         run: curl -X POST --data '{"jsonrpc":"2.0","method":"admin_nodeInfo","params":[],"id":1}' http://0.0.0.0:8545
 #        run: npm run test
         env:
-          WEBSOCKET_ADDR: 'ws://0.0.0.0:8546/'
-          RPC_ADDR: 'http://0.0.0.0:8545/'
+          WEBSOCKET_ADDR: ws://0.0.0.0:8546/
+          RPC_ADDR: http://0.0.0.0:8545/

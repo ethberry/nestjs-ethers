@@ -91,7 +91,7 @@ describe("EthersServer", () => {
     });
 
     it("should receive Block", async () => {
-      await new Promise(resolve => setTimeout(resolve, 5000));
+      await new Promise(resolve => setTimeout(resolve, 15000));
       expect(logSpyBlock).toBeCalled();
       expect(logSpyTransaction).toBeCalledTimes(0);
     });
@@ -129,7 +129,7 @@ describe("EthersServer", () => {
         to: "0x61284003E50b2D7cA2B95F93857abB78a1b0F3Ca",
         value: ethers.utils.parseEther("0.01"),
       });
-      await new Promise(resolve => setTimeout(resolve, 5000));
+      await new Promise(resolve => setTimeout(resolve, 15000));
       expect(logSpyBlock).toBeCalledTimes(0);
       expect(logSpyTransaction).toBeCalled();
     });
@@ -167,7 +167,7 @@ describe("EthersServer", () => {
         to: "0x61284003E50b2D7cA2B95F93857abB78a1b0F3Ca",
         value: ethers.utils.parseEther("0.01"),
       });
-      await new Promise(resolve => setTimeout(resolve, 5000));
+      await new Promise(resolve => setTimeout(resolve, 15000));
       expect(logSpyBlock).toBeCalled();
       expect(logSpyTransaction).toBeCalled();
     });
