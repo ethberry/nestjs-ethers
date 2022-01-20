@@ -50,8 +50,6 @@ describe("EthersServer", () => {
 
   let ethersWsProvider: WebSocketProvider;
   beforeEach(async () => {
-    console.log("process.env.WEBSOCKET_ADDR", process.env.WEBSOCKET_ADDR);
-    console.log("process.env.RPC_ADDR", process.env.RPC_ADDR);
     ethersWsProvider = new ethers.providers.WebSocketProvider(
       process.env.WEBSOCKET_ADDR ? process.env.WEBSOCKET_ADDR : "ws://127.0.0.1:8546/",
     );
