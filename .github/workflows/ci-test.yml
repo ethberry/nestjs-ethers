@@ -6,6 +6,10 @@ on:
     branches:
       - main
       - dev
+  push:
+    branches:
+      - main
+      - dev
 
 jobs:
   test:
@@ -59,5 +63,7 @@ jobs:
         run: npm i && npm run build
 
       - name: Npm run test
-        run: bash -c 'while [[ "$$(curl --connect-timeout 2 -s -o /dev/null -w ''%{http_code}'' http://0.0.0.0:8545)" != "200" ]]; do echo ..; sleep 5; done; echo besu is up; npm run test'
+
+        run: curl --connect-timeout 2 -w ''%{http_code}'' http://0.0.0.0:8545
+#        run: bash -c 'while [[ "$$(curl --connect-timeout 2 -s -o /dev/null -w ''%{http_code}'' http://0.0.0.0:8545)" != "201" ]]; do echo ..; sleep 5; done; echo besu is up; npm run test'
 #        run: npm run test
