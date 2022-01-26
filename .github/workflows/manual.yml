@@ -9,12 +9,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # BEGIN INSTALL
-      - uses: actions/checkout@v2
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
 
       - name: Authenticate Registry & Configure Git User
         run: |
           echo "save-exact=true" > .npmrc
           echo "package-lock=false" >> .npmrc
+          echo "legacy-peer-deps=true" >> .npmrc
           echo "@gemunion:registry=https://npm.pkg.github.com/" >> .npmrc
           echo "//npm.pkg.github.com/:_authToken=$GITHUBTOKEN" >> .npmrc
           git update-index --assume-unchanged .npmrc
