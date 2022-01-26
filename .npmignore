@@ -1,3 +1,4 @@
+.idea
 /src
 /coverage
 /besu
@@ -5,6 +6,5 @@
 /tsconfig.test.json
 /jest.config.json
 **/*.spec.ts
-.idea
-./dist/*.js.map
-./dist/*.d.ts
+*.js.map
+*.d.ts
