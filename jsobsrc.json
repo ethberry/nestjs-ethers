@@ -1,0 +1,15 @@
+{
+  "compact": false,
+  "controlFlowFlattening": false,
+  "deadCodeInjection": false,
+  "debugProtection": false,
+  "debugProtectionInterval": false,
+  "identifierNamesGenerator": "mangled",
+  "log": false,
+  "numbersToExpressions": false,
+  "renameGlobals": false,
+  "selfDefending": true,
+  "simplify": true,
+  "target": "node",
+  "unicodeEscapeSequence": false
+}

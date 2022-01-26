@@ -35,6 +35,9 @@ jobs:
       - name: Authenticate check via npm
         run: npm whoami --registry=https://npm.pkg.github.com/
 
+      - name: Obfuscate and Rename
+        run: npm run obfuscate && find . -name '*obfuscated.js' -exec bash -c 'mv "$1" "${1/-obfuscated/}"' _ {} \;
+
       - name: Version by NPM
         run: npm version patch -m "[Manual release] [skip ci] %s"
 
