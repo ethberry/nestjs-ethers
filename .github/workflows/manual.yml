@@ -11,12 +11,6 @@ jobs:
       # BEGIN INSTALL
       - uses: actions/checkout@v2
 
-      - name: Install Packages npm i
-        run: npm i
-
-      - name: Build Packages
-        run: npm run build
-
       - name: Authenticate Registry & Configure Git User
         run: |
           echo "save-exact=true" > .npmrc
@@ -34,6 +28,12 @@ jobs:
 
       - name: Authenticate check via npm
         run: npm whoami --registry=https://npm.pkg.github.com/
+
+      - name: Install Packages npm i
+        run: npm i
+
+      - name: Build Packages
+        run: npm run build
 
       - name: Obfuscate and Rename
         run: npm run obfuscate && find . -name '*obfuscated.js' -exec bash -c 'mv "$1" "${1/-obfuscated/}"' _ {} \;
