@@ -1,8 +1,8 @@
 # Project
-dist/
-coverage/
-code/
-besu/besu-mainnet
+/dist
+/coverage
+/besu
+/scripts
 
 # IDE
 .idea
