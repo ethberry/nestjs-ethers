@@ -16,8 +16,8 @@ services:
       BESU_RPC_HTTP_HOST: 0.0.0.0
       BESU_RPC_HTTP_ENABLED: "true"
       BESU_RPC_HTTP_CORS_ORIGINS: "*"
-      BESU_RPC_HTTP_API: "ADMIN,ETH,NET,WEB3,MINER"
-      BESU_RPC_WS_API: "ADMIN,ETH,NET,WEB3,MINER"
+      BESU_RPC_HTTP_API: "ADMIN,ETH,NET,WEB3,MINER,IBFT"
+      BESU_RPC_WS_API: "ADMIN,ETH,NET,WEB3,MINER,IBFT"
       BESU_MINER_ENABLED: "true"
       BESU_MINER_COINBASE: fe3b557e8fb62b89f4916b721be55ceb828dbd73
     volumes:
@@ -40,8 +40,8 @@ services:
     restart: "on-failure"
     image: alethio/ethereum-lite-explorer
     environment:
-      APP_NODE_URL: "http://127.0.0.1:30303"
+      APP_NODE_URL: "http://127.0.0.1:8545"
     ports:
-      - 8081:80
+      - 8080:80
     depends_on:
       - mainnet-besu
