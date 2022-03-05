@@ -3,7 +3,7 @@
   "controlFlowFlattening": false,
   "deadCodeInjection": false,
   "debugProtection": false,
-  "debugProtectionInterval": false,
+  "debugProtectionInterval": 0,
   "identifierNamesGenerator": "mangled",
   "log": false,
   "numbersToExpressions": false,
