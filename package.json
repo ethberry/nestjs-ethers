@@ -7,9 +7,9 @@
   "dependencies": {
     "@ethersproject/abstract-provider": "5.6.0",
     "@ethersproject/contracts": "5.6.0",
-    "@ethersproject/networks": "5.6.0",
-    "@ethersproject/providers": "5.6.1",
-    "ethers": "5.6.1"
+    "@ethersproject/networks": "5.6.1",
+    "@ethersproject/providers": "5.6.2",
+    "ethers": "5.6.2"
   },
   "description": "Ethers transport for NestJS",
   "devDependencies": {
@@ -23,8 +23,8 @@
     "@nomiclabs/hardhat-ethers": "2.0.5",
     "@types/jest": "27.4.1",
     "@types/node": "16.11.26",
-    "@typescript-eslint/eslint-plugin": "5.16.0",
-    "@typescript-eslint/parser": "5.16.0",
+    "@typescript-eslint/eslint-plugin": "5.17.0",
+    "@typescript-eslint/parser": "5.17.0",
     "eslint": "7.32.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-config-standard": "16.0.3",
