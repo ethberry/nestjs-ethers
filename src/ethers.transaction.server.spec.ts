@@ -1,5 +1,5 @@
-import { Controller, INestApplication, Injectable, Module } from "@nestjs/common";
-import { ConfigModule, ConfigService } from "@nestjs/config";
+import { Controller, Injectable, Module } from "@nestjs/common";
+import { ConfigModule } from "@nestjs/config";
 import { Test, TestingModule } from "@nestjs/testing";
 import { EventPattern, Payload } from "@nestjs/microservices";
 import { Block, TransactionResponse } from "@ethersproject/abstract-provider";
@@ -7,11 +7,14 @@ import { Block, TransactionResponse } from "@ethersproject/abstract-provider";
 import { ethers } from "ethers";
 import { WebSocketProvider } from "@ethersproject/providers";
 
-import { EthersTransactionServer } from "./transaction.server";
+import { EthersTransactionModule } from "./ethers.transaction.module";
+import { EthersTransactionService } from "./ethers.transaction.service";
 import { EventTypes } from "./interfaces";
 
 @Injectable()
-class EthersTransactionService {
+class TestEthersTransactionService {
+  constructor(private readonly ethersTransactionService: EthersTransactionService) {}
+
   public async block(block: Block): Promise<void> {
     await Promise.resolve(block);
   }
@@ -19,11 +22,15 @@ class EthersTransactionService {
   public async transaction(transaction: TransactionResponse): Promise<void> {
     await Promise.resolve(transaction);
   }
+
+  public async init(eventNames: Array<EventTypes>): Promise<void> {
+    await this.ethersTransactionService.listen(eventNames);
+  }
 }
 
 @Controller()
-class EthersTransactionController {
-  constructor(private readonly ethersTransactionService: EthersTransactionService) {}
+class TestEthersTransactionController {
+  constructor(private readonly ethersTransactionService: TestEthersTransactionService) {}
 
   @EventPattern({ eventName: EventTypes.BLOCK })
   public block(@Payload() data: Block): Promise<void> {
@@ -37,14 +44,14 @@ class EthersTransactionController {
 }
 
 @Module({
-  controllers: [EthersTransactionController],
-  providers: [EthersTransactionService],
+  imports: [EthersTransactionModule],
+  controllers: [TestEthersTransactionController],
+  providers: [TestEthersTransactionService],
 })
-class EthersTransactionModule {}
+class TestEthersTransactionModule {}
 
 describe("EthersServer", () => {
-  let app: INestApplication;
-  let ethersTransactionService: EthersTransactionService;
+  let ethersTransactionService: TestEthersTransactionService;
   let logSpyBlock: jest.SpyInstance;
   let logSpyTransaction: jest.SpyInstance;
 
@@ -71,24 +78,13 @@ describe("EthersServer", () => {
   describe("Block", () => {
     beforeAll(async () => {
       const module: TestingModule = await Test.createTestingModule({
-        imports: [ConfigModule.forRoot(), EthersTransactionModule],
+        imports: [ConfigModule.forRoot(), TestEthersTransactionModule],
       }).compile();
-      app = module.createNestApplication();
-      const configService = app.get(ConfigService);
-      const wsUrl = configService.get<string>("WEBSOCKET_ADDR", "ws://127.0.0.1:8546/");
-      app.connectMicroservice({
-        strategy: new EthersTransactionServer({
-          url: wsUrl,
-          eventNames: [EventTypes.BLOCK],
-        }),
-      });
-      await app.startAllMicroservices();
-      ethersTransactionService = module.get<EthersTransactionService>(EthersTransactionService);
+      ethersTransactionService = module.get<TestEthersTransactionService>(TestEthersTransactionService);
+      await ethersTransactionService.init([EventTypes.BLOCK]);
     });
 
-    afterAll(async () => {
-      await app.close();
-    });
+    afterAll(() => {});
 
     it("should receive Block", async () => {
       await new Promise(resolve => setTimeout(resolve, 15000));
@@ -100,24 +96,13 @@ describe("EthersServer", () => {
   describe("Transaction", () => {
     beforeAll(async () => {
       const module: TestingModule = await Test.createTestingModule({
-        imports: [ConfigModule.forRoot(), EthersTransactionModule],
+        imports: [ConfigModule.forRoot(), TestEthersTransactionModule],
       }).compile();
-      app = module.createNestApplication();
-      const configService = app.get(ConfigService);
-      const wsUrl = configService.get<string>("WEBSOCKET_ADDR", "ws://127.0.0.1:8546/");
-      app.connectMicroservice({
-        strategy: new EthersTransactionServer({
-          url: wsUrl,
-          eventNames: [EventTypes.TRANSACTION],
-        }),
-      });
-      await app.startAllMicroservices();
-      ethersTransactionService = module.get<EthersTransactionService>(EthersTransactionService);
+      ethersTransactionService = module.get<TestEthersTransactionService>(TestEthersTransactionService);
+      await ethersTransactionService.init([EventTypes.TRANSACTION]);
     });
 
-    afterAll(async () => {
-      await app.close();
-    });
+    afterAll(async () => {});
 
     it("should receive Transaction", async () => {
       const provider = new ethers.providers.JsonRpcProvider(
@@ -138,24 +123,13 @@ describe("EthersServer", () => {
   describe("Block & Transaction", () => {
     beforeAll(async () => {
       const module: TestingModule = await Test.createTestingModule({
-        imports: [ConfigModule.forRoot(), EthersTransactionModule],
+        imports: [ConfigModule.forRoot(), TestEthersTransactionModule],
       }).compile();
-      app = module.createNestApplication();
-      const configService = app.get(ConfigService);
-      const wsUrl = configService.get<string>("WEBSOCKET_ADDR", "ws://127.0.0.1:8546/");
-      app.connectMicroservice({
-        strategy: new EthersTransactionServer({
-          url: wsUrl,
-          eventNames: [EventTypes.BLOCK, EventTypes.TRANSACTION],
-        }),
-      });
-      await app.startAllMicroservices();
-      ethersTransactionService = module.get<EthersTransactionService>(EthersTransactionService);
+      ethersTransactionService = module.get<TestEthersTransactionService>(TestEthersTransactionService);
+      await ethersTransactionService.init([EventTypes.BLOCK, EventTypes.TRANSACTION]);
     });
 
-    afterAll(async () => {
-      await app.close();
-    });
+    afterAll(async () => {});
 
     it("should receive Block & Transaction", async () => {
       const provider = new ethers.providers.JsonRpcProvider(
