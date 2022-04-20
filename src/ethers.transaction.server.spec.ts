@@ -1,5 +1,5 @@
 import { Controller, Injectable, Module } from "@nestjs/common";
-import { ConfigModule } from "@nestjs/config";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { Test, TestingModule } from "@nestjs/testing";
 import { EventPattern, Payload } from "@nestjs/microservices";
 import { Block, TransactionResponse } from "@ethersproject/abstract-provider";
@@ -10,6 +10,8 @@ import { WebSocketProvider } from "@ethersproject/providers";
 import { EthersTransactionModule } from "./ethers.transaction.module";
 import { EthersTransactionService } from "./ethers.transaction.service";
 import { EventTypes } from "./interfaces";
+import { LicenseModule } from "@gemunion/nest-js-module-license";
+import process from "process";
 
 @Injectable()
 class TestEthersTransactionService {
@@ -77,9 +79,22 @@ describe("EthersServer", () => {
 
   describe("Block", () => {
     beforeAll(async () => {
-      const module: TestingModule = await Test.createTestingModule({
-        imports: [ConfigModule.forRoot(), TestEthersTransactionModule],
+      const module = await Test.createTestingModule({
+        imports: [
+          ConfigModule.forRoot({
+            envFilePath: `.env`,
+          }),
+          LicenseModule.forRootAsync(LicenseModule, {
+            imports: [ConfigModule],
+            inject: [ConfigService],
+            useFactory: (configService: ConfigService): string => {
+              return configService.get<string>("GEMUNION_API_KEY", process.env.GEMUNION_API_KEY as string);
+            },
+          }),
+          TestEthersTransactionModule,
+        ],
       }).compile();
+
       ethersTransactionService = module.get<TestEthersTransactionService>(TestEthersTransactionService);
       await ethersTransactionService.init([EventTypes.BLOCK]);
     });
@@ -95,8 +110,20 @@ describe("EthersServer", () => {
 
   describe("Transaction", () => {
     beforeAll(async () => {
-      const module: TestingModule = await Test.createTestingModule({
-        imports: [ConfigModule.forRoot(), TestEthersTransactionModule],
+      const module = await Test.createTestingModule({
+        imports: [
+          ConfigModule.forRoot({
+            envFilePath: `.env`,
+          }),
+          LicenseModule.forRootAsync(LicenseModule, {
+            imports: [ConfigModule],
+            inject: [ConfigService],
+            useFactory: (configService: ConfigService): string => {
+              return configService.get<string>("GEMUNION_API_KEY", process.env.GEMUNION_API_KEY as string);
+            },
+          }),
+          TestEthersTransactionModule,
+        ],
       }).compile();
       ethersTransactionService = module.get<TestEthersTransactionService>(TestEthersTransactionService);
       await ethersTransactionService.init([EventTypes.TRANSACTION]);
@@ -122,8 +149,20 @@ describe("EthersServer", () => {
 
   describe("Block & Transaction", () => {
     beforeAll(async () => {
-      const module: TestingModule = await Test.createTestingModule({
-        imports: [ConfigModule.forRoot(), TestEthersTransactionModule],
+      const module = await Test.createTestingModule({
+        imports: [
+          ConfigModule.forRoot({
+            envFilePath: `.env`,
+          }),
+          LicenseModule.forRootAsync(LicenseModule, {
+            imports: [ConfigModule],
+            inject: [ConfigService],
+            useFactory: (configService: ConfigService): string => {
+              return configService.get<string>("GEMUNION_API_KEY", process.env.GEMUNION_API_KEY as string);
+            },
+          }),
+          TestEthersTransactionModule,
+        ],
       }).compile();
       ethersTransactionService = module.get<TestEthersTransactionService>(TestEthersTransactionService);
       await ethersTransactionService.init([EventTypes.BLOCK, EventTypes.TRANSACTION]);

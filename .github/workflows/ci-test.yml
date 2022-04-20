@@ -66,3 +66,4 @@ jobs:
         env:
           WEBSOCKET_ADDR: ws://0.0.0.0:8546/
           RPC_ADDR: http://0.0.0.0:8545/
+          GEMUNION_API_KEY: ${{ secrets.GEMUNION_API_KEY }}
