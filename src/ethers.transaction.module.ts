@@ -10,7 +10,6 @@ import { EthersTransactionService } from "./ethers.transaction.service";
 @Module({
   imports: [ConfigModule, DiscoveryModule, LicenseModule.deferred()],
   providers: [ethersWsProvider, licenseProvider, Logger, EthersTransactionService],
-  controllers: [],
   exports: [EthersTransactionService],
 })
 export class EthersTransactionModule {}
