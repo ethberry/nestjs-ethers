@@ -9,7 +9,7 @@
     "@ethersproject/contracts": "5.6.0",
     "@ethersproject/networks": "5.6.2",
     "@ethersproject/providers": "5.6.4",
-    "@gemunion/nest-js-module-license": "1.0.13",
+    "@gemunion/nest-js-module-license": "1.0.14",
     "@golevelup/nestjs-discovery": "3.0.0",
     "ethers": "5.6.4",
     "ws": "7.5.7"
