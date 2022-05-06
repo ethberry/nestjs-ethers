@@ -1,4 +1,10 @@
 {
   "extends": ["github>gemunion/renovate-config"],
-  "baseBranches": ["main"]
+  "baseBranches": ["main"],
+  "packageRules": [
+    {
+      "matchPackageNames": ["ws"],
+      "allowedVersions": "<=7.4.6"
+    }
+  ]
 }

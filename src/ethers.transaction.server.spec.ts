@@ -1,10 +1,9 @@
 import { Controller, Injectable, Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { Test, TestingModule } from "@nestjs/testing";
+import { Test } from "@nestjs/testing";
 import { EventPattern, Payload } from "@nestjs/microservices";
-import { Block, TransactionResponse } from "@ethersproject/abstract-provider";
-
 import { ethers } from "ethers";
+import { Block, TransactionResponse } from "@ethersproject/abstract-provider";
 import { WebSocketProvider } from "@ethersproject/providers";
 
 import { EthersTransactionModule } from "./ethers.transaction.module";

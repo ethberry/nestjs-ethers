@@ -5,18 +5,16 @@
     "url": "https://trejgun.github.io/"
   },
   "dependencies": {
+    "@golevelup/nestjs-discovery": "3.0.0"
+  },
+  "description": "Ethers transport for NestJS",
+  "devDependencies": {
     "@ethersproject/abstract-provider": "5.6.0",
     "@ethersproject/contracts": "5.6.0",
     "@ethersproject/networks": "5.6.2",
     "@ethersproject/providers": "5.6.5",
-    "@gemunion/nest-js-module-license": "1.0.15",
-    "@golevelup/nestjs-discovery": "3.0.0",
-    "ethers": "5.6.5",
-    "ws": "7.5.7"
-  },
-  "description": "Ethers transport for NestJS",
-  "devDependencies": {
     "@gemunion/eslint-config": "2.0.1",
+    "@gemunion/nest-js-module-license": "1.0.15",
     "@nestjs/common": "8.4.4",
     "@nestjs/config": "2.0.0",
     "@nestjs/core": "8.4.4",
@@ -39,6 +37,7 @@
     "eslint-plugin-n": "15.2.0",
     "eslint-plugin-prettier": "4.0.0",
     "eslint-plugin-promise": "6.0.0",
+    "ethers": "5.6.5",
     "husky": "4.3.8",
     "javascript-obfuscator": "4.0.0",
     "jest": "27.5.1",
@@ -47,7 +46,8 @@
     "reflect-metadata": "0.1.13",
     "rimraf": "3.0.2",
     "ts-jest": "27.1.4",
-    "typescript": "4.6.4"
+    "typescript": "4.6.4",
+    "ws": "7.4.6"
   },
   "engines": {
     "node": ">=12.13"
@@ -56,11 +56,18 @@
   "main": "./dist/index.js",
   "name": "@gemunion/nestjs-ethers",
   "peerDependencies": {
-    "@nestjs/common": "^8.4.4",
+    "@ethersproject/abstract-provider": "^5.6.0",
+    "@ethersproject/contracts": "^5.6.0",
+    "@ethersproject/networks": "^5.6.0",
+    "@ethersproject/providers": "^5.6.0",
+    "@gemunion/nest-js-module-license": "^1.0.0",
+    "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^2.0.0",
-    "@nestjs/microservices": "^8.4.4",
+    "@nestjs/microservices": "^8.0.0",
     "@nestjs/terminus": "^8.0.0",
-    "rxjs": "^7.5.5"
+    "ethers": "^5.6.0",
+    "rxjs": "^7.0.0",
+    "ws": "7.4.6"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
