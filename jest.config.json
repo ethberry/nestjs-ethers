@@ -1,10 +1,9 @@
 {
+  "collectCoverage": true,
   "coverageDirectory": "../coverage",
   "moduleFileExtensions": ["js", "jsx", "ts", "tsx", "json"],
   "preset": "ts-jest",
   "rootDir": "src",
-  "testRegex": ".spec.ts$",
-  "timers": "real",
-  "verbose": true,
-  "collectCoverage": true
+  "testMatch": ["**/*.spec.ts"],
+  "verbose": true
 }
