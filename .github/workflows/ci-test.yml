@@ -58,7 +58,7 @@ jobs:
         run: npm whoami --registry=https://npm.pkg.github.com/
 
       - name: Install & Build Packages
-        run: npm i && npm run build
+        run: npm i
 
       - name: Npm run test
 

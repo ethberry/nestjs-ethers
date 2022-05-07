@@ -80,9 +80,9 @@
     "build": "tsc",
     "lint": "eslint . --fix",
     "obfuscate": "sh scripts/obfuscate.sh",
+    "renamedist": "sh scripts/renameo.sh",
     "prebuild": "rimraf dist/",
     "prepare": "npm run build",
-    "renamedist": "sh scripts/renameo.sh",
     "test": "jest --config=jest.config.json --detectOpenHandles --runInBand --forceExit"
   },
   "types": "./dist/index.d.ts",

@@ -36,8 +36,8 @@ jobs:
       - name: Install Packages npm i
         run: npm i
 
-      - name: Build Packages
-        run: npm run build
+#      - name: Build Packages
+#        run: npm run build
 
       - name: Obfuscate and Rename
         run: npm run obfuscate && find . -name '*obfuscated.js' -exec bash -c 'mv "$1" "${1/-obfuscated/}"' _ {} \;
