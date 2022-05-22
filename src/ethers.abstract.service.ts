@@ -1,4 +1,5 @@
 import { Inject, Injectable, Logger, LoggerService } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { DiscoveredMethodWithMeta, DiscoveryService } from "@golevelup/nestjs-discovery";
 import { PATTERN_METADATA } from "@nestjs/microservices/constants";
 import { MessageHandler } from "@nestjs/microservices";
@@ -16,6 +17,7 @@ export abstract class EthersAbstractService {
     @Inject(ETHERS_WS)
     protected readonly provider: ethers.providers.WebSocketProvider,
     protected readonly discoveryService: DiscoveryService,
+    protected readonly configService: ConfigService,
   ) {}
 
   protected async getHandlerByPattern<T extends Record<string, string>>(

@@ -1,11 +1,9 @@
 import { Log, Provider } from "@ethersproject/abstract-provider";
-import { ContractInterface } from "@ethersproject/contracts";
 import { Interface, LogDescription } from "@ethersproject/abi";
 
 export const getPastEvents = async (
   provider: Provider,
   address: string,
-  abi: ContractInterface,
   fromBlockNumber: number,
   toBlockNumber: number,
   chunkLimit = 0,
