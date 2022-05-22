@@ -9,6 +9,7 @@
   },
   "description": "Ethers transport for NestJS",
   "devDependencies": {
+    "@ethersproject/abi": "5.6.2",
     "@ethersproject/abstract-provider": "5.6.0",
     "@ethersproject/contracts": "5.6.1",
     "@ethersproject/networks": "5.6.2",
@@ -56,6 +57,7 @@
   "main": "./dist/index.js",
   "name": "@gemunion/nestjs-ethers",
   "peerDependencies": {
+    "@ethersproject/abi": "^5.6.0",
     "@ethersproject/abstract-provider": "^5.6.0",
     "@ethersproject/contracts": "^5.6.0",
     "@ethersproject/networks": "^5.6.0",
@@ -80,9 +82,9 @@
     "build": "tsc",
     "lint": "eslint . --fix",
     "obfuscate": "sh scripts/obfuscate.sh",
-    "renamedist": "sh scripts/renameo.sh",
     "prebuild": "rimraf dist/",
     "prepare": "npm run build",
+    "renamedist": "sh scripts/renameo.sh",
     "test": "jest --config=jest.config.json --detectOpenHandles --runInBand --forceExit"
   },
   "types": "./dist/index.d.ts",
