@@ -17,15 +17,8 @@ import { CONTRACT_OPTIONS_PROVIDER, ETHERS_WS } from "./ethers.constants";
   providers: [ethersWsProvider, licenseProvider, Logger, EthersContractService],
   exports: [EthersContractService],
 })
-export class EthersContractModule {}
-
-@Module({
-  imports: [ConfigModule, DiscoveryModule, ScheduleModule.forRoot(), LicenseModule.deferred()],
-  providers: [ethersWsProvider, licenseProvider, Logger, EthersContractService],
-  exports: [EthersContractService],
-})
-export class TestModule
-  extends createConfigurableDynamicRootModule<TestModule, Array<IContractOptions>>(CONTRACT_OPTIONS_PROVIDER)
+export class EthersContractModule
+  extends createConfigurableDynamicRootModule<EthersContractModule, Array<IContractOptions>>(CONTRACT_OPTIONS_PROVIDER)
   implements OnModuleInit
 {
   constructor(
