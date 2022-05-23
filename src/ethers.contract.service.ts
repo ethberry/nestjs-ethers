@@ -1,38 +1,33 @@
 import { Injectable } from "@nestjs/common";
+import { Cron, CronExpression } from "@nestjs/schedule";
 import { Interface } from "@ethersproject/abi";
 
-import { IContractOptions } from "./interfaces";
 import { EthersAbstractService } from "./ethers.abstract.service";
 import { getPastEvents, parseLog } from "./utils/utils";
 
 @Injectable()
 export class EthersContractService extends EthersAbstractService {
   private latency: number;
+  private fromBlockNumber: number;
+  private toBlockNumber: number;
 
-  public async listen(contractOptions: Array<IContractOptions>): Promise<void> {
+  public async init(): Promise<void> {
     this.latency = ~~this.configService.get<string>("LATENCY", "32");
-
-    let fromBlockNumber = ~~this.configService.get<string>("STARTING_BLOCK", "0");
-    let toBlockNumber = await this.provider.getBlockNumber();
-
-    // check all past events
-    await this.init(contractOptions, fromBlockNumber, toBlockNumber);
-
-    // then check new events once in a while
-    setTimeout(async () => {
-      fromBlockNumber = toBlockNumber;
-      toBlockNumber = await this.provider.getBlockNumber();
-      await this.init(contractOptions, fromBlockNumber, toBlockNumber);
-    }, 300 * 1000);
+    this.fromBlockNumber = ~~this.configService.get<string>("STARTING_BLOCK", "0");
+    this.toBlockNumber = await this.provider.getBlockNumber();
+    return this.getPastEvents(this.toBlockNumber, this.toBlockNumber - this.latency);
   }
 
-  public async init(
-    contractOptions: Array<IContractOptions>,
-    fromBlockNumber: number,
-    toBlockNumber: number,
-  ): Promise<void> {
+  @Cron(CronExpression.EVERY_MINUTE)
+  public async listen(): Promise<void> {
+    this.fromBlockNumber = this.toBlockNumber;
+    this.toBlockNumber = await this.provider.getBlockNumber();
+    return this.getPastEvents(this.toBlockNumber, this.toBlockNumber - this.latency);
+  }
+
+  public async getPastEvents(fromBlockNumber: number, toBlockNumber: number): Promise<void> {
     await Promise.all(
-      contractOptions.map(async contractOption => {
+      this.options.map(async contractOption => {
         const { contractAddress, contractInterface, contractName, eventNames = [] } = contractOption;
 
         const events = await getPastEvents(this.provider, contractAddress, fromBlockNumber, toBlockNumber, 1000);
@@ -52,6 +47,42 @@ export class EthersContractService extends EthersAbstractService {
 }
 
 /*
+
+@Module({
+  imports: [
+    ConfigModule,
+    EthersContractModule.forRootAsync(EthersContractModule, {
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService): Array<IContractOptions> => {
+        const resourcesMarketplaceAddr = configService.get<string>("ERC1155_MARKETPLACE_ADDR", "");
+        return [
+          {
+            contractName: ContractType.ERC1155_MARKETPLACE,
+            contractAddress: resourcesMarketplaceAddr,
+            contractInterface: ERC1155Marketplace.abi as Array<AbiItem>,
+            // prettier-ignore
+            eventNames: [
+              Erc1155MarketplaceEventType.Redeem,
+            ],
+          },
+        ];
+      },
+    }),
+  ],
+})
+export class BlockchainModule implements OnModuleDestroy {
+  constructor(
+    private readonly ethersContractService: EthersContractService,
+  ) {}
+
+  // not sure we need this at all
+  public async onModuleDestroy(): Promise<void> {
+    await this.ethersContractService.destroy();
+  }
+}
+
+
 
 @Controller()
 export class ExampleControllerWs {

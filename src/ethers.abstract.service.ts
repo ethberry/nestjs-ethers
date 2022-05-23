@@ -1,13 +1,14 @@
-import { Inject, Injectable, Logger, LoggerService } from "@nestjs/common";
+import { Inject, Injectable, Optional, Logger, LoggerService } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { DiscoveredMethodWithMeta, DiscoveryService } from "@golevelup/nestjs-discovery";
 import { PATTERN_METADATA } from "@nestjs/microservices/constants";
 import { MessageHandler } from "@nestjs/microservices";
 import { transformPatternToRoute } from "@nestjs/microservices/utils";
-import { ethers } from "ethers";
+import { providers } from "ethers";
 import { EMPTY, Observable } from "rxjs";
 
-import { ETHERS_WS } from "./ethers.constants";
+import { CONTRACT_OPTIONS_PROVIDER, ETHERS_WS } from "./ethers.constants";
+import { IContractOptions } from "./interfaces";
 
 @Injectable()
 export abstract class EthersAbstractService {
@@ -15,9 +16,12 @@ export abstract class EthersAbstractService {
     @Inject(Logger)
     protected readonly loggerService: LoggerService,
     @Inject(ETHERS_WS)
-    protected readonly provider: ethers.providers.WebSocketProvider,
+    protected readonly provider: providers.WebSocketProvider,
     protected readonly discoveryService: DiscoveryService,
     protected readonly configService: ConfigService,
+    @Optional()
+    @Inject(CONTRACT_OPTIONS_PROVIDER)
+    protected readonly options: Array<IContractOptions>,
   ) {}
 
   protected async getHandlerByPattern<T extends Record<string, string>>(
