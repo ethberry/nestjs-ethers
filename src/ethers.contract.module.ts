@@ -1,31 +1,26 @@
-import { Inject, Logger, Module, OnModuleInit } from "@nestjs/common";
+import { Logger, Module, OnModuleInit } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { ScheduleModule } from "@nestjs/schedule";
 import { createConfigurableDynamicRootModule } from "@golevelup/nestjs-modules";
 import { DiscoveryModule } from "@golevelup/nestjs-discovery";
-import { providers } from "ethers";
 
 import { LicenseModule, licenseProvider } from "@gemunion/nest-js-module-license";
 
-import { ethersWsProvider } from "./providers";
+import { ethersRpcProvider } from "./providers";
 import { EthersContractService } from "./ethers.contract.service";
-import { IContractOptions } from "./interfaces";
-import { CONTRACT_OPTIONS_PROVIDER, ETHERS_WS } from "./ethers.constants";
+import { IModuleOptions } from "./interfaces";
+import { MODULE_OPTIONS_PROVIDER } from "./ethers.constants";
 
 @Module({
   imports: [ConfigModule, DiscoveryModule, ScheduleModule.forRoot(), LicenseModule.deferred()],
-  providers: [ethersWsProvider, licenseProvider, Logger, EthersContractService],
+  providers: [ethersRpcProvider, licenseProvider, Logger, EthersContractService],
   exports: [EthersContractService],
 })
 export class EthersContractModule
-  extends createConfigurableDynamicRootModule<EthersContractModule, Array<IContractOptions>>(CONTRACT_OPTIONS_PROVIDER)
+  extends createConfigurableDynamicRootModule<EthersContractModule, IModuleOptions>(MODULE_OPTIONS_PROVIDER)
   implements OnModuleInit
 {
-  constructor(
-    @Inject(ETHERS_WS)
-    protected readonly provider: providers.WebSocketProvider,
-    private readonly ethersContractService: EthersContractService,
-  ) {
+  constructor(private readonly ethersContractService: EthersContractService) {
     super();
   }
 

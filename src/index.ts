@@ -5,5 +5,3 @@ export * from "./ethers.constants";
 export * from "./ethers.contract.module";
 export * from "./ethers.contract.service";
 export * from "./ethers.health.indicator";
-export * from "./ethers.transaction.module";
-export * from "./ethers.transaction.service";

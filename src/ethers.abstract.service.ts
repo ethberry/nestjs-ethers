@@ -7,21 +7,21 @@ import { transformPatternToRoute } from "@nestjs/microservices/utils";
 import { providers } from "ethers";
 import { EMPTY, Observable } from "rxjs";
 
-import { CONTRACT_OPTIONS_PROVIDER, ETHERS_WS } from "./ethers.constants";
-import { IContractOptions } from "./interfaces";
+import { ETHERS_RPC, MODULE_OPTIONS_PROVIDER } from "./ethers.constants";
+import { IModuleOptions } from "./interfaces";
 
 @Injectable()
 export abstract class EthersAbstractService {
   constructor(
     @Inject(Logger)
     protected readonly loggerService: LoggerService,
-    @Inject(ETHERS_WS)
-    protected readonly provider: providers.WebSocketProvider,
+    @Inject(ETHERS_RPC)
+    protected readonly provider: providers.JsonRpcProvider,
     protected readonly discoveryService: DiscoveryService,
     protected readonly configService: ConfigService,
     @Optional()
-    @Inject(CONTRACT_OPTIONS_PROVIDER)
-    protected readonly options: Array<IContractOptions>,
+    @Inject(MODULE_OPTIONS_PROVIDER)
+    protected options: IModuleOptions,
   ) {}
 
   protected async getHandlerByPattern<T extends Record<string, string>>(
@@ -45,9 +45,5 @@ export abstract class EthersAbstractService {
         discoveredMethodWithMeta.discoveredMethod.parentClass.instance,
       ) as MessageHandler
     )(data, context);
-  }
-
-  public destroy(): Promise<void> {
-    return this.provider.destroy();
   }
 }

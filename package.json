@@ -11,11 +11,12 @@
   },
   "description": "Ethers transport for NestJS",
   "devDependencies": {
-    "@ethersproject/abi": "5.6.2",
+    "@ethersproject/abi": "5.6.3",
     "@ethersproject/abstract-provider": "5.6.1",
-    "@ethersproject/contracts": "5.6.2",
+    "@ethersproject/constants": "5.6.1",
     "@ethersproject/networks": "5.6.3",
     "@ethersproject/providers": "5.6.8",
+    "ethers": "5.6.8",
     "@gemunion/eslint-config": "2.0.1",
     "@gemunion/nest-js-module-license": "1.0.18",
     "@nestjs/common": "8.4.5",
@@ -40,7 +41,6 @@
     "eslint-plugin-n": "15.2.0",
     "eslint-plugin-prettier": "4.0.0",
     "eslint-plugin-promise": "6.0.0",
-    "ethers": "5.6.8",
     "husky": "4.3.8",
     "javascript-obfuscator": "4.0.0",
     "jest": "28.1.0",
@@ -49,7 +49,7 @@
     "reflect-metadata": "0.1.13",
     "rimraf": "3.0.2",
     "ts-jest": "28.0.3",
-    "typescript": "4.7.2",
+    "typescript": "4.4.4",
     "ws": "7.4.6"
   },
   "engines": {

@@ -1,11 +1,10 @@
-import { Log, Provider } from "@ethersproject/abstract-provider";
-import { ContractInterface } from "@ethersproject/contracts";
+import { Log } from "@ethersproject/abstract-provider";
 import { Interface, LogDescription } from "@ethersproject/abi";
+import { JsonRpcProvider } from "@ethersproject/providers";
 
 export const getPastEvents = async (
-  provider: Provider,
-  address: string,
-  abi: ContractInterface,
+  provider: JsonRpcProvider,
+  address: Array<string>,
   fromBlockNumber: number,
   toBlockNumber: number,
   chunkLimit = 0,
@@ -30,13 +29,18 @@ export const getPastEvents = async (
 
   const events: Array<Log> = [];
   for (const chunk of chunks) {
-    const logs = await provider.getLogs({
-      fromBlock: chunk.fromBlock,
-      toBlock: chunk.toBlock,
-      address,
-    });
+    const logs: Log[] = await provider.send("eth_getLogs", [
+      {
+        address,
+        fromBlock: `0x${chunk.fromBlock.toString(16)}`,
+        toBlock: `0x${chunk.toBlock.toString(16)}`,
+        topics: [],
+      },
+    ]);
 
-    events.push(...logs);
+    if (logs) {
+      events.push(...logs);
+    }
   }
 
   return events;
