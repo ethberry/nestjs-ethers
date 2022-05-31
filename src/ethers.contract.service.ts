@@ -20,7 +20,7 @@ export class EthersContractService extends EthersAbstractService {
 
   @Cron(CronExpression.EVERY_MINUTE)
   public async listen(): Promise<void> {
-    this.fromBlockNumber = this.toBlockNumber - this.latency;
+    this.fromBlockNumber = this.toBlockNumber - this.latency + 1;
     this.toBlockNumber = await this.provider.getBlockNumber();
     return this.getPastEvents(this.fromBlockNumber, this.toBlockNumber - this.latency);
   }
@@ -46,7 +46,7 @@ export class EthersContractService extends EthersAbstractService {
 
   public updateListener(address: Array<string>, fromBlock?: number): void {
     if (address.length > 0) {
-      this.options.contract.contractAddress.concat(address);
+      this.options.contract.contractAddress.push(...address);
     }
 
     if (fromBlock) {

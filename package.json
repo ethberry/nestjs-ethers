@@ -90,5 +90,5 @@
     "test": "jest --config=jest.config.json --detectOpenHandles --runInBand --forceExit"
   },
   "types": "./dist/index.d.ts",
-  "version": "1.0.11"
+  "version": "2.0.0"
 }
