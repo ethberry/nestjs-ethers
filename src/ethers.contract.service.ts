@@ -1,32 +1,56 @@
 import { Injectable } from "@nestjs/common";
-import { ethers } from "ethers";
+import { Cron, CronExpression } from "@nestjs/schedule";
+import { Interface } from "@ethersproject/abi";
 
-import { IContractOptions } from "./interfaces";
 import { EthersAbstractService } from "./ethers.abstract.service";
+import { getPastEvents, parseLog } from "./utils/utils";
 
 @Injectable()
 export class EthersContractService extends EthersAbstractService {
-  public async listen(contractOptions: Array<IContractOptions>): Promise<void> {
-    await Promise.resolve();
+  private latency: number;
+  private fromBlockNumber: number;
+  private toBlockNumber: number;
 
-    contractOptions.forEach(contractOption => {
-      const { contractAddress, contractInterface, contractName, eventNames = [], filters = {} } = contractOption;
+  public async init(): Promise<void> {
+    this.latency = ~~this.configService.get<string>("LATENCY", "32");
+    this.fromBlockNumber = this.options.block.startBlock || ~~this.configService.get<string>("STARTING_BLOCK", "0");
+    this.toBlockNumber = await this.provider.getBlockNumber();
+    return this.getPastEvents(this.fromBlockNumber, this.toBlockNumber - this.latency);
+  }
 
-      const contract = new ethers.Contract(contractAddress, contractInterface, this.provider);
+  @Cron(CronExpression.EVERY_MINUTE)
+  public async listen(): Promise<void> {
+    this.fromBlockNumber = this.toBlockNumber - this.latency + 1;
+    this.toBlockNumber = await this.provider.getBlockNumber();
+    return this.getPastEvents(this.fromBlockNumber, this.toBlockNumber - this.latency);
+  }
 
-      // https://docs.ethers.io/v5/api/contract/contract/#Contract--events
-      eventNames.forEach(eventName => {
-        contract.on(eventName, (...data: Array<any>) => {
-          void this.call({ contractName, eventName }, data[data.length - 1]);
-        });
-      });
+  public async getPastEvents(fromBlockNumber: number, toBlockNumber: number): Promise<void> {
+    const { contractAddress, contractInterface, contractType, eventNames = [] } = this.options.contract;
 
-      // https://docs.ethers.io/v5/concepts/events/
-      Object.keys(filters).forEach(filterName => {
-        contract.on(filters[filterName], (...data: Array<any>) => {
-          void this.call({ contractName, filterName }, data[data.length - 1]);
-        });
-      });
-    });
+    // don't listen void
+    if (!contractAddress.length) return;
+
+    const events = await getPastEvents(this.provider, contractAddress, fromBlockNumber, toBlockNumber, 1000);
+
+    const iface = contractInterface instanceof Interface ? contractInterface : new Interface(contractInterface);
+
+    for (const log of events) {
+      const description = parseLog(iface, log);
+      if (!description || !eventNames.includes(description.name)) {
+        return;
+      }
+      void this.call({ contractType, eventName: description.name }, description, log);
+    }
+  }
+
+  public updateListener(address: Array<string>, fromBlock?: number): void {
+    if (address.length > 0) {
+      this.options.contract.contractAddress.push(...address);
+    }
+
+    if (fromBlock) {
+      this.options.block.startBlock = fromBlock;
+    }
   }
 }
