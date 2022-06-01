@@ -1,14 +1,4 @@
 {
-  "baseBranches": ["main", "get-past-events"],
-  "extends": ["github>gemunion/renovate-config"],
-  "packageRules": [
-    {
-      "allowedVersions": "<=7.4.6",
-      "matchPackageNames": ["ws"]
-    },
-    {
-      "allowedVersions": "<=7.4.6",
-      "matchPackageNames": ["@types/ws"]
-    }
-  ]
+  "baseBranches": ["main"],
+  "extends": ["github>gemunion/renovate-config"]
 }
