@@ -1,14 +1,16 @@
-import { Inject, Injectable, Optional, Logger, LoggerService } from "@nestjs/common";
+import { Inject, Injectable, Logger, LoggerService } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { DiscoveredMethodWithMeta, DiscoveryService } from "@golevelup/nestjs-discovery";
 import { PATTERN_METADATA } from "@nestjs/microservices/constants";
 import { MessageHandler } from "@nestjs/microservices";
 import { transformPatternToRoute } from "@nestjs/microservices/utils";
 import { providers } from "ethers";
+import { LogDescription } from "@ethersproject/abi";
 import { EMPTY, Observable } from "rxjs";
 
 import { ETHERS_RPC, MODULE_OPTIONS_PROVIDER } from "./ethers.constants";
 import { IModuleOptions } from "./interfaces";
+import { Log } from "@ethersproject/abstract-provider";
 
 @Injectable()
 export abstract class EthersAbstractService {
@@ -19,7 +21,6 @@ export abstract class EthersAbstractService {
     protected readonly provider: providers.JsonRpcProvider,
     protected readonly discoveryService: DiscoveryService,
     protected readonly configService: ConfigService,
-    @Optional()
     @Inject(MODULE_OPTIONS_PROVIDER)
     protected options: IModuleOptions,
   ) {}
@@ -33,7 +34,7 @@ export abstract class EthersAbstractService {
     });
   }
 
-  protected async call(pattern: Record<string, string>, data: any, context?: any): Promise<Observable<any>> {
+  protected async call(pattern: Record<string, string>, data: LogDescription, context?: Log): Promise<Observable<any>> {
     const discoveredMethodWithMeta = await this.getHandlerByPattern(transformPatternToRoute(pattern));
 
     if (!discoveredMethodWithMeta) {

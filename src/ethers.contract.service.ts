@@ -3,26 +3,26 @@ import { Cron, CronExpression } from "@nestjs/schedule";
 import { Interface } from "@ethersproject/abi";
 
 import { EthersAbstractService } from "./ethers.abstract.service";
-import { getPastEvents, parseLog } from "./utils/utils";
+import { getPastEvents, parseLog } from "./ethers.utils";
 
 @Injectable()
 export class EthersContractService extends EthersAbstractService {
   private latency: number;
-  private fromBlockNumber: number;
-  private toBlockNumber: number;
+  private fromBlock: number;
+  private toBlock: number;
 
   public async init(): Promise<void> {
     this.latency = ~~this.configService.get<string>("LATENCY", "32");
-    this.fromBlockNumber = this.options.block.startBlock || ~~this.configService.get<string>("STARTING_BLOCK", "0");
-    this.toBlockNumber = await this.provider.getBlockNumber();
-    return this.getPastEvents(this.fromBlockNumber, this.toBlockNumber - this.latency);
+    this.fromBlock = this.options.block.fromBlock || ~~this.configService.get<string>("STARTING_BLOCK", "0");
+    this.toBlock = await this.provider.getBlockNumber();
+    return this.getPastEvents(this.fromBlock, this.toBlock - this.latency);
   }
 
   @Cron(CronExpression.EVERY_MINUTE)
   public async listen(): Promise<void> {
-    this.fromBlockNumber = this.toBlockNumber - this.latency + 1;
-    this.toBlockNumber = await this.provider.getBlockNumber();
-    return this.getPastEvents(this.fromBlockNumber, this.toBlockNumber - this.latency);
+    this.fromBlock = this.toBlock - this.latency + 1;
+    this.toBlock = await this.provider.getBlockNumber();
+    return this.getPastEvents(this.fromBlock, this.toBlock - this.latency);
   }
 
   public async getPastEvents(fromBlockNumber: number, toBlockNumber: number): Promise<void> {
@@ -50,7 +50,7 @@ export class EthersContractService extends EthersAbstractService {
     }
 
     if (fromBlock) {
-      this.options.block.startBlock = fromBlock;
+      this.options.block.fromBlock = fromBlock;
     }
   }
 }

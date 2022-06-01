@@ -1,6 +1,6 @@
 import { Injectable, Inject } from "@nestjs/common";
 import { HealthIndicator, HealthIndicatorResult } from "@nestjs/terminus";
-import { ethers } from "ethers";
+import { providers } from "ethers";
 import ws from "ws";
 
 import { ETHERS_WS } from "./ethers.constants";
@@ -9,7 +9,7 @@ import { ETHERS_WS } from "./ethers.constants";
 export class EthersHealthIndicator extends HealthIndicator {
   constructor(
     @Inject(ETHERS_WS)
-    protected readonly provider: ethers.providers.WebSocketProvider,
+    protected readonly provider: providers.WebSocketProvider,
   ) {
     super();
   }

@@ -1,3 +1,3 @@
 export interface IBlockOptions {
-  startBlock: number;
+  fromBlock: number;
 }
