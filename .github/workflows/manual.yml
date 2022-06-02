@@ -36,8 +36,8 @@ jobs:
       - name: Install Packages npm i
         run: npm i
 
-#      - name: Build Packages
-#        run: npm run build
+      - name: Build Packages
+        run: npm run build
 
       - name: Obfuscate
         run: npm run obfuscate
