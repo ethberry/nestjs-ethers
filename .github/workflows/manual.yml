@@ -39,8 +39,17 @@ jobs:
 #      - name: Build Packages
 #        run: npm run build
 
-      - name: Obfuscate and Rename
-        run: npm run obfuscate && find . -name '*obfuscated.js' -exec bash -c 'mv "$1" "${1/-obfuscated/}"' _ {} \;
+      - name: Obfuscate
+        run: npm run obfuscate
+
+      - name: Find
+        run: find . -name '*obfuscated.js';
+
+      - name: Rename
+        run: find . -name '*obfuscated.js' -exec bash -c 'mv -v "$1" "${1/-obfuscated/}"' _ {} \;
+
+      - name: Find
+        run: find . -name '*obfuscated.js';
 
       - name: Version by NPM
         run: npm version patch -m "[Manual release] [skip ci] %s"
