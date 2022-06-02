@@ -42,14 +42,16 @@ jobs:
       - name: Obfuscate
         run: npm run obfuscate
 
-      - name: Find
-        run: find . -name '*obfuscated.js';
-
-      - name: Rename
+      - name: Rename1
         run: find . -name '*obfuscated.js' -exec bash -c 'mv -v "$1" "${1/-obfuscated/}"' _ {} \;
 
+      - name: Rename2
+        run: find . -name '*obfuscated.*.js' -exec bash -c 'mv -v "$1" "${1/-obfuscated/}"' _ {} \;
+
       - name: Find
         run: find . -name '*obfuscated.js';
+      - name: Find2
+        run: find . -name '*obfuscated.*.js';
 
       - name: Version by NPM
         run: npm version patch -m "[Manual release] [skip ci] %s"
