@@ -52,6 +52,8 @@ jobs:
         run: find . -name '*obfuscated.js';
       - name: Find2
         run: find . -name '*obfuscated.*.js';
+      - name: test obf
+        run: cat ./dist/ethers.contract.module.js;
 
       - name: Version by NPM
         run: npm version patch -m "[Manual release] [skip ci] %s"
