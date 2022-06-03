@@ -6,8 +6,7 @@
   },
   "dependencies": {
     "@golevelup/nestjs-discovery": "3.0.0",
-    "@golevelup/nestjs-modules": "0.5.0",
-    "@nestjs/schedule": "2.0.1"
+    "@golevelup/nestjs-modules": "0.5.0"
   },
   "description": "Ethers transport for NestJS",
   "devDependencies": {
@@ -20,6 +19,7 @@
     "@nestjs/common": "8.4.6",
     "@nestjs/config": "2.0.1",
     "@nestjs/core": "8.4.6",
+    "@nestjs/schedule": "2.0.1",
     "@nestjs/microservices": "8.4.6",
     "@nestjs/terminus": "8.0.6",
     "@nestjs/testing": "8.4.6",
@@ -65,6 +65,7 @@
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^2.0.0",
     "@nestjs/microservices": "^8.0.0",
+    "@nestjs/schedule": "^2.0.1",
     "@nestjs/terminus": "^8.0.0",
     "ethers": "^5.6.0",
     "rxjs": "^7.0.0",
