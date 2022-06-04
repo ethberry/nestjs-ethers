@@ -53,4 +53,8 @@ export class EthersContractService extends EthersAbstractService {
       this.options.block.fromBlock = fromBlock;
     }
   }
+
+  public getLastBlock(): number {
+    return this.toBlock - this.latency;
+  }
 }
