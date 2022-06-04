@@ -38,7 +38,7 @@ export class EthersContractService extends EthersAbstractService {
     for (const log of events) {
       const description = parseLog(iface, log);
       if (!description || !eventNames.includes(description.name)) {
-        return;
+        continue;
       }
       void this.call({ contractType, eventName: description.name }, description, log);
     }
