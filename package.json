@@ -84,7 +84,7 @@
     "obfuscate": "sh scripts/obfuscate.sh",
     "prebuild": "rimraf dist/",
     "renamedist": "sh scripts/renameo.sh",
-    "test": "jest --config=jest.config.json --detectOpenHandles --runInBand --forceExit"
+    "test": "jest --config=jest.config.json --detectOpenHandles --runInBand --forceExit --passWithNoTests"
   },
   "types": "./dist/index.d.ts",
   "version": "2.0.6"
