@@ -2,14 +2,14 @@ name: CI Test on PR
 
 on:
   workflow_dispatch:
-  pull_request:
-    branches:
-      - main
-      - dev
-  push:
-    branches:
-      - main
-      - dev
+#  pull_request:
+#    branches:
+#      - main
+#      - dev
+#  push:
+#    branches:
+#      - main
+#      - dev
 
 jobs:
   test:
@@ -61,7 +61,6 @@ jobs:
         run: npm i
 
       - name: Npm run test
-
         run: npm run test
         env:
           WEBSOCKET_ADDR: ws://0.0.0.0:8546/
