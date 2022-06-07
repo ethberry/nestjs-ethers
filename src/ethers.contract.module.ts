@@ -1,4 +1,4 @@
-import { Logger, Module, OnModuleInit } from "@nestjs/common";
+import { Logger, Module, OnModuleInit, OnModuleDestroy } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { ScheduleModule } from "@nestjs/schedule";
 import { createConfigurableDynamicRootModule } from "@golevelup/nestjs-modules";
@@ -18,7 +18,7 @@ import { MODULE_OPTIONS_PROVIDER } from "./ethers.constants";
 })
 export class EthersContractModule
   extends createConfigurableDynamicRootModule<EthersContractModule, IModuleOptions>(MODULE_OPTIONS_PROVIDER)
-  implements OnModuleInit
+  implements OnModuleInit, OnModuleDestroy
 {
   constructor(private readonly ethersContractService: EthersContractService) {
     super();
@@ -26,5 +26,9 @@ export class EthersContractModule
 
   public async onModuleInit(): Promise<void> {
     return this.ethersContractService.init();
+  }
+
+  public async onModuleDestroy(): Promise<void> {
+    return await this.ethersContractService.destroy();
   }
 }
