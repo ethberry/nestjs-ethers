@@ -51,7 +51,7 @@ export const parseLog = (iface: Interface, log: Log): LogDescription | null => {
     const { args, ...rest } = iface.parseLog(log);
     return {
       ...rest,
-      args: JSON.parse(JSON.stringify(Object.fromEntries(Object.entries(args).splice(args.length)))),
+      args: JSON.parse(JSON.stringify(Object.fromEntries(Object.entries(args)))),
     };
   } catch (e) {
     return null;

@@ -51,20 +51,24 @@ export class EthersContractService {
   public async init(): Promise<void> {
     this.latency = ~~this.configService.get<string>("LATENCY", "32");
     this.fromBlock = this.options.block.fromBlock || ~~this.configService.get<string>("STARTING_BLOCK", "0");
-    this.toBlock = await this.provider.getBlockNumber();
+    this.toBlock = await this.getLastBlockEth();
     return this.getPastEvents(this.fromBlock, this.toBlock - this.latency);
   }
 
   @Cron(CronExpression.EVERY_MINUTE)
   public async listen(): Promise<void> {
-    this.fromBlock = this.toBlock - this.latency + 1;
-    this.toBlock = await this.provider.getBlockNumber();
     return this.getPastEvents(this.fromBlock, this.toBlock - this.latency);
   }
 
   public async getPastEvents(fromBlockNumber: number, toBlockNumber: number): Promise<void> {
     const { contractAddress, contractInterface, contractType, eventNames = [] } = this.options.contract;
 
+    if (this.options.block.debug) {
+      this.loggerService.log(
+        `getPastEvents ${contractType} @ ${contractAddress.toString()} @ ${fromBlockNumber}-${toBlockNumber}`,
+        EthersContractService.name,
+      );
+    }
     // don't listen when no addresses are supplied
     if (!contractAddress.length) {
       return;
@@ -79,8 +83,14 @@ export class EthersContractService {
       if (!description || !eventNames.includes(description.name)) {
         continue;
       }
+      if (this.options.block.debug) {
+        this.loggerService.log(JSON.stringify(description, null, "\t"), EthersContractService.name);
+      }
       this.subject.next({ pattern: { contractType, eventName: description.name }, description, log });
     }
+
+    this.fromBlock = this.toBlock - this.latency + 1;
+    this.toBlock = await this.getLastBlockEth();
   }
 
   public updateListener(address: Array<string>, fromBlock?: number): void {
@@ -91,6 +101,17 @@ export class EthersContractService {
     if (fromBlock) {
       this.options.block.fromBlock = fromBlock;
     }
+  }
+
+  public async getLastBlockEth(): Promise<number> {
+    return await this.provider.getBlockNumber().catch(err => {
+      console.info("getBlockNumberError", err);
+      return this.toBlock;
+    });
+  }
+
+  public getLastBlockOption(): number {
+    return this.toBlock - this.latency;
   }
 
   protected async getHandlerByPattern<T extends Record<string, string>>(
@@ -113,6 +134,11 @@ export class EthersContractService {
       discoveredMethodWithMeta.discoveredMethod.handler.bind(
         discoveredMethodWithMeta.discoveredMethod.parentClass.instance,
       ) as MessageHandler
-    )(data, context);
+    )(data, context).then(() => from(["OK"]));
+  }
+
+  // eslint-disable-next-line @typescript-eslint/require-await
+  public async destroy(): Promise<void> {
+    this.subject.complete();
   }
 }
