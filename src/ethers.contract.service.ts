@@ -55,7 +55,7 @@ export class EthersContractService {
     return this.getPastEvents(this.fromBlock, this.toBlock - this.latency);
   }
 
-  @Cron(CronExpression.EVERY_MINUTE)
+  @Cron(CronExpression.EVERY_10_SECONDS)
   public async listen(): Promise<void> {
     return this.getPastEvents(this.fromBlock, this.toBlock - this.latency);
   }
@@ -99,10 +99,9 @@ export class EthersContractService {
     }
 
     if (fromBlock) {
-      this.options.block.fromBlock = fromBlock;
+      this.fromBlock = fromBlock;
     }
   }
-
 
   public async getLastBlockEth(): Promise<number> {
     return await this.provider.getBlockNumber().catch(err => {
