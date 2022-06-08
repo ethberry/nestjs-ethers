@@ -74,14 +74,6 @@ export class EthersContractService {
       return;
     }
 
-    if (fromBlockNumber > toBlockNumber) {
-      this.loggerService.log(
-        `getPastEvents skip slow block @ ${fromBlockNumber}-${toBlockNumber}`,
-        EthersContractService.name,
-      );
-      return;
-    }
-
     const events = await getPastEvents(this.provider, contractAddress, fromBlockNumber, toBlockNumber, 1000);
 
     const iface = contractInterface instanceof Interface ? contractInterface : new Interface(contractInterface);
