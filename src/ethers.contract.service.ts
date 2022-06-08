@@ -55,7 +55,7 @@ export class EthersContractService {
     return this.getPastEvents(this.fromBlock, this.toBlock - this.latency);
   }
 
-  @Cron(CronExpression.EVERY_10_SECONDS)
+  @Cron(CronExpression.EVERY_MINUTE)
   public async listen(): Promise<void> {
     return this.getPastEvents(this.fromBlock, this.toBlock - this.latency);
   }
@@ -71,6 +71,14 @@ export class EthersContractService {
     }
     // don't listen when no addresses are supplied
     if (!contractAddress.length) {
+      return;
+    }
+
+    if (fromBlockNumber > toBlockNumber) {
+      this.loggerService.log(
+        `getPastEvents skip slow block @ ${fromBlockNumber}-${toBlockNumber}`,
+        EthersContractService.name,
+      );
       return;
     }
 
@@ -91,6 +99,12 @@ export class EthersContractService {
 
     this.fromBlock = this.toBlock - this.latency + 1;
     this.toBlock = await this.getLastBlockEth();
+
+    // if slow block time more than Cron delay
+    if (this.toBlock < this.fromBlock) {
+      this.toBlock = this.fromBlock;
+      this.loggerService.log(`getPastEvents slow block @ ${this.toBlock}`, EthersContractService.name);
+    }
   }
 
   public updateListener(address: Array<string>, fromBlock?: number): void {
