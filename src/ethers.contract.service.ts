@@ -57,17 +57,17 @@ export class EthersContractService {
 
   @Cron(CronExpression.EVERY_MINUTE)
   public async listen(): Promise<void> {
+    // if block time is more than Cron delay
+    if (this.fromBlock > this.toBlock - this.latency) {
+      this.loggerService.log(`getPastEvents@slowBlock No: ${this.toBlock - this.latency}`, EthersContractService.name);
+      this.toBlock = this.fromBlock;
+      return this.getPastEvents(this.fromBlock, this.toBlock);
+    }
     return this.getPastEvents(this.fromBlock, this.toBlock - this.latency);
   }
 
   public async getPastEvents(fromBlockNumber: number, toBlockNumber: number): Promise<void> {
     const { contractAddress, contractInterface, contractType, eventNames = [] } = this.options.contract;
-
-    // if block time is more than Cron delay
-    if (this.fromBlock > this.toBlock) {
-      this.toBlock = this.fromBlock;
-      this.loggerService.log(`getPastEvents@slowBlock No: ${this.toBlock}`, EthersContractService.name);
-    }
 
     if (this.options.block.debug) {
       this.loggerService.log(
