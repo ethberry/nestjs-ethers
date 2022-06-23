@@ -52,6 +52,12 @@ export class EthersContractService {
     this.latency = ~~this.configService.get<string>("LATENCY", "32");
     this.fromBlock = this.options.block.fromBlock || ~~this.configService.get<string>("STARTING_BLOCK", "0");
     this.toBlock = await this.getLastBlockEth();
+    // if block time is more than Cron delay
+    if (this.fromBlock > this.toBlock) {
+      this.loggerService.log(`getPastEvents@slowBlock No: ${this.toBlock}`, EthersContractService.name);
+      this.toBlock = this.fromBlock;
+      return this.getPastEvents(this.fromBlock, this.toBlock);
+    }
     return this.getPastEvents(this.fromBlock, this.toBlock - this.latency);
   }
 
