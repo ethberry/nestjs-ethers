@@ -132,7 +132,9 @@ export class EthersContractService {
   ): Promise<DiscoveredMethodWithMeta<T> | undefined> {
     const methods = await this.discoveryService.controllerMethodsWithMetaAtKey<T>(PATTERN_METADATA);
     return methods.find(method => {
-      return transformPatternToRoute(method.meta) === route;
+      return Array.isArray(method.meta)
+        ? method.meta.some(meta => transformPatternToRoute(meta) === route) // nestjs@9
+        : transformPatternToRoute(method.meta) === route; // nestjs@8
     });
   }
 

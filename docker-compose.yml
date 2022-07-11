@@ -3,8 +3,8 @@ version: "3.3"
 
 services:
 
-  mainnet-besu:
-    container_name: mainnet-besu
+  besu:
+    container_name: besu
     restart: "on-failure"
     image: hyperledger/besu:latest
     environment:
@@ -33,10 +33,9 @@ services:
       interval: 10s
       timeout: 10s
       retries: 5
-      start_period: 10s
 
-  mainnet-explorer:
-    container_name: mainnet-explorer
+  explorer:
+    container_name: explorer
     restart: "on-failure"
     image: alethio/ethereum-lite-explorer
     environment:
@@ -44,4 +43,4 @@ services:
     ports:
       - 8080:80
     depends_on:
-      - mainnet-besu
+      - besu
