@@ -61,7 +61,7 @@ export class EthersContractService {
     return this.getPastEvents(this.fromBlock, this.toBlock - this.latency);
   }
 
-  @Cron(CronExpression.EVERY_MINUTE)
+  @Cron(CronExpression.EVERY_5_SECONDS)
   public async listen(): Promise<void> {
     // if block time is more than Cron delay
     if (this.fromBlock > this.toBlock - this.latency) {
