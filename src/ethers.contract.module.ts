@@ -1,4 +1,4 @@
-import { Logger, Module, OnModuleInit, OnModuleDestroy } from "@nestjs/common";
+import { DynamicModule, Logger, Module, OnModuleDestroy, OnModuleInit } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { ScheduleModule } from "@nestjs/schedule";
 import { createConfigurableDynamicRootModule } from "@golevelup/nestjs-modules";
@@ -23,6 +23,8 @@ export class EthersContractModule
   constructor(private readonly ethersContractService: EthersContractService) {
     super();
   }
+
+  static deferred = (): Promise<DynamicModule> => EthersContractModule.externallyConfigured(EthersContractModule, 0);
 
   public async onModuleInit(): Promise<void> {
     return this.ethersContractService.init();

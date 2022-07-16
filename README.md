@@ -49,10 +49,8 @@ export class BlockchainModule implements OnModuleDestroy {
   }
 }
 
-
-
 @Controller()
-export class ExampleControllerWs {
+export class ExampleController {
   constructor(private readonly exampleServiceWs: ExampleServiceWs) {}
 
   @EventPattern({ contractName: "EXAMPLE", eventName: "EXAMPLE" })
@@ -61,9 +59,8 @@ export class ExampleControllerWs {
   }
 }
 
-
 @Injectable()
-export class ExampleServiceWs {
+export class ExampleService {
   constructor(
     @Inject(Logger)
     private readonly loggerService: LoggerService,
