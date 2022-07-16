@@ -11,6 +11,7 @@
 /scripts
 /coverage
 /besu
+/dist/interfaces/abi
 
 /tsconfig.json
 /tsconfig.test.json

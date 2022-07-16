@@ -1,7 +1,8 @@
 import { transform } from "./ethers.utils";
 import { Interface, Result } from "@ethersproject/abi";
-import { abi } from "./interfaces/ABI.json";
 import { Log } from "@ethersproject/abstract-provider";
+
+import { abi } from "./interfaces/abi/ABI.json";
 
 describe("Utils", () => {
   it("transform", () => {
