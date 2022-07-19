@@ -32,7 +32,15 @@ class TestEthersContractController {
     contractType: "TEST_CONTRACT",
     eventName: "RoleRevoked",
   })
-  public logEvent(@Payload() event: ILogEvent, @Ctx() ctx: Log): Promise<void> {
+  public logEvent1(@Payload() event: ILogEvent, @Ctx() ctx: Log): Promise<void> {
+    return this.testEthersContractService.logEvent(event, ctx);
+  }
+
+  @EventPattern({
+    contractType: "TEST_CONTRACT",
+    eventName: "RoleRevoked",
+  })
+  public logEvent2(@Payload() event: ILogEvent, @Ctx() ctx: Log): Promise<void> {
     return this.testEthersContractService.logEvent(event, ctx);
   }
 }
@@ -122,7 +130,7 @@ describe.only("EthersServer", () => {
 
       await new Promise<void>(resolve => setTimeout(() => resolve(), 5000));
 
-      expect(logSpyContract).toBeCalledTimes(1);
+      expect(logSpyContract).toBeCalledTimes(2);
     });
   });
 });

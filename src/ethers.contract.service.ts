@@ -127,29 +127,31 @@ export class EthersContractService {
     return this.toBlock - this.latency;
   }
 
-  protected async getHandlerByPattern<T extends Record<string, string>>(
+  protected async getHandlerByPattern<T extends Array<Record<string, string>>>(
     route: string,
-  ): Promise<DiscoveredMethodWithMeta<T> | undefined> {
+  ): Promise<Array<DiscoveredMethodWithMeta<T>>> {
     const methods = await this.discoveryService.controllerMethodsWithMetaAtKey<T>(PATTERN_METADATA);
-    return methods.find(method => {
-      return Array.isArray(method.meta)
-        ? method.meta.some(meta => transformPatternToRoute(meta) === route) // nestjs@9
-        : transformPatternToRoute(method.meta) === route; // nestjs@8
+    return methods.filter(method => {
+      return method.meta.some(meta => transformPatternToRoute(meta) === route);
     });
   }
 
   protected async call(pattern: Record<string, string>, data: LogDescription, context?: Log): Promise<Observable<any>> {
-    const discoveredMethodWithMeta = await this.getHandlerByPattern(transformPatternToRoute(pattern));
+    const discoveredMethodsWithMeta = await this.getHandlerByPattern(transformPatternToRoute(pattern));
 
-    if (!discoveredMethodWithMeta) {
+    if (!discoveredMethodsWithMeta.length) {
       return Promise.resolve(EMPTY);
     }
 
-    return (
-      discoveredMethodWithMeta.discoveredMethod.handler.bind(
-        discoveredMethodWithMeta.discoveredMethod.parentClass.instance,
-      ) as MessageHandler
-    )(data, context).then(() => from(["OK"]));
+    return Promise.allSettled(
+      discoveredMethodsWithMeta.map(discoveredMethodWithMeta => {
+        return (
+          discoveredMethodWithMeta.discoveredMethod.handler.bind(
+            discoveredMethodWithMeta.discoveredMethod.parentClass.instance,
+          ) as MessageHandler
+        )(data, context);
+      }),
+    ).then(() => from(["OK"]));
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
