@@ -52,12 +52,12 @@ export class EthersContractService {
   public async init(): Promise<void> {
     this.instanceId = (Math.random() + 1).toString(36).substring(7);
     this.latency = ~~this.configService.get<string>("LATENCY", "32");
-    this.fromBlock = this.options.block.fromBlock || ~~this.configService.get<string>("STARTING_BLOCK", "0");
+    this.fromBlock = this.options.block.fromBlock;
     this.toBlock = await this.getLastBlockEth();
     // if block time is more than Cron delay
     if (this.fromBlock > this.toBlock) {
       this.loggerService.log(
-        `getPastEvents@slowBlock No: ${this.toBlock}`,
+        `Init getPastEvents@slowBlock No: ${this.toBlock}`,
         `${EthersContractService.name}-${this.instanceId}`,
       );
       this.toBlock = this.fromBlock;
@@ -69,7 +69,7 @@ export class EthersContractService {
   // MUST be bigger than Block Time!
   @Cron(CronExpression.EVERY_30_SECONDS)
   public async listen(): Promise<void> {
-    // if block time is more than Cron delay
+    // if block time still more than Cron
     if (this.fromBlock > this.toBlock - this.latency) {
       this.loggerService.log(
         `getPastEvents@slowBlock No: ${this.toBlock - this.latency}`,
@@ -80,6 +80,20 @@ export class EthersContractService {
     }
     return this.getPastEvents(this.fromBlock, this.toBlock - this.latency);
   }
+
+  // init:
+  // from 11176262
+  // to 11176784(last) - 5 = 11176779
+  // getPastEv done:
+  // from = 11176779(to) - 5(lat) + 1 = 11176775
+  // to = (lastBl)
+  // do cron from=11176775, to=(lastBl)
+  // cron log getPastEvents@slowBlock No: 11176779
+  // this.fromBlock(11176780) > this.toBlock(lastBl) - this.latency(5) = 11176779
+  // from 11176780 and to 11176780
+  // getPastEv done:
+  // from = 11176780(to) - 5(lat) + 1 = 11176776
+  // to = (lastBl)
 
   public async getPastEvents(fromBlockNumber: number, toBlockNumber: number): Promise<void> {
     const { contractAddress, contractInterface, contractType, eventNames = [] } = this.options.contract;
@@ -116,8 +130,13 @@ export class EthersContractService {
       this.subject.next({ pattern: { contractType, eventName: description.name }, description, log });
     }
 
-    this.fromBlock = this.toBlock - this.latency + 1;
-    this.toBlock = await this.getLastBlockEth();
+    if (this.toBlock - this.fromBlock <= this.latency) {
+      this.fromBlock = this.fromBlock + 1;
+      this.toBlock = await this.getLastBlockEth();
+    } else {
+      this.fromBlock = this.toBlock - this.latency + 1;
+      this.toBlock = await this.getLastBlockEth();
+    }
   }
 
   public updateListener(address: Array<string>, fromBlock?: number): void {
