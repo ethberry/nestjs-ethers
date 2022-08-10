@@ -17,6 +17,7 @@ import { mergeAll, mergeMap } from "rxjs/operators";
 
 @Injectable()
 export class EthersContractService {
+  private instanceId: string;
   private latency: number;
   private fromBlock: number;
   private toBlock: number;
@@ -37,35 +38,43 @@ export class EthersContractService {
       .pipe(mergeMap(({ pattern, description, log }) => from(this.call(pattern, description, log)).pipe(mergeAll()), 1))
       .subscribe({
         next: v => {
-          loggerService.log(v, EthersContractService.name);
+          loggerService.log(v, `${EthersContractService.name}-${this.instanceId}`);
         },
         error: e => {
           loggerService.error(e);
         },
         complete: () => {
-          loggerService.log("complete", EthersContractService.name);
+          loggerService.log("complete", `${EthersContractService.name}-${this.instanceId}`);
         },
       });
   }
 
   public async init(): Promise<void> {
+    this.instanceId = (Math.random() + 1).toString(36).substring(7);
     this.latency = ~~this.configService.get<string>("LATENCY", "32");
     this.fromBlock = this.options.block.fromBlock || ~~this.configService.get<string>("STARTING_BLOCK", "0");
     this.toBlock = await this.getLastBlockEth();
     // if block time is more than Cron delay
     if (this.fromBlock > this.toBlock) {
-      this.loggerService.log(`getPastEvents@slowBlock No: ${this.toBlock}`, EthersContractService.name);
+      this.loggerService.log(
+        `getPastEvents@slowBlock No: ${this.toBlock}`,
+        `${EthersContractService.name}-${this.instanceId}`,
+      );
       this.toBlock = this.fromBlock;
       return this.getPastEvents(this.fromBlock, this.toBlock);
     }
     return this.getPastEvents(this.fromBlock, this.toBlock - this.latency);
   }
 
-  @Cron(CronExpression.EVERY_5_SECONDS)
+  // MUST be bigger than Block Time!
+  @Cron(CronExpression.EVERY_30_SECONDS)
   public async listen(): Promise<void> {
     // if block time is more than Cron delay
     if (this.fromBlock > this.toBlock - this.latency) {
-      this.loggerService.log(`getPastEvents@slowBlock No: ${this.toBlock - this.latency}`, EthersContractService.name);
+      this.loggerService.log(
+        `getPastEvents@slowBlock No: ${this.toBlock - this.latency}`,
+        `${EthersContractService.name}-${this.instanceId}`,
+      );
       this.toBlock = this.fromBlock;
       return this.getPastEvents(this.fromBlock, this.toBlock);
     }
@@ -77,8 +86,10 @@ export class EthersContractService {
 
     if (this.options.block.debug) {
       this.loggerService.log(
-        `getPastEvents ${contractType} @ ${contractAddress.toString()} @ ${fromBlockNumber}-${toBlockNumber}`,
-        EthersContractService.name,
+        `${
+          this.instanceId
+        }  getPastEvents ${contractType} @ ${contractAddress.toString()} @ ${fromBlockNumber}-${toBlockNumber}`,
+        `${EthersContractService.name}-${this.instanceId}`,
       );
     }
 
@@ -93,11 +104,16 @@ export class EthersContractService {
 
     for (const log of events) {
       const description = parseLog(iface, log);
+
       if (!description || !eventNames.includes(description.name)) {
         continue;
       }
+
       if (this.options.block.debug) {
-        this.loggerService.log(JSON.stringify(description, null, "\t"), EthersContractService.name);
+        this.loggerService.log(
+          JSON.stringify(description, null, "\t"),
+          `${EthersContractService.name}-${this.instanceId}`,
+        );
       }
       this.subject.next({ pattern: { contractType, eventName: description.name }, description, log });
     }
@@ -118,7 +134,7 @@ export class EthersContractService {
 
   public async getLastBlockEth(): Promise<number> {
     return await this.provider.getBlockNumber().catch(err => {
-      this.loggerService.error(JSON.stringify(err, null, "\t"), EthersContractService.name);
+      this.loggerService.error(JSON.stringify(err, null, "\t"), `${EthersContractService.name}-${this.instanceId}`);
       return this.toBlock;
     });
   }
