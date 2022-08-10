@@ -86,9 +86,7 @@ export class EthersContractService {
 
     if (this.options.block.debug) {
       this.loggerService.log(
-        `${
-          this.instanceId
-        }  getPastEvents ${contractType} @ ${contractAddress.toString()} @ ${fromBlockNumber}-${toBlockNumber}`,
+        `getPastEvents ${contractType} @ ${contractAddress.toString()} @ ${fromBlockNumber}-${toBlockNumber}`,
         `${EthersContractService.name}-${this.instanceId}`,
       );
     }
