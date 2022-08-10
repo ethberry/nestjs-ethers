@@ -126,7 +126,9 @@ export class EthersContractService {
     }
 
     if (fromBlock) {
-      this.fromBlock = fromBlock;
+      if (fromBlock > this.fromBlock) {
+        this.fromBlock = fromBlock;
+      }
     }
   }
 
