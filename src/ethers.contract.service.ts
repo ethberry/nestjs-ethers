@@ -81,20 +81,6 @@ export class EthersContractService {
     return this.getPastEvents(this.fromBlock, this.toBlock - this.latency);
   }
 
-  // init:
-  // from 11176262
-  // to 11176784(last) - 5 = 11176779
-  // getPastEv done:
-  // from = 11176779(to) - 5(lat) + 1 = 11176775
-  // to = (lastBl)
-  // do cron from=11176775, to=(lastBl)
-  // cron log getPastEvents@slowBlock No: 11176779
-  // this.fromBlock(11176780) > this.toBlock(lastBl) - this.latency(5) = 11176779
-  // from 11176780 and to 11176780
-  // getPastEv done:
-  // from = 11176780(to) - 5(lat) + 1 = 11176776
-  // to = (lastBl)
-
   public async getPastEvents(fromBlockNumber: number, toBlockNumber: number): Promise<void> {
     const { contractAddress, contractInterface, contractType, eventNames = [] } = this.options.contract;
 
@@ -145,10 +131,14 @@ export class EthersContractService {
     }
 
     if (fromBlock) {
-      if (fromBlock > this.fromBlock) {
-        this.fromBlock = fromBlock;
-      }
+      this.fromBlock = fromBlock;
     }
+
+    this.loggerService.log(
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      `ETH Listener updated: ${address} @ ${fromBlock}`,
+      `${EthersContractService.name}-${this.instanceId}`,
+    );
   }
 
   public async getLastBlockEth(): Promise<number> {
