@@ -176,7 +176,13 @@ export class EthersContractService {
           ) as MessageHandler
         )(data, context);
       }),
-    ).then(() => from(["OK"]));
+    ).then(res => {
+      res.forEach(r => {
+        if (r.status === "rejected")
+          this.loggerService.error(r.reason, `${EthersContractService.name}-${this.instanceId}`);
+      });
+      return from(["OK"]);
+    });
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
