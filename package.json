@@ -15,7 +15,7 @@
     "@ethersproject/contracts": "5.7.0",
     "@ethersproject/providers": "5.7.0",
     "@gemunion/eslint-config": "2.0.5",
-    "@gemunion/nest-js-module-license": "2.0.7",
+    "@gemunion/nest-js-module-license": "2.0.9",
     "@nestjs/common": "9.0.11",
     "@nestjs/config": "2.2.0",
     "@nestjs/core": "9.0.11",
