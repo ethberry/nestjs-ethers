@@ -82,6 +82,15 @@ export class EthersContractService {
   }
 
   public async getPastEvents(fromBlockNumber: number, toBlockNumber: number): Promise<void> {
+    // LAST frontier!
+    if (fromBlockNumber > toBlockNumber) {
+      this.loggerService.log(
+        `getPastEvents@slowBlock No: ${toBlockNumber}`,
+        `${EthersContractService.name}-${this.instanceId}`,
+      );
+      toBlockNumber = fromBlockNumber;
+    }
+
     const { contractAddress, contractInterface, contractType, eventNames = [] } = this.options.contract;
 
     if (this.options.block.debug) {
