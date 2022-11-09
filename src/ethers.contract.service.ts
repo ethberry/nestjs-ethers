@@ -105,7 +105,12 @@ export class EthersContractService {
       return;
     }
 
-    const events = await getPastEvents(this.provider, contractAddress, fromBlockNumber, toBlockNumber, 1000);
+    const events = await getPastEvents(this.provider, contractAddress, fromBlockNumber, toBlockNumber, 1000).catch(
+      e => {
+        this.loggerService.log(e, `${EthersContractService.name}-${this.instanceId}`);
+        return [];
+      },
+    );
 
     const iface = contractInterface instanceof Interface ? contractInterface : new Interface(contractInterface);
 
