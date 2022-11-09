@@ -107,7 +107,7 @@ export class EthersContractService {
 
     const events = await getPastEvents(this.provider, contractAddress, fromBlockNumber, toBlockNumber, 1000).catch(
       e => {
-        this.loggerService.log(e, `${EthersContractService.name}-${this.instanceId}`);
+        this.loggerService.log(JSON.stringify(e, null, "\t"), `${EthersContractService.name}-${this.instanceId}`);
         return [];
       },
     );
@@ -141,7 +141,7 @@ export class EthersContractService {
 
   public updateListener(address: Array<string>, fromBlock?: number): void {
     if (address.length > 0) {
-      this.options.contract.contractAddress.push(...address);
+      this.options.contract.contractAddress = [...new Set(address)];
     }
 
     if (fromBlock) {
