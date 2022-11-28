@@ -15,6 +15,7 @@ Object.defineProperties(BigNumber.prototype, {
 export const getPastEvents = async (
   provider: JsonRpcProvider,
   address: Array<string>,
+  topics: Array<string | Array<string> | null>,
   fromBlockNumber: number,
   toBlockNumber: number,
   chunkLimit = 0,
@@ -44,7 +45,7 @@ export const getPastEvents = async (
         address,
         fromBlock: `0x${chunk.fromBlock.toString(16)}`,
         toBlock: `0x${chunk.toBlock.toString(16)}`,
-        topics: [],
+        topics,
       },
     ]);
 

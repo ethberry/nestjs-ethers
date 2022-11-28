@@ -91,7 +91,7 @@ export class EthersContractService {
       toBlockNumber = fromBlockNumber;
     }
 
-    const { contractAddress, contractInterface, contractType, eventNames = [] } = this.options.contract;
+    const { contractAddress, contractInterface, contractType, eventNames = [], topics = [] } = this.options.contract;
 
     if (this.options.block.debug) {
       this.loggerService.log(
@@ -105,12 +105,17 @@ export class EthersContractService {
       return;
     }
 
-    const events = await getPastEvents(this.provider, contractAddress, fromBlockNumber, toBlockNumber, 1000).catch(
-      e => {
-        this.loggerService.log(JSON.stringify(e, null, "\t"), `${EthersContractService.name}-${this.instanceId}`);
-        return [];
-      },
-    );
+    const events = await getPastEvents(
+      this.provider,
+      contractAddress,
+      topics,
+      fromBlockNumber,
+      toBlockNumber,
+      1000,
+    ).catch(e => {
+      this.loggerService.log(JSON.stringify(e, null, "\t"), `${EthersContractService.name}-${this.instanceId}`);
+      return [];
+    });
 
     const iface = contractInterface instanceof Interface ? contractInterface : new Interface(contractInterface);
 
@@ -139,7 +144,11 @@ export class EthersContractService {
     }
   }
 
-  public updateListener(address: Array<string>, fromBlock?: number): void {
+  public updateListener(
+    address: Array<string>,
+    fromBlock?: number,
+    topics?: Array<string | Array<string> | null>,
+  ): void {
     if (address.length > 0) {
       this.options.contract.contractAddress = [...new Set(address)];
     }
@@ -148,9 +157,13 @@ export class EthersContractService {
       this.fromBlock = fromBlock;
     }
 
+    if (topics && topics.length > 0) {
+      this.options.contract.topics = topics;
+    }
+
     this.loggerService.log(
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      `ETH Listener updated: ${address} @ ${fromBlock}`,
+      `ETH Listener updated: ${address} @ ${fromBlock} @ ${topics}`,
       `${EthersContractService.name}-${this.instanceId}`,
     );
   }
