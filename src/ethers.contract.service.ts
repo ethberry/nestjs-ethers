@@ -189,9 +189,11 @@ export class EthersContractService {
   }
 
   protected async call(pattern: Record<string, string>, data: LogDescription, context?: Log): Promise<Observable<any>> {
-    const discoveredMethodsWithMeta = await this.getHandlerByPattern(transformPatternToRoute(pattern));
+    const route = transformPatternToRoute(pattern);
+    const discoveredMethodsWithMeta = await this.getHandlerByPattern(route);
 
     if (!discoveredMethodsWithMeta.length) {
+      this.loggerService.log(`Handler not found for: ${route}`, `${EthersContractService.name}-${this.instanceId}`);
       return Promise.resolve(EMPTY);
     }
 
