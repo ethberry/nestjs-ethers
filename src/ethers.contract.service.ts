@@ -121,7 +121,7 @@ export class EthersContractService {
 
     for (const log of events) {
       const description = parseLog(iface, log);
-
+      // TODO probably remove includes check if use topics only filtering?
       if (!description || !eventNames.includes(description.name)) {
         continue;
       }
