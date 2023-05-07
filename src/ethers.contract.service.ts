@@ -75,7 +75,7 @@ export class EthersContractService {
       await this.listen();
     });
 
-    this.schedulerRegistry.addCronJob("listen", job);
+    this.schedulerRegistry.addCronJob(`ethListener_${this.instanceId}`, job);
     job.start();
   }
 
