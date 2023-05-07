@@ -64,4 +64,6 @@ jobs:
         env:
           JSON_RPC_ADDR: http://0.0.0.0:8545/
           PRIVATE_KEY:  ${{ secrets.BESU_PRIVATE_KEY }}
+          ACCOUNT:  ${{ secrets.BESU_ACCOUNT }}
           GEMUNION_API_KEY: ${{ secrets.GEMUNION_API_KEY }}
+          LATENCY: 1
