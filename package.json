@@ -6,7 +6,8 @@
   },
   "dependencies": {
     "@golevelup/nestjs-discovery": "3.0.0",
-    "@golevelup/nestjs-modules": "0.6.1"
+    "@golevelup/nestjs-modules": "0.6.1",
+    "@types/cron": "2.0.1"
   },
   "description": "Ethers transport for NestJS",
   "devDependencies": {
@@ -16,6 +17,7 @@
     "@ethersproject/providers": "5.7.2",
     "@gemunion/eslint-config": "2.0.7",
     "@gemunion/nest-js-module-license": "2.0.35",
+    "@nestjs/axios": "2.0.0",
     "@nestjs/common": "9.4.0",
     "@nestjs/config": "2.3.1",
     "@nestjs/core": "9.4.0",
@@ -84,6 +86,7 @@
     "build": "tsc",
     "lint": "eslint . --fix",
     "obfuscate": "sh scripts/obfuscate.sh",
+    "clean": "sh scripts/clean.sh",
     "prebuild": "rimraf dist/",
     "renamedist": "sh scripts/renameo.sh",
     "test": "jest --config=jest.config.json --detectOpenHandles --runInBand --forceExit --passWithNoTests"
