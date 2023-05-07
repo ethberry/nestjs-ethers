@@ -93,12 +93,10 @@ export class EthersContractService {
 
     const { contractAddress, contractInterface, contractType, eventNames = [], topics = [] } = this.options.contract;
 
-    if (this.options.block.debug) {
-      this.loggerService.log(
-        `getPastEvents ${contractType} @ ${contractAddress.toString()} @ ${fromBlockNumber}-${toBlockNumber}`,
-        `${EthersContractService.name}-${this.instanceId}`,
-      );
-    }
+    this.loggerService.log(
+      `getPastEvents ${contractType} @ ${contractAddress.toString()} @ ${fromBlockNumber}-${toBlockNumber}`,
+      `${EthersContractService.name}-${this.instanceId}`,
+    );
 
     // don't listen when no addresses are supplied
     if (!contractAddress.length) {
@@ -123,6 +121,23 @@ export class EthersContractService {
       const description = parseLog(iface, log);
       // TODO probably remove includes check if use topics only filtering?
       if (!description || !eventNames.includes(description.name)) {
+        if (this.options.block.debug) {
+          if (!description) {
+            this.loggerService.log("CANT PARSE LOG", `${EthersContractService.name}-${this.instanceId}`);
+            this.loggerService.log(JSON.stringify(log, null, "\t"), `${EthersContractService.name}-${this.instanceId}`);
+          }
+          if (description && !eventNames.includes(description.name)) {
+            this.loggerService.log(
+              `${description.name} NOT FOUND IN CONTROLLER EVENTS`,
+              `${EthersContractService.name}-${this.instanceId}`,
+            );
+            this.loggerService.log(eventNames.toString(), `${EthersContractService.name}-${this.instanceId}`);
+          }
+          this.loggerService.log(
+            JSON.stringify(description, null, "\t"),
+            `${EthersContractService.name}-${this.instanceId}`,
+          );
+        }
         continue;
       }
 
