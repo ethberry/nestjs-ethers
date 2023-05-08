@@ -3,7 +3,9 @@ import { ConfigService } from "@nestjs/config";
 import { MessageHandler } from "@nestjs/microservices";
 import { transformPatternToRoute } from "@nestjs/microservices/utils";
 import { PATTERN_METADATA } from "@nestjs/microservices/constants";
-import { Cron, CronExpression } from "@nestjs/schedule";
+import { CronExpression, SchedulerRegistry } from "@nestjs/schedule";
+import { CronJob } from "cron";
+
 import { EMPTY, from, Observable, Subject } from "rxjs";
 import { providers } from "ethers";
 import { Log } from "@ethersproject/abstract-provider";
@@ -33,6 +35,7 @@ export class EthersContractService {
     protected readonly configService: ConfigService,
     @Inject(MODULE_OPTIONS_PROVIDER)
     protected options: IModuleOptions,
+    private schedulerRegistry: SchedulerRegistry,
   ) {
     this.subject
       .pipe(mergeMap(({ pattern, description, log }) => from(this.call(pattern, description, log)).pipe(mergeAll()), 1))
@@ -63,11 +66,19 @@ export class EthersContractService {
       this.toBlock = this.fromBlock;
       return this.getPastEvents(this.fromBlock, this.toBlock);
     }
-    return this.getPastEvents(this.fromBlock, this.toBlock - this.latency);
+    // cron config MUST be bigger than Block Time!
+    return this.setCronJob(this.options.block.cron || CronExpression.EVERY_30_SECONDS);
   }
 
-  // MUST be bigger than Block Time!
-  @Cron(CronExpression.EVERY_30_SECONDS)
+  public setCronJob(dto: CronExpression): void {
+    const job = new CronJob(dto, async () => {
+      await this.listen();
+    });
+
+    this.schedulerRegistry.addCronJob(`ethListener_${this.instanceId}`, job);
+    job.start();
+  }
+
   public async listen(): Promise<void> {
     // if block time still more than Cron
     if (this.fromBlock > this.toBlock - this.latency) {

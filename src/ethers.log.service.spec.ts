@@ -2,7 +2,8 @@ import { Controller, Injectable, Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { Test } from "@nestjs/testing";
 import { Ctx, EventPattern, Payload } from "@nestjs/microservices";
-import { ethers, providers, Wallet, Contract, constants } from "ethers";
+import { CronExpression } from "@nestjs/schedule";
+import { constants, Contract, ethers, providers, Wallet } from "ethers";
 import { Log } from "@ethersproject/abstract-provider";
 import { JsonRpcProvider } from "@ethersproject/providers";
 import { config } from "dotenv";
@@ -46,6 +47,15 @@ class TestEthersContractController {
 }
 
 @Module({
+  imports: [
+    LicenseModule.forRootAsync(LicenseModule, {
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService): string => {
+        return configService.get<string>("GEMUNION_API_KEY", process.env.GEMUNION_API_KEY);
+      },
+    }),
+  ],
   providers: [TestEthersContractService],
   controllers: [TestEthersContractController],
   exports: [TestEthersContractService],
@@ -58,7 +68,7 @@ describe.only("EthersServer", () => {
   let contract: Contract;
 
   // https://github.com/facebook/jest/issues/11543
-  jest.setTimeout(10000);
+  jest.setTimeout(20000);
 
   beforeAll(async () => {
     provider = new providers.JsonRpcProvider(process.env.JSON_RPC_ADDR);
@@ -105,6 +115,7 @@ describe.only("EthersServer", () => {
                 block: {
                   fromBlock,
                   debug: true,
+                  cron: CronExpression.EVERY_5_SECONDS,
                 },
               };
             },
@@ -127,8 +138,7 @@ describe.only("EthersServer", () => {
       const tx = await contract.renounceRole(constants.HashZero, process.env.ACCOUNT);
 
       await tx.wait();
-
-      await new Promise<void>(resolve => setTimeout(() => resolve(), 5000));
+      await new Promise<void>(resolve => setTimeout(() => resolve(), 10000));
 
       expect(logSpyContract).toBeCalledTimes(2);
     });
