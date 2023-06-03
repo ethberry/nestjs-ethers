@@ -1,22 +1,14 @@
-import { Logger, LoggerService } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 
-import { providers } from "ethers";
+import { JsonRpcProvider } from "ethers";
 
 import { ETHERS_RPC } from "../ethers.constants";
 
 export const ethersRpcProvider = {
   provide: ETHERS_RPC,
-  inject: [ConfigService, Logger],
-  useFactory: (configService: ConfigService, loggerService: LoggerService): providers.JsonRpcProvider => {
+  inject: [ConfigService],
+  useFactory: (configService: ConfigService): JsonRpcProvider => {
     const rpcUrl = configService.get<string>("JSON_RPC_ADDR", "http://127.0.0.1:8545/");
-
-    const provider = new providers.JsonRpcProvider(rpcUrl);
-
-    provider.on("error", (e: Error) => {
-      loggerService.error(e.message, e.stack, "EthersRpcProvider");
-    });
-
-    return provider;
+    return new JsonRpcProvider(rpcUrl);
   },
 };

@@ -1,21 +1,14 @@
-import { Logger, LoggerService } from "@nestjs/common";
+import { Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { providers } from "ethers";
+import { WebSocketProvider } from "ethers";
 
 import { ETHERS_WS } from "../ethers.constants";
 
 export const ethersWsProvider = {
   provide: ETHERS_WS,
   inject: [ConfigService, Logger],
-  useFactory: (configService: ConfigService, loggerService: LoggerService): providers.WebSocketProvider => {
+  useFactory: (configService: ConfigService): WebSocketProvider => {
     const wsUrl = configService.get<string>("WEBSOCKET_ADDR", "ws://127.0.0.1:8546/");
-
-    const provider = new providers.WebSocketProvider(wsUrl);
-
-    provider._websocket.on("error", (e: Error) => {
-      loggerService.error(e.message, e.stack, "EthersWsProvider");
-    });
-
-    return provider;
+    return new WebSocketProvider(wsUrl);
   },
 };

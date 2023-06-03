@@ -1,16 +1,4 @@
-import { Log } from "@ethersproject/abstract-provider";
-import { Interface, LogDescription, Result } from "@ethersproject/abi";
-import { JsonRpcProvider } from "@ethersproject/providers";
-import { BigNumber } from "ethers";
-
-// Patch BigNumber
-Object.defineProperties(BigNumber.prototype, {
-  toJSON: {
-    value: function (this: BigNumber) {
-      return this.toString();
-    },
-  },
-});
+import { JsonRpcProvider, Log } from "ethers";
 
 export const getPastEvents = async (
   provider: JsonRpcProvider,
@@ -55,23 +43,4 @@ export const getPastEvents = async (
   }
 
   return events;
-};
-
-export const transform = (args: Result): Record<string, any> => {
-  return JSON.parse(JSON.stringify(Object.fromEntries(Object.entries(args).splice(args.length)))) as Record<
-    string,
-    any
-  >;
-};
-
-export const parseLog = (iface: Interface, log: Log): LogDescription | null => {
-  try {
-    const { args, ...rest } = iface.parseLog(log);
-    return {
-      ...rest,
-      args: transform(args) as Result,
-    };
-  } catch (e) {
-    return null;
-  }
 };

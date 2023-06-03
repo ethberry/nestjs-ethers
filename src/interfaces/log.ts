@@ -1,4 +1,4 @@
-import { EventFragment } from "@ethersproject/abi";
+import { EventFragment } from "ethers";
 
 export interface ILogEvent<T = any> {
   eventFragment: EventFragment;
