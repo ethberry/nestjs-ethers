@@ -87,5 +87,5 @@
     "test": "jest --config=jest.config.json --detectOpenHandles --runInBand --forceExit --passWithNoTests"
   },
   "types": "./dist/index.d.ts",
-  "version": "4.0.2"
+  "version": "4.0.3"
 }
