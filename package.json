@@ -12,7 +12,7 @@
   "description": "Ethers transport for NestJS",
   "devDependencies": {
     "@gemunion/eslint-config": "3.0.2",
-    "@gemunion/nest-js-module-license": "3.0.1",
+    "@gemunion/nest-js-module-license": "3.0.2",
     "@nestjs/axios": "2.0.0",
     "@nestjs/common": "9.4.2",
     "@nestjs/config": "2.3.2",
@@ -59,7 +59,7 @@
   "main": "./dist/index.js",
   "name": "@gemunion/nestjs-ethers",
   "peerDependencies": {
-    "@gemunion/nest-js-module-license": "^2.0.0",
+    "@gemunion/nest-js-module-license": "^3.0.0",
     "@nestjs/axios": "^2.0.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.2.0",
