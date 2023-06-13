@@ -7,7 +7,7 @@ import { CronExpression, SchedulerRegistry } from "@nestjs/schedule";
 import { CronJob } from "cron";
 
 import { EMPTY, from, Observable, Subject } from "rxjs";
-import { Interface, JsonRpcProvider, Log, LogDescription } from "ethers";
+import { JsonRpcProvider, Log, LogDescription } from "ethers";
 import { DiscoveredMethodWithMeta, DiscoveryService } from "@golevelup/nestjs-discovery";
 
 import { getPastEvents } from "./ethers.utils";
@@ -124,10 +124,10 @@ export class EthersContractService {
       return [];
     });
 
-    const iface = contractInterface instanceof Interface ? contractInterface : new Interface(contractInterface);
+    // const iface = contractInterface;
 
     for (const log of events) {
-      const description = iface.parseLog(log as any);
+      const description = contractInterface.parseLog(log as any);
       // TODO probably remove includes check if use topics only filtering?
 
       if (!description || !eventNames.includes(description.name)) {
@@ -171,7 +171,8 @@ export class EthersContractService {
 
   public updateListener(address: Array<string>, fromBlock = 0, topics?: Array<string | Array<string> | null>): void {
     if (address.length > 0) {
-      this.options.contract.contractAddress = [...new Set(address)];
+      const addresses = this.options.contract.contractAddress;
+      this.options.contract.contractAddress = [...new Set(addresses.concat(address))];
     }
 
     if (fromBlock) {

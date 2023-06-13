@@ -1,9 +1,9 @@
-import { Interface, InterfaceAbi } from "ethers";
+import { Interface } from "ethers";
 
 export interface IContractOptions {
   contractType: string;
   contractAddress: Array<string>;
-  contractInterface: Interface | InterfaceAbi;
+  contractInterface: Interface;
   eventNames?: Array<string>;
   topics?: Array<string | Array<string> | null>;
 }
