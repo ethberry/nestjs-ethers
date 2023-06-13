@@ -170,9 +170,13 @@ export class EthersContractService {
   }
 
   public updateListener(address: Array<string>, fromBlock = 0, topics?: Array<string | Array<string> | null>): void {
-    if (address.length > 0) {
+    if (address.length === 1) {
+      // add new
       const addresses = this.options.contract.contractAddress;
       this.options.contract.contractAddress = [...new Set(addresses.concat(address))];
+    } else {
+      // update array
+      this.options.contract.contractAddress = [...new Set(address)];
     }
 
     if (fromBlock) {
