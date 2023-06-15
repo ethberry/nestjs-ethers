@@ -1,7 +1,7 @@
 import { EventFragment } from "ethers";
 
 export interface ILogEvent<T = any> {
-  eventFragment: EventFragment;
+  fragment: EventFragment;
   name: string;
   signature: string;
   topic: string;

@@ -1,4 +1,4 @@
-import { JsonRpcProvider, Log } from "ethers";
+import { JsonRpcProvider, Log, Result } from "ethers";
 
 // Patch BigNumber
 // https://github.com/GoogleChromeLabs/jsbi/issues/30
@@ -12,6 +12,26 @@ Object.defineProperty(BigInt.prototype, "toJSON", {
   enumerable: false,
   writable: true,
 });
+
+export const recursivelyDecodeResult = (result: Result): Record<string, any> => {
+  if (typeof result !== "object") {
+    // Raw primitive value
+    return result;
+  }
+  try {
+    const obj = result.toObject();
+    if (obj._) {
+      throw new Error("Decode as array, not object");
+    }
+    Object.keys(obj).forEach(key => {
+      obj[key] = recursivelyDecodeResult(obj[key]);
+    });
+    return obj;
+  } catch (err) {
+    // Result is array.
+    return result.toArray().map(item => recursivelyDecodeResult(item as Result));
+  }
+};
 
 export const getPastEvents = async (
   provider: JsonRpcProvider,

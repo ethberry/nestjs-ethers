@@ -7,12 +7,12 @@ import { CronExpression, SchedulerRegistry } from "@nestjs/schedule";
 import { CronJob } from "cron";
 
 import { EMPTY, from, Observable, Subject } from "rxjs";
-import { JsonRpcProvider, Log, LogDescription } from "ethers";
+import { JsonRpcProvider, Log } from "ethers";
 import { DiscoveredMethodWithMeta, DiscoveryService } from "@golevelup/nestjs-discovery";
 
-import { getPastEvents } from "./ethers.utils";
+import { getPastEvents, recursivelyDecodeResult } from "./ethers.utils";
 import { ETHERS_RPC, MODULE_OPTIONS_PROVIDER } from "./ethers.constants";
-import { IModuleOptions } from "./interfaces";
+import { ILogEvent, IModuleOptions } from "./interfaces";
 import { mergeAll, mergeMap } from "rxjs/operators";
 
 @Injectable()
@@ -157,6 +157,7 @@ export class EthersContractService {
           `${EthersContractService.name}-${this.instanceId}`,
         );
       }
+
       this.subject.next({ pattern: { contractType, eventName: description.name }, description, log });
     }
 
@@ -213,7 +214,7 @@ export class EthersContractService {
     });
   }
 
-  protected async call(pattern: Record<string, string>, data: LogDescription, context?: Log): Promise<Observable<any>> {
+  protected async call(pattern: Record<string, string>, data: ILogEvent, context?: Log): Promise<Observable<any>> {
     const route = transformPatternToRoute(pattern);
     const discoveredMethodsWithMeta = await this.getHandlerByPattern(route);
 
@@ -222,13 +223,24 @@ export class EthersContractService {
       return Promise.resolve(EMPTY);
     }
 
+    // LogDescription.args are readonly =(
+    // We need to decode ethers.Result to get key: values
+    // Object.assign(description, { args: recursivelyDecodeResult(description.args) });
+    const decoded = {
+      fragment: data.fragment,
+      name: data.name,
+      signature: data.signature,
+      topic: data.topic,
+      args: recursivelyDecodeResult(data.args),
+    };
+
     return Promise.allSettled(
       discoveredMethodsWithMeta.map(discoveredMethodWithMeta => {
         return (
           discoveredMethodWithMeta.discoveredMethod.handler.bind(
             discoveredMethodWithMeta.discoveredMethod.parentClass.instance,
           ) as MessageHandler
-        )(data, context);
+        )(decoded, context);
       }),
     ).then(res => {
       res.forEach(r => {
