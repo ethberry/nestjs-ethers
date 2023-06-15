@@ -14,7 +14,7 @@ docker run -p 8080:80 -e APP_NODE_URL=http://localhost:8545 alethio/ethereum-lit
 ```
 How to use:
 
-```code
+```typescript
 @Module({
   imports: [
     ConfigModule,
