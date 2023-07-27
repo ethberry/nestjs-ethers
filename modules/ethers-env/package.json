@@ -9,10 +9,9 @@
   },
   "dependencies": {
     "@gemunion/constants": "0.12.6",
-    "@gemunion/nest-js-module-ethers": "5.0.7"
+    "@gemunion/nest-js-module-ethers": "5.0.8"
   },
   "devDependencies": {
-    "@gemunion/nest-js-module-ethers": "5.0.8",
     "@gemunion/nest-js-module-secret-manager-env": "1.1.5",
     "@nestjs/config": "3.0.0",
     "ethers": "6.6.5"
