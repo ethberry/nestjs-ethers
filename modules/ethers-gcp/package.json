@@ -11,8 +11,8 @@
     "@gemunion/constants": "0.12.6"
   },
   "devDependencies": {
+    "@gemunion/nest-js-module-ethers": "5.0.8",
     "@gemunion/nest-js-module-secret-manager-gcp": "1.1.5",
-    "@gemunion/nest-js-module-ethers": "5.0.7",
     "@nestjs/config": "3.0.0",
     "ethers": "6.6.5"
   },
@@ -24,8 +24,8 @@
   "main": "./dist/index.js",
   "name": "@gemunion/nest-js-module-ethers-gcp",
   "peerDependencies": {
-    "@gemunion/nest-js-module-secret-manager-gcp": "^1.0.0",
     "@gemunion/nest-js-module-ethers": "^5.0.0",
+    "@gemunion/nest-js-module-secret-manager-gcp": "^1.0.0",
     "@nestjs/config": "^3.0.0",
     "ethers": "^6.0.0"
   },
@@ -46,5 +46,5 @@
   },
   "title": "-=Gemun Ion Studio=-",
   "types": "./dist/index.d.ts",
-  "version": "1.0.1"
+  "version": "1.0.2"
 }
