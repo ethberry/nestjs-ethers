@@ -1,7 +1,7 @@
 import { ConfigService } from "@nestjs/config";
 import { JsonRpcProvider, Wallet } from "ethers";
 
-import { ETHERS_RPC, ETHERS_SIGNER } from "@gemunion/nestjs-ethers";
+import { ETHERS_RPC, ETHERS_SIGNER } from "@gemunion/nest-js-module-ethers";
 import { SecretManagerService } from "@gemunion/nest-js-module-secret-manager-aws";
 import { privateKey } from "@gemunion/constants";
 

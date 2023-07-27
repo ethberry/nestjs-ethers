@@ -11,9 +11,9 @@ coverage/
 .DS_Store
 
 # env
-modules/nestjs-ethers/.env
-modules/nestjs-ethers/.env.sample
-!modules/nestjs-ethers/.env.sample
+modules/ethers/.env
+modules/ethers/.env.sample
+!modules/ethers/.env.sample
 
 # NODE
 node_modules/

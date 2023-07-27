@@ -45,7 +45,7 @@
   "keywords": [],
   "license": "UNLICENSED",
   "main": "./dist/index.js",
-  "name": "@gemunion/nestjs-ethers",
+  "name": "@gemunion/nest-js-module-ethers",
   "peerDependencies": {
     "@gemunion/nest-js-module-license": "^4.0.0",
     "@nestjs/axios": "^3.0.0",

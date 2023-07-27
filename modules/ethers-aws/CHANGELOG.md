@@ -5,7 +5,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## 1.0.1 (2023-07-27)
 
-**Note:** Version bump only for package @gemunion/nestjs-ethers-aws
+**Note:** Version bump only for package @gemunion/nest-js-module-ethers-aws
 
 
 
