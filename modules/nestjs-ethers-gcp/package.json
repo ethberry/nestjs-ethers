@@ -12,7 +12,7 @@
   },
   "devDependencies": {
     "@gemunion/nest-js-module-secret-manager-gcp": "1.1.5",
-    "@gemunion/nestjs-ethers": "5.0.6",
+    "@gemunion/nestjs-ethers": "5.0.7",
     "@nestjs/config": "3.0.0",
     "ethers": "6.6.5"
   },
@@ -46,5 +46,5 @@
   },
   "title": "-=Gemun Ion Studio=-",
   "types": "./dist/index.d.ts",
-  "version": "1.0.0"
+  "version": "1.0.1"
 }
