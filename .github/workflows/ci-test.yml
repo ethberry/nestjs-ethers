@@ -2,52 +2,26 @@ name: CI Test on PR
 
 on:
   workflow_dispatch:
-#  pull_request:
-#    branches:
-#      - main
-#      - dev
-#  push:
-#    branches:
-#      - main
-#      - dev
+  pull_request:
+    branches:
+      - master
+    types: [opened]
 
 jobs:
   test:
-    if: ${{ !contains(github.head_ref, 'renovate') }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [20.x]
-    services:
-      besu:
-        # Docker Hub image
-        image: hyperledger/besu:latest
-        # Provide the besu setup
-        env:
-          BESU_HOST_ALLOWLIST: "*"
-          BESU_RPC_WS_ENABLED: "true"
-          BESU_RPC_WS_HOST: 0.0.0.0
-          BESU_RPC_HTTP_HOST: 0.0.0.0
-          BESU_RPC_HTTP_ENABLED: "true"
-          BESU_RPC_HTTP_CORS_ORIGINS: "*"
-          BESU_RPC_HTTP_API: "ADMIN,ETH,NET,WEB3,MINER"
-          BESU_RPC_WS_API: "ADMIN,ETH,NET,WEB3,MINER"
-          BESU_MINER_ENABLED: "true"
-          BESU_MINER_COINBASE: fe3b557e8fb62b89f4916b721be55ceb828dbd73
-          BESU_NETWORK: "dev"
-          BESU_NAT_METHOD: "DOCKER"
-        ports:
-          - "8545:8545"
-          - "8546:8546"
-          - "8547:8547"
-          - "30303:30303"
-
     steps:
       - name: checkout
         uses: actions/checkout@v3
         with:
           ref: ${{ github.head_ref }}
-
+      - uses: actions/setup-node@v3
+        name: Use Node.js ${{ matrix.node-version }}
+        with:
+          node-version: ${{ matrix.node-version }}
       - name: Add @scope & token to npmrc
         run: |
           echo "@gemunion:registry=https://npm.pkg.github.com/" >> .npmrc
@@ -55,18 +29,29 @@ jobs:
         env:
           GITHUBTOKEN: ${{ secrets.GITHUBTOKEN }}
 
+      - name: Authenticate Registry & Configure Git User
+        run: |
+          echo "@gemunion:registry=https://npm.pkg.github.com/" >> .npmrc
+          echo "//npm.pkg.github.com/:_authToken=$GITHUBTOKEN" >> .npmrc
+          git update-index --assume-unchanged .npmrc
+          npx npm-cli-login -u $GITHUBUSER -p $GITHUBTOKEN -e $GITHUBEMAIL -r https://npm.pkg.github.com -s @gemunion --config-path="./"
+          git config --global user.name '@gemunion'
+          git config --global user.email $GITHUBEMAIL
+        env:
+          GITHUBTOKEN: ${{ secrets.GITHUBTOKEN }}
+          GITHUBUSER: ${{ secrets.GITHUBUSER }}
+          GITHUBEMAIL: ${{ secrets.GITHUBEMAIL }}
 
       - name: Authenticate check via npm
         run: npm whoami --registry=https://npm.pkg.github.com/
 
-      - name: Install & Build Packages
+      - name: Install Packages
         run: npm i
-
       - name: Npm run test
         run: npm run test
         env:
-          JSON_RPC_ADDR: http://0.0.0.0:8545/
-          PRIVATE_KEY:  ${{ secrets.BESU_PRIVATE_KEY }}
-          ACCOUNT:  ${{ secrets.BESU_ACCOUNT }}
           GEMUNION_API_KEY: ${{ secrets.GEMUNION_API_KEY }}
-          LATENCY: 1
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}

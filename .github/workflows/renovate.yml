@@ -1,0 +1,63 @@
+name: Renovate Publish
+
+on:
+  pull_request:
+    branches:
+#      disabled
+      - wtf
+    types: [closed]
+
+jobs:
+  # publish only renovate PR with 'deps' label
+  renovate-release-patch:
+    if: ${{github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name,'deps')}}
+    runs-on: ubuntu-latest
+    steps:
+      # BEGIN INSTALL
+      - uses: actions/checkout@v3
+        with:
+          # pulls all commits (needed for lerna to correctly version)
+          # see https://stackoverflow.com/a/60184319/9285308 & https://github.com/actions/checkout
+          fetch-depth: "0"
+      # pulls all tags (needed for lerna to correctly version)
+      - run: git fetch --depth=1 origin +refs/tags/*:refs/tags/* # see https://stackoverflow.com/a/60184319/9285308
+
+      - name: Authenticate Registry & Configure Git User
+        run: |
+          echo "@gemunion:registry=https://npm.pkg.github.com/" >> .npmrc
+          echo "//npm.pkg.github.com/:_authToken=$GITHUBTOKEN" >> .npmrc
+          git update-index --assume-unchanged .npmrc
+        env:
+          GITHUBTOKEN: ${{ secrets.GITHUBTOKEN }}
+      - name: Authenticate check via npm
+        run: npm whoami --registry=https://npm.pkg.github.com/
+
+      - name: Install Packages npm i
+        run: npm i
+
+      - name: Bootstrap Packages
+        run: npm run bootstrap && npm run build
+
+      - name: Authenticate Registry & Configure Git User
+        run: |
+          npx npm-cli-login -u $GITHUBUSER -p $GITHUBTOKEN -e $GITHUBEMAIL -r https://npm.pkg.github.com -s @gemunion --config-path="./"
+          git config --global user.name '@gemunion'
+          git config --global user.email $GITHUBEMAIL
+        env:
+          GITHUBTOKEN: ${{ secrets.GITHUBTOKEN }}
+          GITHUBUSER: ${{ secrets.GITHUBUSER }}
+          GITHUBEMAIL: ${{ secrets.GITHUBEMAIL }}
+
+      - name: Authenticate check via npm
+        run: npm whoami --registry=https://npm.pkg.github.com/
+
+      - name: What changed
+        run: lerna changed
+        id: lerna_changed
+        continue-on-error: true
+
+      - name: Version & Publish by lerna
+        run: lerna version --ignore-scripts && npm run release:publish
+        if: steps.lerna_changed.outcome == 'success'
+        env:
+          GITHUBTOKEN: ${{ secrets.GITHUBTOKEN }}

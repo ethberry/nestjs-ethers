@@ -1,8 +1,6 @@
 # Project
-/dist
-/coverage
-/besu
-/scripts
+dist/
+coverage/
 
 # IDE
 .idea
@@ -12,12 +10,16 @@
 # OS
 .DS_Store
 
+# env
+modules/nestjs-ethers/.env
+modules/nestjs-ethers/.env.sample
+!modules/nestjs-ethers/.env.sample
+
 # NODE
 node_modules/
 npm-debug.log
-package-lock.json
+package.json.lerna_backup
 yarn.lock
+/lerna-debug.log
 /report.*.json
-
-# ENV
-.env
+/package-lock.json

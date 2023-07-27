@@ -1,0 +1,15 @@
+{
+  "command": {
+    "publish": {
+      "registry": "https://npm.pkg.github.com"
+    },
+    "version": {
+      "conventionalCommits": true,
+      "exact": true,
+      "yes": true
+    }
+  },
+  "packages": ["modules/*"],
+  "useNx": false,
+  "version": "independent"
+}

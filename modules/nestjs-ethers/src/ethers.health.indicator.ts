@@ -1,4 +1,4 @@
-import { Injectable, Inject } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { HealthIndicator, HealthIndicatorResult } from "@nestjs/terminus";
 import { WebSocketProvider } from "ethers";
 import ws from "ws";

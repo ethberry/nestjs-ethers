@@ -11,7 +11,6 @@ import { LicenseModule } from "@gemunion/nest-js-module-license";
 import { EthersContractModule } from "./ethers.contract.module";
 import { ILogEvent, IModuleOptions } from "./interfaces";
 import Erc721Contract from "./interfaces/abi/ERC721Simple.json";
-import process from "process";
 
 interface IERC721 extends BaseContract {
   renounceRole: (role: string, account: string) => Promise<any>;
