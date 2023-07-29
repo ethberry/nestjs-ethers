@@ -14,7 +14,7 @@
   "devDependencies": {
     "@gemunion/nest-js-module-secret-manager-env": "1.1.6",
     "@nestjs/config": "3.0.0",
-    "ethers": "6.6.5"
+    "ethers": "6.6.7"
   },
   "engines": {
     "node": ">=18"
