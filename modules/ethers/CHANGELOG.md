@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.11](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@5.0.10...@gemunion/nest-js-module-ethers@5.0.11) (2023-08-05)
+
+
+### Bug Fixes
+
+* do not check eventNames if only topics listening ([dcffffd](https://github.com/gemunion/ethers-packages/commit/dcffffd8fa9ab6ad6da4af68388416fed444f882))
+
+
+
+
+
 ## [5.0.10](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@5.0.9...@gemunion/nest-js-module-ethers@5.0.10) (2023-08-05)
 
 
