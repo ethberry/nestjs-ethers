@@ -1,0 +1,15 @@
+name: Clean Packages
+
+on:
+  workflow_dispatch:
+
+jobs:
+  clean:
+    runs-on: ubuntu-latest
+    steps:
+      - name: clean old
+        uses: actions/delete-package-versions@v4
+        with:
+          package-name: 'nestjs-ethers'
+          package-type: 'npm'
+          min-versions-to-keep: 10
