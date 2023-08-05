@@ -128,9 +128,8 @@ export class EthersContractService {
 
     for (const log of events) {
       const description = contractInterface.parseLog(log as any);
-      // TODO probably remove includes check if use topics only filtering?
 
-      if (!description || !eventNames.includes(description.name)) {
+      if (!description || (eventNames.length > 0 && !eventNames.includes(description.name))) {
         if (this.options.block.debug) {
           if (!description) {
             this.loggerService.log("CANT PARSE LOG", `${EthersContractService.name}-${this.instanceId}`);

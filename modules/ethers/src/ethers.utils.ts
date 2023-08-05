@@ -64,9 +64,9 @@ export const getPastEvents = async (
     const logs: Log[] = await provider.send("eth_getLogs", [
       {
         address,
+        topics,
         fromBlock: `0x${chunk.fromBlock.toString(16)}`,
         toBlock: `0x${chunk.toBlock.toString(16)}`,
-        topics,
       },
     ]);
 

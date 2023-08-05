@@ -2,6 +2,10 @@ name: Clean Packages
 
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Manual release Publish", "Manual release Publish --force"]
+    types:
+      - completed
 
 jobs:
   clean:
