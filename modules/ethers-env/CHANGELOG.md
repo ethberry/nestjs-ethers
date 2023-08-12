@@ -3,89 +3,53 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.7](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers-env@1.0.6...@gemunion/nest-js-module-ethers-env@1.0.7) (2023-08-12)
+
+**Note:** Version bump only for package @gemunion/nest-js-module-ethers-env
+
 ## [1.0.6](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers-env@1.0.5...@gemunion/nest-js-module-ethers-env@1.0.6) (2023-08-05)
 
 **Note:** Version bump only for package @gemunion/nest-js-module-ethers-env
 
-
-
-
-
 ## [1.0.5](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers-env@1.0.4...@gemunion/nest-js-module-ethers-env@1.0.5) (2023-08-05)
-
 
 ### Bug Fixes
 
-* **deps:** update [@gemunion](https://github.com/gemunion) packages ([8f45ec3](https://github.com/gemunion/ethers-packages/commit/8f45ec35ef82653b3258b24544b035aca7a221bf))
-
-
-
-
+- **deps:** update [@gemunion](https://github.com/gemunion) packages ([8f45ec3](https://github.com/gemunion/ethers-packages/commit/8f45ec35ef82653b3258b24544b035aca7a221bf))
 
 ## [1.0.4](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers-env@1.0.3...@gemunion/nest-js-module-ethers-env@1.0.4) (2023-07-29)
 
 **Note:** Version bump only for package @gemunion/nest-js-module-ethers-env
 
-
-
-
-
 ## [1.0.3](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers-env@1.0.2...@gemunion/nest-js-module-ethers-env@1.0.3) (2023-07-27)
 
 **Note:** Version bump only for package @gemunion/nest-js-module-ethers-env
-
-
-
-
 
 ## 1.0.2 (2023-07-27)
 
 **Note:** Version bump only for package @gemunion/nest-js-module-ethers-env
 
-
-
-
-
 ## 1.0.1 (2023-07-27)
 
 **Note:** Version bump only for package @gemunion/nest-js-module-ethers-env
 
-
-
-
-
 ## [4.0.9](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-secret-manager-aws@4.0.8...@gemunion/nest-js-module-secret-manager-aws@4.0.9) (2023-07-25)
-
 
 ### Bug Fixes
 
-* **deps:** update [@gemunion](https://github.com/gemunion) packages ([4b69ba9](https://github.com/gemunion/ethers-packages/commit/4b69ba9d7d405f134acc9d3cc7c6435e20cac6ee))
-
-
-
-
+- **deps:** update [@gemunion](https://github.com/gemunion) packages ([4b69ba9](https://github.com/gemunion/ethers-packages/commit/4b69ba9d7d405f134acc9d3cc7c6435e20cac6ee))
 
 ## 4.0.8 (2023-07-23)
 
-
 ### Bug Fixes
 
-* **deps:** update [@gemunion](https://github.com/gemunion) packages ([9d719fc](https://github.com/gemunion/ethers-packages/commit/9d719fc585e7f9850afe9d5af55235a619435bf1))
-
-
-
-
+- **deps:** update [@gemunion](https://github.com/gemunion) packages ([9d719fc](https://github.com/gemunion/ethers-packages/commit/9d719fc585e7f9850afe9d5af55235a619435bf1))
 
 ## 4.0.7 (2023-07-18)
 
-
 ### Bug Fixes
 
-* **deps:** update [@gemunion](https://github.com/gemunion) packages ([4540fea](https://github.com/gemunion/ethers-packages/commit/4540feaedb56913ba21006f5fbe0c4557c865c8d))
-
-
-
-
+- **deps:** update [@gemunion](https://github.com/gemunion) packages ([4540fea](https://github.com/gemunion/ethers-packages/commit/4540feaedb56913ba21006f5fbe0c4557c865c8d))
 
 ## [4.0.6](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-secret-manager@4.0.5...@gemunion/nest-js-module-secret-manager@4.0.6) (2023-07-15)
 

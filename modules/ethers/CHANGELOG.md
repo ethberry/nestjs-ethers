@@ -3,35 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [5.0.11](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@5.0.10...@gemunion/nest-js-module-ethers@5.0.11) (2023-08-05)
-
+## [5.0.12](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@5.0.11...@gemunion/nest-js-module-ethers@5.0.12) (2023-08-12)
 
 ### Bug Fixes
 
-* do not check eventNames if only topics listening ([dcffffd](https://github.com/gemunion/ethers-packages/commit/dcffffd8fa9ab6ad6da4af68388416fed444f882))
+- **deps:** update all non-major dependencies ([93febd4](https://github.com/gemunion/ethers-packages/commit/93febd463a146c1aa2ad0909bd7ad0ea47e024c3))
 
+## [5.0.11](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@5.0.10...@gemunion/nest-js-module-ethers@5.0.11) (2023-08-05)
 
+### Bug Fixes
 
-
+- do not check eventNames if only topics listening ([dcffffd](https://github.com/gemunion/ethers-packages/commit/dcffffd8fa9ab6ad6da4af68388416fed444f882))
 
 ## [5.0.10](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@5.0.9...@gemunion/nest-js-module-ethers@5.0.10) (2023-08-05)
 
-
 ### Bug Fixes
 
-* **deps:** update [@gemunion](https://github.com/gemunion) packages ([8f45ec3](https://github.com/gemunion/ethers-packages/commit/8f45ec35ef82653b3258b24544b035aca7a221bf))
-
-
-
-
+- **deps:** update [@gemunion](https://github.com/gemunion) packages ([8f45ec3](https://github.com/gemunion/ethers-packages/commit/8f45ec35ef82653b3258b24544b035aca7a221bf))
 
 ## 5.0.9 (2023-07-29)
 
 **Note:** Version bump only for package @gemunion/nest-js-module-ethers
-
-
-
-
 
 ## 5.0.8 (2023-07-27)
 
