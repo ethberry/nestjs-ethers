@@ -9,7 +9,7 @@
     "lerna": "7.1.5"
   },
   "devDependencies": {
-    "@gemunion/eslint-config": "4.0.3",
+    "@gemunion/eslint-config": "4.0.4",
     "@typescript-eslint/eslint-plugin": "6.3.0",
     "@typescript-eslint/parser": "6.3.0",
     "eslint": "8.47.0",
