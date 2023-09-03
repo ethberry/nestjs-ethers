@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "@gemunion/nest-js-module-secret-manager-aws": "4.0.16",
-    "@nestjs/config": "3.0.0",
+    "@nestjs/config": "3.0.1",
     "ethers": "6.7.1"
   },
   "engines": {
