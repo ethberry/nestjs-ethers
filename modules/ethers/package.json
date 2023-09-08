@@ -9,8 +9,8 @@
   },
   "dependencies": {
     "@golevelup/nestjs-modules": "0.7.0",
-    "cron": "2.4.3",
-    "bee-queue": "1.5.0"
+    "bee-queue": "1.5.0",
+    "cron": "2.4.3"
   },
   "description": "Ethers transport for NestJS",
   "devDependencies": {
@@ -76,5 +76,5 @@
   },
   "title": "NestJS Ethers module",
   "types": "./dist/index.d.ts",
-  "version": "5.1.0-redis-beta"
+  "version": "5.1.0-redis-beta.0"
 }

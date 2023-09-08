@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers-aws@1.0.7...@gemunion/nest-js-module-ethers-aws@1.1.0) (2023-09-08)
+
+### Features
+
+- use redis queue ([7f4c91d](https://github.com/gemunion/ethers-packages/commit/7f4c91dd87f76986bb09dd7fc4cb6c6fba85f22a))
+
 ## [1.0.7](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers-aws@1.0.6...@gemunion/nest-js-module-ethers-aws@1.0.7) (2023-08-12)
 
 **Note:** Version bump only for package @gemunion/nest-js-module-ethers-aws
