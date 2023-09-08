@@ -13,6 +13,10 @@ import { ETHERS_RPC, MODULE_OPTIONS_PROVIDER, REDIS_QUEUE_PRODUCER } from "./eth
 import { ILogEvent, IModuleOptions } from "./interfaces";
 import { mergeAll, mergeMap } from "rxjs/operators";
 
+interface ILogWithIndex extends Log {
+  logIndex: string;
+}
+
 @Injectable()
 export class EthersContractService {
   private instanceId: string;
@@ -203,7 +207,11 @@ export class EthersContractService {
     return this.toBlock - this.latency;
   }
 
-  protected async call(pattern: Record<string, string>, data: ILogEvent, context?: Log): Promise<Observable<any>> {
+  protected async call(
+    pattern: Record<string, string>,
+    data: ILogEvent,
+    context?: ILogWithIndex,
+  ): Promise<Observable<any>> {
     const route = transformPatternToRoute(pattern);
 
     // LogDescription.args are readonly =(
@@ -219,7 +227,7 @@ export class EthersContractService {
 
     const job = this.providerRedis.createJob({ route, decoded, context });
     return job
-      .setId(`${context!.transactionHash}_${context!.index}`)
+      .setId(`${context!.transactionHash}_${context!.logIndex}`)
       .timeout(3000)
       .retries(2)
       .save()
