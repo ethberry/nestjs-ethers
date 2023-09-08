@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-redis-beta.1](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers-env@1.1.0...@gemunion/nest-js-module-ethers-env@1.1.0-redis-beta.1) (2023-09-08)
+
+### Features
+
+- redis beta version ([3b6817e](https://github.com/gemunion/ethers-packages/commit/3b6817e2873c546a6fdf4d37de285f8256fb66c9))
+
 # [1.1.0](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers-env@1.0.7...@gemunion/nest-js-module-ethers-env@1.1.0) (2023-09-08)
 
 ### Features

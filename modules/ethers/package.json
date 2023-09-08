@@ -76,5 +76,5 @@
   },
   "title": "NestJS Ethers module",
   "types": "./dist/index.d.ts",
-  "version": "5.1.0-redis-beta.0"
+  "version": "5.1.0-redis-beta.1"
 }
