@@ -1,17 +1,15 @@
 import { Inject, Injectable, Logger, LoggerService } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { MessageHandler } from "@nestjs/microservices";
 import { transformPatternToRoute } from "@nestjs/microservices/utils";
-import { PATTERN_METADATA } from "@nestjs/microservices/constants";
 import { CronExpression, SchedulerRegistry } from "@nestjs/schedule";
 import { CronJob } from "cron";
+import Queue from "bee-queue";
 
-import { EMPTY, from, Observable, Subject } from "rxjs";
+import { from, Observable, Subject } from "rxjs";
 import { JsonRpcProvider, Log } from "ethers";
-import { DiscoveredMethodWithMeta, DiscoveryService } from "@golevelup/nestjs-discovery";
 
 import { getPastEvents, recursivelyDecodeResult } from "./ethers.utils";
-import { ETHERS_RPC, MODULE_OPTIONS_PROVIDER } from "./ethers.constants";
+import { ETHERS_RPC, MODULE_OPTIONS_PROVIDER, REDIS_QUEUE_PRODUCER } from "./ethers.constants";
 import { ILogEvent, IModuleOptions } from "./interfaces";
 import { mergeAll, mergeMap } from "rxjs/operators";
 
@@ -29,7 +27,8 @@ export class EthersContractService {
     protected readonly loggerService: LoggerService,
     @Inject(ETHERS_RPC)
     protected readonly provider: JsonRpcProvider,
-    protected readonly discoveryService: DiscoveryService,
+    @Inject(REDIS_QUEUE_PRODUCER)
+    protected readonly providerRedis: Queue,
     protected readonly configService: ConfigService,
     @Inject(MODULE_OPTIONS_PROVIDER)
     protected options: IModuleOptions,
@@ -107,7 +106,7 @@ export class EthersContractService {
       `${EthersContractService.name}-${this.instanceId}`,
     );
 
-    // don't listen when no addresses are supplied
+    // don't listen when no addresses
     if (!contractAddress.length) {
       return;
     }
@@ -204,23 +203,8 @@ export class EthersContractService {
     return this.toBlock - this.latency;
   }
 
-  protected async getHandlerByPattern<T extends Array<Record<string, string>>>(
-    route: string,
-  ): Promise<Array<DiscoveredMethodWithMeta<T>>> {
-    const methods = await this.discoveryService.controllerMethodsWithMetaAtKey<T>(PATTERN_METADATA);
-    return methods.filter(method => {
-      return method.meta.some(meta => transformPatternToRoute(meta) === route);
-    });
-  }
-
   protected async call(pattern: Record<string, string>, data: ILogEvent, context?: Log): Promise<Observable<any>> {
     const route = transformPatternToRoute(pattern);
-    const discoveredMethodsWithMeta = await this.getHandlerByPattern(route);
-
-    if (!discoveredMethodsWithMeta.length) {
-      this.loggerService.log(`Handler not found for: ${route}`, `${EthersContractService.name}-${this.instanceId}`);
-      return Promise.resolve(EMPTY);
-    }
 
     // LogDescription.args are readonly =(
     // We need to decode ethers.Result to get key: values
@@ -233,21 +217,20 @@ export class EthersContractService {
       args: recursivelyDecodeResult(data.args),
     };
 
-    return Promise.allSettled(
-      discoveredMethodsWithMeta.map(discoveredMethodWithMeta => {
-        return (
-          discoveredMethodWithMeta.discoveredMethod.handler.bind(
-            discoveredMethodWithMeta.discoveredMethod.parentClass.instance,
-          ) as MessageHandler
-        )(decoded, context);
-      }),
-    ).then(res => {
-      res.forEach(r => {
-        if (r.status === "rejected")
-          this.loggerService.error(r.reason, `${EthersContractService.name}-${this.instanceId}`);
+    const job = this.providerRedis.createJob({ route, decoded, context });
+    return job
+      .setId(`${context!.transactionHash}_${context!.index}`)
+      .timeout(3000)
+      .retries(2)
+      .save()
+      .then(job => {
+        this.loggerService.log(`Created Job ${job.id}`, `${EthersContractService.name}-${this.instanceId}`);
+        if (!job.id) {
+          this.loggerService.log("Duplicate Job", `${EthersContractService.name}-${this.instanceId}`);
+        }
+        // job enqueued, job.id populated
+        return from(["OK"]);
       });
-      return from(["OK"]);
-    });
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await

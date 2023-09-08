@@ -8,9 +8,8 @@
     "url": "https://github.com/gemunion/ethers-packages/issues"
   },
   "dependencies": {
-    "@golevelup/nestjs-discovery": "4.0.0",
-    "@golevelup/nestjs-modules": "0.7.0",
-    "cron": "2.4.3"
+    "cron": "2.4.3",
+    "bee-queue": "1.5.0"
   },
   "description": "Ethers transport for NestJS",
   "devDependencies": {
@@ -74,7 +73,7 @@
     "test:real": "jest --config=jest.config.json --detectOpenHandles --runInBand --forceExit --passWithNoTests",
     "test": "exit 0"
   },
-  "title": "NestJS Cache module",
+  "title": "NestJS Ethers module",
   "types": "./dist/index.d.ts",
-  "version": "5.0.12"
+  "version": "5.1.0-redis-beta"
 }
