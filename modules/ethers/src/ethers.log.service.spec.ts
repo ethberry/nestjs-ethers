@@ -104,6 +104,7 @@ describe.only("EthersServer", () => {
             inject: [ConfigService],
             useFactory: async (configService: ConfigService): Promise<IModuleOptions> => {
               const fromBlock = ~~configService.get<string>("STARTING_BLOCK", "0");
+              // producer queues running on the web server
               const address = await contract.getAddress();
               return {
                 contract: {

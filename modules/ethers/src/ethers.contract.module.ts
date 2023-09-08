@@ -6,14 +6,14 @@ import { DiscoveryModule } from "@golevelup/nestjs-discovery";
 
 import { LicenseModule, licenseProvider } from "@gemunion/nest-js-module-license";
 
-import { ethersRpcProvider } from "./providers";
+import { ethersRpcProvider, redisQueueProvider } from "./providers";
 import { EthersContractService } from "./ethers.contract.service";
 import { IModuleOptions } from "./interfaces";
 import { MODULE_OPTIONS_PROVIDER } from "./ethers.constants";
 
 @Module({
   imports: [ConfigModule, DiscoveryModule, ScheduleModule.forRoot(), LicenseModule.deferred()],
-  providers: [ethersRpcProvider, licenseProvider, Logger, EthersContractService],
+  providers: [ethersRpcProvider, licenseProvider, Logger, EthersContractService, redisQueueProvider],
   exports: [EthersContractService],
 })
 export class EthersContractModule
