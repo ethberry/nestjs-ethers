@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0-redis-beta.2](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@5.1.0-redis-beta.1...@gemunion/nest-js-module-ethers@5.1.0-redis-beta.2) (2023-09-14)
+
+### Features
+
+- static network ([9d84628](https://github.com/gemunion/ethers-packages/commit/9d846284e15f8fef0cda97f5c6bfa2ff6847f6af))
+
 # [5.1.0-redis-beta.1](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@5.1.0-redis-beta.0...@gemunion/nest-js-module-ethers@5.1.0-redis-beta.1) (2023-09-08)
 
 ### Features
