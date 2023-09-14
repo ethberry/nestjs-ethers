@@ -11,6 +11,6 @@ export const ethersRpcProvider = {
     const rpcUrl = configService.get<string>("JSON_RPC_ADDR", "http://127.0.0.1:8545/");
     const chainId = configService.get<number>("CHAIN_ID", 13377);
     const network = new Network("Network", chainId);
-    return new JsonRpcProvider(rpcUrl, network, { staticNetwork: network });
+    return new JsonRpcProvider(rpcUrl, network, { staticNetwork: network, batchMaxCount: 1 });
   },
 };
