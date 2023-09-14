@@ -1,6 +1,6 @@
 import { ConfigService } from "@nestjs/config";
 
-import { JsonRpcProvider } from "ethers";
+import { JsonRpcProvider, Network } from "ethers";
 
 import { ETHERS_RPC } from "../ethers.constants";
 
@@ -9,6 +9,8 @@ export const ethersRpcProvider = {
   inject: [ConfigService],
   useFactory: (configService: ConfigService): JsonRpcProvider => {
     const rpcUrl = configService.get<string>("JSON_RPC_ADDR", "http://127.0.0.1:8545/");
-    return new JsonRpcProvider(rpcUrl);
+    const chainId = configService.get<number>("CHAIN_ID", 13377);
+    const network = new Network("Network", chainId);
+    return new JsonRpcProvider(rpcUrl, network, { staticNetwork: network });
   },
 };
