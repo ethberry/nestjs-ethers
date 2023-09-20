@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0-redis-beta.4](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@5.1.0-redis-beta.3...@gemunion/nest-js-module-ethers@5.1.0-redis-beta.4) (2023-09-20)
+
+### Features
+
+- do not retry job, timeout 10s ([d920af8](https://github.com/gemunion/ethers-packages/commit/d920af8aca610764aef2f1e8e5de16fd102d1e94))
+
 # [5.1.0-redis-beta.3](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@5.1.0-redis-beta.2...@gemunion/nest-js-module-ethers@5.1.0-redis-beta.3) (2023-09-14)
 
 ### Features
