@@ -226,19 +226,21 @@ export class EthersContractService {
     };
 
     const job = this.providerRedis.createJob({ route, decoded, context });
-    return job
-      .setId(`${context!.transactionHash}_${context!.logIndex}`)
-      .timeout(3000)
-      .retries(2)
-      .save()
-      .then(job => {
-        this.loggerService.log(`Created Job ${job.id}`, `${EthersContractService.name}-${this.instanceId}`);
-        if (!job.id) {
-          this.loggerService.log("Duplicate Job", `${EthersContractService.name}-${this.instanceId}`);
-        }
-        // job enqueued, job.id populated
-        return from(["OK"]);
-      });
+    return (
+      job
+        .setId(`${context!.transactionHash}_${context!.logIndex}`)
+        .timeout(10000)
+        // .retries(1)
+        .save()
+        .then(job => {
+          this.loggerService.log(`Created Job ${job.id}`, `${EthersContractService.name}-${this.instanceId}`);
+          if (!job.id) {
+            this.loggerService.log("Duplicate Job", `${EthersContractService.name}-${this.instanceId}`);
+          }
+          // job enqueued, job.id populated
+          return from(["OK"]);
+        })
+    );
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
