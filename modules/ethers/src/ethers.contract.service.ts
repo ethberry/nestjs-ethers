@@ -228,7 +228,7 @@ export class EthersContractService {
     const job = this.providerRedis.createJob({ route, decoded, context });
     return (
       job
-        .setId(`${context!.transactionHash}_${context!.logIndex}`)
+        .setId(`${this.options.contract.contractType}_${context!.transactionHash}_${context!.logIndex}`)
         .timeout(10000)
         // .retries(1)
         .save()
