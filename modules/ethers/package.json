@@ -10,7 +10,7 @@
   "dependencies": {
     "@golevelup/nestjs-discovery": "4.0.0",
     "@golevelup/nestjs-modules": "0.7.0",
-    "cron": "2.4.3"
+    "cron": "2.4.4"
   },
   "description": "Ethers transport for NestJS",
   "devDependencies": {
@@ -27,14 +27,14 @@
     "@nomiclabs/hardhat-ethers": "2.2.3",
     "@types/cron": "2.0.1",
     "@types/jest": "29.5.5",
-    "@types/node": "18.17.18",
+    "@types/node": "18.18.1",
     "@types/ws": "7.4.6",
     "dotenv": "16.3.1",
     "ethers": "6.7.1",
     "jest": "29.7.0",
     "jest-environment-node": "29.7.0",
     "reflect-metadata": "0.1.13",
-    "rimraf": "5.0.1",
+    "rimraf": "5.0.5",
     "rxjs": "7.8.1",
     "ts-jest": "29.1.1",
     "ws": "7.4.6"
