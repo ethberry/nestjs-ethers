@@ -1,4 +1,4 @@
-import { EventFragment } from "ethers";
+import { EventFragment, Log } from "ethers";
 
 export interface ILogEvent<T = any> {
   fragment: EventFragment;
@@ -6,4 +6,8 @@ export interface ILogEvent<T = any> {
   signature: string;
   topic: string;
   args: T;
+}
+
+export interface ILogWithIndex extends Log {
+  logIndex: string;
 }
