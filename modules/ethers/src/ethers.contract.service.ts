@@ -6,16 +6,12 @@ import { CronJob } from "cron";
 import Queue from "bee-queue";
 
 import { from, Observable, Subject } from "rxjs";
-import { JsonRpcProvider, Log } from "ethers";
+import { JsonRpcProvider } from "ethers";
 
 import { getPastEvents, recursivelyDecodeResult } from "./ethers.utils";
 import { ETHERS_RPC, MODULE_OPTIONS_PROVIDER, REDIS_QUEUE_PRODUCER } from "./ethers.constants";
-import { ILogEvent, IModuleOptions } from "./interfaces";
+import { IEventObj, IModuleOptions, jobSorter } from "./interfaces";
 import { mergeAll, mergeMap } from "rxjs/operators";
-
-interface ILogWithIndex extends Log {
-  logIndex: string;
-}
 
 @Injectable()
 export class EthersContractService {
@@ -39,7 +35,8 @@ export class EthersContractService {
     private schedulerRegistry: SchedulerRegistry,
   ) {
     this.subject
-      .pipe(mergeMap(({ pattern, description, log }) => from(this.call(pattern, description, log)).pipe(mergeAll()), 1))
+      // .pipe(mergeMap(({ pattern, description, log }) => from(this.call(pattern, description, log)).pipe(mergeAll()), 1))
+      .pipe(mergeMap(allEvents => from(this.call(allEvents)).pipe(mergeAll()), 1))
       .subscribe({
         next: v => {
           loggerService.log(v, `${EthersContractService.name}-${this.instanceId}`);
@@ -127,20 +124,21 @@ export class EthersContractService {
       return [];
     });
 
-    // const iface = contractInterface;
+    const allEvents = [];
 
     for (const log of events) {
       const description = contractInterface.parseLog(log as any);
 
+      // LOG PROBLEMS IF ANY
       if (!description || (eventNames.length > 0 && !eventNames.includes(description.name))) {
         if (this.options.block.debug) {
           if (!description) {
-            this.loggerService.log("CANT PARSE LOG", `${EthersContractService.name}-${this.instanceId}`);
+            this.loggerService.log("CAN'T PARSE LOG", `${EthersContractService.name}-${this.instanceId}`);
             this.loggerService.log(JSON.stringify(log, null, "\t"), `${EthersContractService.name}-${this.instanceId}`);
           }
           if (description && !eventNames.includes(description.name)) {
             this.loggerService.log(
-              `${description.name} NOT FOUND IN CONTROLLER EVENTS`,
+              `${description.name} NOT FOUND IN EVENTS LIST`,
               `${EthersContractService.name}-${this.instanceId}`,
             );
             this.loggerService.log(eventNames.toString(), `${EthersContractService.name}-${this.instanceId}`);
@@ -160,7 +158,13 @@ export class EthersContractService {
         );
       }
 
-      this.subject.next({ pattern: { contractType, eventName: description.name }, description, log });
+      allEvents.push({ pattern: { contractType, eventName: description.name }, description, log });
+      // this.subject.next({ pattern: { contractType, eventName: description.name }, description, log });
+    }
+
+    // don't call when no events
+    if (allEvents.length > 0) {
+      this.subject.next(allEvents);
     }
 
     if (this.toBlock - this.fromBlock <= this.latency) {
@@ -207,40 +211,80 @@ export class EthersContractService {
     return this.toBlock - this.latency;
   }
 
-  protected async call(
-    pattern: Record<string, string>,
-    data: ILogEvent,
-    context?: ILogWithIndex,
-  ): Promise<Observable<any>> {
-    const route = transformPatternToRoute(pattern);
+  // eslint-disable-next-line @typescript-eslint/require-await
+  protected async call(allEvents: Array<IEventObj>): Promise<Observable<any>> {
+    // Must sort events by context: blockNumber(hex) -> transactionIndex -> logIndex
+    const allEventLogs = allEvents.sort(jobSorter()).map(event => {
+      const { pattern, description, log } = event;
+      // Get nestjs route
+      const route = transformPatternToRoute(pattern);
+      // LogDescription.args are readonly =( need to decode ethers.Result to get key: values
+      const decoded = {
+        fragment: description.fragment,
+        name: description.name,
+        signature: description.signature,
+        topic: description.topic,
+        args: recursivelyDecodeResult(description.args),
+      };
+      return { route, decoded, log };
+    });
 
-    // LogDescription.args are readonly =(
-    // We need to decode ethers.Result to get key: values
-    // Object.assign(description, { args: recursivelyDecodeResult(description.args) });
-    const decoded = {
-      fragment: data.fragment,
-      name: data.name,
-      signature: data.signature,
-      topic: data.topic,
-      args: recursivelyDecodeResult(data.args),
-    };
+    // Save all jobs to Redis queue
+    allEventLogs.map(event => {
+      const { route, decoded, log } = event;
 
-    const job = this.providerRedis.createJob({ route, decoded, context });
-    return (
-      job
-        .setId(`${this.options.contract.contractType}_${context!.transactionHash}_${context!.logIndex}`)
+      const job = this.providerRedis.createJob({ route, decoded, context: log });
+
+      return job
+        .setId(`${this.options.contract.contractType}_${log.transactionHash}_${log.logIndex}`)
         .timeout(10000)
-        // .retries(1)
         .save()
         .then(job => {
-          this.loggerService.log(`Created Job ${job.id}`, `${EthersContractService.name}-${this.instanceId}`);
-          if (!job.id) {
-            this.loggerService.log("Duplicate Job", `${EthersContractService.name}-${this.instanceId}`);
-          }
           // job enqueued, job.id populated
-          return from(["OK"]);
-        })
-    );
+          this.loggerService.log(
+            job.id ? `Created Job ${job.id}` : `Duplicate Job`,
+            `${EthersContractService.name}-${this.instanceId}`,
+          );
+        });
+    });
+
+    // await this.providerRedis.saveAll(allJobs).then(_errors => {
+    //   this.loggerService.log(
+    //     "Duplicate Jobs",
+    //     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+    //     `${EthersContractService.name}-${this.instanceId}`,
+    //   );
+    // });
+
+    return from(["OK"]);
+
+    // const route = transformPatternToRoute(pattern);
+    // // LogDescription.args are readonly =(
+    // // We need to decode ethers.Result to get key: values
+    // // Object.assign(description, { args: recursivelyDecodeResult(description.args) });
+    // const decoded = {
+    //   fragment: data.fragment,
+    //   name: data.name,
+    //   signature: data.signature,
+    //   topic: data.topic,
+    //   args: recursivelyDecodeResult(data.args),
+    // };
+    // const job = this.providerRedis.createJob({ route, decoded, context });
+    // return (
+    //   job
+    //     .setId(`${this.options.contract.contractType}_${context!.transactionHash}_${context!.logIndex}`)
+    //     .timeout(10000)
+    //     // .retries(1)
+    //     .save()
+    //     .then(job => {
+    //       this.loggerService.log(`Created Job ${job.id}`, `${EthersContractService.name}-${this.instanceId}`);
+    //       if (!job.id) {
+    //         this.loggerService.log("Duplicate Job", `${EthersContractService.name}-${this.instanceId}`);
+    //       }
+    //       // job enqueued, job.id populated
+    //       return from(["OK"]);
+    //     })
+    // );
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await

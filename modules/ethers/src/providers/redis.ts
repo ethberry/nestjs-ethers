@@ -10,6 +10,8 @@ export const redisQueueProvider = {
     // producer queues running on the web server
     const queueName = configService.get<string>("REDIS_QUEUE_NAME", "ETH_EVENTS");
     const sharedConfigSend = {
+      storeJobs: false,
+      sendEvents: false,
       getEvents: false,
       isWorker: false,
       redis: {
