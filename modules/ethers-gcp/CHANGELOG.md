@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-redis-beta.5](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers-gcp@1.1.0-redis-beta.4...@gemunion/nest-js-module-ethers-gcp@1.1.0-redis-beta.5) (2023-10-04)
+
+### Bug Fixes
+
+- **deps:** update [@gemunion](https://github.com/gemunion) packages ([58e3541](https://github.com/gemunion/ethers-packages/commit/58e35410f11be581a2178ee2fb68fbb2fa836aac))
+
 ## [1.0.8](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers-gcp@1.0.7...@gemunion/nest-js-module-ethers-gcp@1.0.8) (2023-09-17)
 
 **Note:** Version bump only for package @gemunion/nest-js-module-ethers-gcp

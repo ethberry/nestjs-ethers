@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0-redis-beta.5](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@5.1.0-redis-beta.4...@gemunion/nest-js-module-ethers@5.1.0-redis-beta.5) (2023-10-04)
+
+### Features
+
+- add contract type to job id ([7461103](https://github.com/gemunion/ethers-packages/commit/746110347972ecab00df7d3bc6e7a2ac69bb5a6e))
+- sort events ([0af51fa](https://github.com/gemunion/ethers-packages/commit/0af51fa073454f00a3afc8b58a3013d5799e099a))
+
 ## [5.0.13](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@5.0.12...@gemunion/nest-js-module-ethers@5.0.13) (2023-09-17)
 
 ### Bug Fixes
