@@ -3,40 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [5.1.0-redis-beta.4](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@5.1.0-redis-beta.3...@gemunion/nest-js-module-ethers@5.1.0-redis-beta.4) (2023-09-20)
-
-### Features
-
-- do not retry job, timeout 10s ([d920af8](https://github.com/gemunion/ethers-packages/commit/d920af8aca610764aef2f1e8e5de16fd102d1e94))
-
-# [5.1.0-redis-beta.3](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@5.1.0-redis-beta.2...@gemunion/nest-js-module-ethers@5.1.0-redis-beta.3) (2023-09-14)
-
-### Features
-
-- batchMaxCount 1 ([229fb35](https://github.com/gemunion/ethers-packages/commit/229fb35061f6556963a32203240eb99b9d5a95e4))
-
-# [5.1.0-redis-beta.2](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@5.1.0-redis-beta.1...@gemunion/nest-js-module-ethers@5.1.0-redis-beta.2) (2023-09-14)
-
-### Features
-
-- static network ([9d84628](https://github.com/gemunion/ethers-packages/commit/9d846284e15f8fef0cda97f5c6bfa2ff6847f6af))
-
-# [5.1.0-redis-beta.1](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@5.1.0-redis-beta.0...@gemunion/nest-js-module-ethers@5.1.0-redis-beta.1) (2023-09-08)
-
-### Features
-
-- redis beta version ([3b6817e](https://github.com/gemunion/ethers-packages/commit/3b6817e2873c546a6fdf4d37de285f8256fb66c9))
-
-# [5.1.0-redis-beta.0](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@5.0.12...@gemunion/nest-js-module-ethers@5.1.0-redis-beta.0) (2023-09-08)
+## [5.0.13](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@5.0.12...@gemunion/nest-js-module-ethers@5.0.13) (2023-09-17)
 
 ### Bug Fixes
 
+- **deps:** update all non-major dependencies ([bbca286](https://github.com/gemunion/ethers-packages/commit/bbca2860535a0259033139f3f49322bb19b773d2))
 - **deps:** update all non-major dependencies ([9bf89ba](https://github.com/gemunion/ethers-packages/commit/9bf89ba7ba043bc6ac6214b5a64b7235565d644f))
-- imports ([e61ebde](https://github.com/gemunion/ethers-packages/commit/e61ebde07adb977b7afd45a69a68be32b48f5de3))
-
-### Features
-
-- use redis queue ([7f4c91d](https://github.com/gemunion/ethers-packages/commit/7f4c91dd87f76986bb09dd7fc4cb6c6fba85f22a))
 
 ## [5.0.12](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@5.0.11...@gemunion/nest-js-module-ethers@5.0.12) (2023-08-12)
 
