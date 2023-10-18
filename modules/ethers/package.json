@@ -15,7 +15,7 @@
   "description": "Ethers transport for NestJS",
   "devDependencies": {
     "@gemunion/eslint-config": "4.0.5",
-    "@gemunion/nest-js-module-license": "4.0.14",
+    "@gemunion/nest-js-module-license": "4.0.15",
     "@nestjs/axios": "3.0.0",
     "@nestjs/common": "10.2.7",
     "@nestjs/config": "3.1.1",
