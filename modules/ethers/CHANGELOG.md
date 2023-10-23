@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0-redis-beta.9](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@5.1.0-redis-beta.8...@gemunion/nest-js-module-ethers@5.1.0-redis-beta.9) (2023-10-23)
+
+### Features
+
+- add chainId to jobId ([095d31a](https://github.com/gemunion/ethers-packages/commit/095d31a74b8b991950555350fe8914fab46380d4))
+
 # 5.1.0-redis-beta.8 (2023-10-14)
 
 ### Bug Fixes
