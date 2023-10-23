@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0-redis-beta.10](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@5.1.0-redis-beta.9...@gemunion/nest-js-module-ethers@5.1.0-redis-beta.10) (2023-10-23)
+
+### Bug Fixes
+
+- update last block ([8228cd2](https://github.com/gemunion/ethers-packages/commit/8228cd2ba8e59662344244bcbdedc3ccac2bb4b9))
+
 # [5.1.0-redis-beta.9](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@5.1.0-redis-beta.8...@gemunion/nest-js-module-ethers@5.1.0-redis-beta.9) (2023-10-23)
 
 ### Features
