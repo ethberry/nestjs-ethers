@@ -164,17 +164,17 @@ export class EthersContractService {
       // this.subject.next({ pattern: { contractType, eventName: description.name }, description, log });
     }
 
-    // don't call when no events
-    if (allEvents.length > 0) {
-      this.subject.next(allEvents);
-    }
-
     if (this.toBlock - this.fromBlock <= this.latency) {
       this.fromBlock = this.fromBlock + 1;
       this.toBlock = await this.getLastBlockEth();
     } else {
       this.fromBlock = this.toBlock - this.latency + 1;
       this.toBlock = await this.getLastBlockEth();
+    }
+
+    // call next when events
+    if (allEvents.length > 0) {
+      this.subject.next(allEvents);
     }
   }
 
@@ -197,7 +197,7 @@ export class EthersContractService {
     }
 
     this.loggerService.log(
-      `ETH Listener updated: ${address.join(", ")} @ ${fromBlock} @ ${JSON.stringify(topics)}`,
+      `ETH Listener updated: ${address.join(", ")} @ ${fromBlock} @ ${topics ? JSON.stringify(topics) : ""}`,
       `${EthersContractService.name}-${this.instanceId}`,
     );
   }
