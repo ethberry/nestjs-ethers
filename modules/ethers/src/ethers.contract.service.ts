@@ -19,6 +19,7 @@ export class EthersContractService {
   private latency: number;
   private fromBlock: number;
   private toBlock: number;
+  private chainId: number;
 
   private subject = new Subject<any>();
 
@@ -55,6 +56,7 @@ export class EthersContractService {
     this.latency = ~~this.configService.get<string>("LATENCY", "32");
     this.fromBlock = this.options.block.fromBlock;
     this.toBlock = await this.getLastBlockEth();
+    this.chainId = ~~this.configService.get<number>("CHAIN_ID", 13377);
     // if block time is more than Cron delay
     if (this.fromBlock > this.toBlock) {
       this.loggerService.log(
@@ -236,7 +238,7 @@ export class EthersContractService {
       const job = this.providerRedis.createJob({ route, decoded, context: log });
 
       return job
-        .setId(`${this.options.contract.contractType}_${log.transactionHash}_${log.logIndex}`)
+        .setId(`${this.chainId}_${this.options.contract.contractType}_${log.transactionHash}_${log.logIndex}`)
         .timeout(10000)
         .save()
         .then(job => {
