@@ -20,6 +20,7 @@ export class EthersContractService {
   private fromBlock: number;
   private toBlock: number;
   private chainId: number;
+  private cronLock: boolean = false;
 
   private subject = new Subject<any>();
 
@@ -72,7 +73,13 @@ export class EthersContractService {
 
   public setCronJob(dto: CronExpression): void {
     const job = new CronJob(dto, async () => {
+      // CHECK CRON LOCK
+      if (this.cronLock) {
+        return;
+      }
+      this.cronLock = true;
       await this.listen();
+      this.cronLock = false;
     });
 
     this.schedulerRegistry.addCronJob(`ethListener_${this.instanceId}`, job);
