@@ -242,7 +242,12 @@ export class EthersContractService {
     allEventLogs.map(event => {
       const { route, decoded, log } = event;
 
-      const job = this.providerRedis.createJob({ route, decoded, context: log });
+      const job = this.providerRedis.createJob({
+        route,
+        decoded,
+        context: log,
+        contractType: this.options.contract.contractType,
+      });
 
       return job
         .setId(`${this.chainId}_${this.options.contract.contractType}_${log.transactionHash}_${log.logIndex}`)
