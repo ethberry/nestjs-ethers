@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0-redis-beta.11](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@5.1.0-redis-beta.10...@gemunion/nest-js-module-ethers@5.1.0-redis-beta.11) (2023-11-05)
+
+### Features
+
+- cron lock ([3f941cb](https://github.com/gemunion/ethers-packages/commit/3f941cb04adbe8e075c5c62a09a949e0f1802bf2))
+
 # [5.1.0-redis-beta.10](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@5.1.0-redis-beta.9...@gemunion/nest-js-module-ethers@5.1.0-redis-beta.10) (2023-10-23)
 
 ### Bug Fixes
