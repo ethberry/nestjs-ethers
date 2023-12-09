@@ -5,8 +5,8 @@
     "url": "https://trejgun.github.io/"
   },
   "dependencies": {
-    "@lerna/legacy-package-management": "7.4.2",
-    "lerna": "7.4.2"
+    "@lerna/legacy-package-management": "8.0.0",
+    "lerna": "8.0.0"
   },
   "devDependencies": {
     "@gemunion/eslint-config": "4.0.5",
