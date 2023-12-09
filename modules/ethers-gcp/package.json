@@ -12,7 +12,7 @@
     "@gemunion/nest-js-module-ethers": "5.0.19"
   },
   "devDependencies": {
-    "@gemunion/nest-js-module-secret-manager-gcp": "1.1.21",
+    "@gemunion/nest-js-module-secret-manager-gcp": "1.1.22",
     "@nestjs/config": "3.1.1",
     "ethers": "6.9.0"
   },
