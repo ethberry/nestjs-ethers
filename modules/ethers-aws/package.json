@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@gemunion/constants": "0.12.8",
-    "@gemunion/nest-js-module-ethers": "5.0.20"
+    "@gemunion/nest-js-module-ethers": "5.0.21"
   },
   "devDependencies": {
     "@gemunion/nest-js-module-secret-manager-aws": "4.0.29",
@@ -45,5 +45,5 @@
   },
   "title": "-=Gemun Ion Studio=-",
   "types": "./dist/index.d.ts",
-  "version": "1.0.16"
+  "version": "1.0.17"
 }
