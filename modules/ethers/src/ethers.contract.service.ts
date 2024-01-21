@@ -6,11 +6,11 @@ import { CronJob } from "cron";
 import Queue from "bee-queue";
 
 import { from, Observable, Subject } from "rxjs";
-import { JsonRpcProvider } from "ethers";
+import { JsonRpcProvider, Log } from "ethers";
 
 import { getPastEvents, recursivelyDecodeResult } from "./ethers.utils";
 import { ETHERS_RPC, MODULE_OPTIONS_PROVIDER, REDIS_QUEUE_PRODUCER } from "./ethers.constants";
-import { IEventObj, IModuleOptions, jobSorter } from "./interfaces";
+import { ILogEvent, IModuleOptions } from "./interfaces";
 import { mergeAll, mergeMap } from "rxjs/operators";
 
 @Injectable()
@@ -19,8 +19,6 @@ export class EthersContractService {
   private latency: number;
   private fromBlock: number;
   private toBlock: number;
-  private chainId: number;
-  private cronLock: boolean = false;
 
   private subject = new Subject<any>();
 
@@ -37,8 +35,7 @@ export class EthersContractService {
     private schedulerRegistry: SchedulerRegistry,
   ) {
     this.subject
-      // .pipe(mergeMap(({ pattern, description, log }) => from(this.call(pattern, description, log)).pipe(mergeAll()), 1))
-      .pipe(mergeMap(allEvents => from(this.call(allEvents)).pipe(mergeAll()), 1))
+      .pipe(mergeMap(({ pattern, description, log }) => from(this.call(pattern, description, log)).pipe(mergeAll()), 1))
       .subscribe({
         next: v => {
           loggerService.log(v, `${EthersContractService.name}-${this.instanceId}`);
@@ -57,7 +54,6 @@ export class EthersContractService {
     this.latency = ~~this.configService.get<string>("LATENCY", "32");
     this.fromBlock = this.options.block.fromBlock;
     this.toBlock = await this.getLastBlockEth();
-    this.chainId = ~~this.configService.get<number>("CHAIN_ID", 13377);
     // if block time is more than Cron delay
     if (this.fromBlock > this.toBlock) {
       this.loggerService.log(
@@ -73,13 +69,7 @@ export class EthersContractService {
 
   public setCronJob(dto: CronExpression): void {
     const job = new CronJob(dto, async () => {
-      // CHECK CRON LOCK
-      if (this.cronLock) {
-        return;
-      }
-      this.cronLock = true;
       await this.listen();
-      this.cronLock = false;
     });
 
     this.schedulerRegistry.addCronJob(`ethListener_${this.instanceId}`, job);
@@ -133,21 +123,20 @@ export class EthersContractService {
       return [];
     });
 
-    const allEvents = [];
+    // const iface = contractInterface;
 
     for (const log of events) {
       const description = contractInterface.parseLog(log as any);
 
-      // LOG PROBLEMS IF ANY
       if (!description || (eventNames.length > 0 && !eventNames.includes(description.name))) {
         if (this.options.block.debug) {
           if (!description) {
-            this.loggerService.log("CAN'T PARSE LOG", `${EthersContractService.name}-${this.instanceId}`);
+            this.loggerService.log("CANT PARSE LOG", `${EthersContractService.name}-${this.instanceId}`);
             this.loggerService.log(JSON.stringify(log, null, "\t"), `${EthersContractService.name}-${this.instanceId}`);
           }
           if (description && !eventNames.includes(description.name)) {
             this.loggerService.log(
-              `${description.name} NOT FOUND IN EVENTS LIST`,
+              `${description.name} NOT FOUND IN CONTROLLER EVENTS`,
               `${EthersContractService.name}-${this.instanceId}`,
             );
             this.loggerService.log(eventNames.toString(), `${EthersContractService.name}-${this.instanceId}`);
@@ -167,8 +156,7 @@ export class EthersContractService {
         );
       }
 
-      allEvents.push({ pattern: { contractType, eventName: description.name }, description, log });
-      // this.subject.next({ pattern: { contractType, eventName: description.name }, description, log });
+      this.subject.next({ pattern: { contractType, eventName: description.name }, description, log });
     }
 
     if (this.toBlock - this.fromBlock <= this.latency) {
@@ -177,11 +165,6 @@ export class EthersContractService {
     } else {
       this.fromBlock = this.toBlock - this.latency + 1;
       this.toBlock = await this.getLastBlockEth();
-    }
-
-    // call next when events
-    if (allEvents.length > 0) {
-      this.subject.next(allEvents);
     }
   }
 
@@ -204,7 +187,7 @@ export class EthersContractService {
     }
 
     this.loggerService.log(
-      `ETH Listener updated: ${address.join(", ")} @ ${fromBlock} @ ${topics ? JSON.stringify(topics) : ""}`,
+      `ETH Listener updated: ${address.join(", ")} @ ${fromBlock} @ ${JSON.stringify(topics)}`,
       `${EthersContractService.name}-${this.instanceId}`,
     );
   }
@@ -220,85 +203,34 @@ export class EthersContractService {
     return this.toBlock - this.latency;
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
-  protected async call(allEvents: Array<IEventObj>): Promise<Observable<any>> {
-    // Must sort events by context: blockNumber(hex) -> transactionIndex -> logIndex
-    const allEventLogs = allEvents.sort(jobSorter()).map(event => {
-      const { pattern, description, log } = event;
-      // Get nestjs route
-      const route = transformPatternToRoute(pattern);
-      // LogDescription.args are readonly =( need to decode ethers.Result to get key: values
-      const decoded = {
-        fragment: description.fragment,
-        name: description.name,
-        signature: description.signature,
-        topic: description.topic,
-        args: recursivelyDecodeResult(description.args),
-      };
-      return { route, decoded, log };
-    });
+  protected async call(pattern: Record<string, string>, data: ILogEvent, context?: Log): Promise<Observable<any>> {
+    const route = transformPatternToRoute(pattern);
 
-    // Save all jobs to Redis queue
-    allEventLogs.map(event => {
-      const { route, decoded, log } = event;
+    // LogDescription.args are readonly =(
+    // We need to decode ethers.Result to get key: values
+    // Object.assign(description, { args: recursivelyDecodeResult(description.args) });
+    const decoded = {
+      fragment: data.fragment,
+      name: data.name,
+      signature: data.signature,
+      topic: data.topic,
+      args: recursivelyDecodeResult(data.args),
+    };
 
-      const job = this.providerRedis.createJob({
-        route,
-        decoded,
-        context: log,
-        contractType: this.options.contract.contractType,
+    const job = this.providerRedis.createJob({ route, decoded, context });
+    return job
+      .setId(`${context!.transactionHash}_${context!.index}`)
+      .timeout(3000)
+      .retries(2)
+      .save()
+      .then(job => {
+        this.loggerService.log(`Created Job ${job.id}`, `${EthersContractService.name}-${this.instanceId}`);
+        if (!job.id) {
+          this.loggerService.log("Duplicate Job", `${EthersContractService.name}-${this.instanceId}`);
+        }
+        // job enqueued, job.id populated
+        return from(["OK"]);
       });
-
-      return job
-        .setId(`${this.chainId}_${this.options.contract.contractType}_${log.transactionHash}_${log.logIndex}`)
-        .timeout(10000)
-        .save()
-        .then(job => {
-          // job enqueued, job.id populated
-          this.loggerService.log(
-            job.id ? `Created Job ${job.id}` : `Duplicate Job`,
-            `${EthersContractService.name}-${this.instanceId}`,
-          );
-        });
-    });
-
-    // await this.providerRedis.saveAll(allJobs).then(_errors => {
-    //   this.loggerService.log(
-    //     "Duplicate Jobs",
-    //     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    //     `${EthersContractService.name}-${this.instanceId}`,
-    //   );
-    // });
-
-    return from(["OK"]);
-
-    // const route = transformPatternToRoute(pattern);
-    // // LogDescription.args are readonly =(
-    // // We need to decode ethers.Result to get key: values
-    // // Object.assign(description, { args: recursivelyDecodeResult(description.args) });
-    // const decoded = {
-    //   fragment: data.fragment,
-    //   name: data.name,
-    //   signature: data.signature,
-    //   topic: data.topic,
-    //   args: recursivelyDecodeResult(data.args),
-    // };
-    // const job = this.providerRedis.createJob({ route, decoded, context });
-    // return (
-    //   job
-    //     .setId(`${this.options.contract.contractType}_${context!.transactionHash}_${context!.logIndex}`)
-    //     .timeout(10000)
-    //     // .retries(1)
-    //     .save()
-    //     .then(job => {
-    //       this.loggerService.log(`Created Job ${job.id}`, `${EthersContractService.name}-${this.instanceId}`);
-    //       if (!job.id) {
-    //         this.loggerService.log("Duplicate Job", `${EthersContractService.name}-${this.instanceId}`);
-    //       }
-    //       // job enqueued, job.id populated
-    //       return from(["OK"]);
-    //     })
-    // );
   }
 
   // eslint-disable-next-line @typescript-eslint/require-await
