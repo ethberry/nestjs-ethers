@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.1.0](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@5.0.22...@gemunion/nest-js-module-ethers@6.1.0) (2024-01-21)
+
+### Bug Fixes
+
+- **deps:** update all non-major dependencies ([f4c5303](https://github.com/gemunion/ethers-packages/commit/f4c5303642a4e1fdb223dd0ac4318a9d8f8f6a0e))
+- imports ([71164b7](https://github.com/gemunion/ethers-packages/commit/71164b7fcb4ad985a071303322ed07c9ee00532e))
+- update last block ([89a9219](https://github.com/gemunion/ethers-packages/commit/89a9219838f0943e75a591b6cb86d1e0560a4465))
+
+### Features
+
+- add chainId to jobId ([cce9596](https://github.com/gemunion/ethers-packages/commit/cce959636a0bd24eb40109d68706081d06e4c9c9))
+- add contract type to job id ([b80cbc4](https://github.com/gemunion/ethers-packages/commit/b80cbc43cf41e861ec8ee7026174b0636775f12b))
+- cron lock ([b4304eb](https://github.com/gemunion/ethers-packages/commit/b4304eb60b7c29e37659accaa1aa5dc5610f9a87))
+- do not retry job, timeout 10s ([992a4a2](https://github.com/gemunion/ethers-packages/commit/992a4a25b2e4a4b0a36b761146a47216e03d87b7))
+- job contract type ([a35b98d](https://github.com/gemunion/ethers-packages/commit/a35b98d5f8e366e5fb96b2ac6050ac621ed926c7))
+- redis beta version ([b7085b6](https://github.com/gemunion/ethers-packages/commit/b7085b62975f0180543d91fd2875cbeff9c3bd97))
+- sort events ([42600b8](https://github.com/gemunion/ethers-packages/commit/42600b8b5e6d10389d0034cefb68b8204b4c928e))
+- use redis queue ([f6664b7](https://github.com/gemunion/ethers-packages/commit/f6664b7f36a5ea2eec30dee3a4c538e512f7c6f2))
+- v6 (bee queue) ([e005008](https://github.com/gemunion/ethers-packages/commit/e0050080eb2b445ec8ffd026d2b83bc65c6f35f2))
+- v6 (bee queue) ([167ee88](https://github.com/gemunion/ethers-packages/commit/167ee881dfdc9f02445f4aea4b6393114909a4be))
+
 ## [5.0.22](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@5.0.21...@gemunion/nest-js-module-ethers@5.0.22) (2023-12-30)
 
 **Note:** Version bump only for package @gemunion/nest-js-module-ethers
