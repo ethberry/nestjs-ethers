@@ -10,6 +10,6 @@
     }
   },
   "packages": ["modules/*"],
-  "useNx": false,
+  "useNx": true,
   "version": "independent"
 }
