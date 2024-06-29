@@ -8,11 +8,11 @@
     "url": "https://github.com/gemunion/ethers-packages/issues"
   },
   "dependencies": {
-    "@gemunion/constants": "0.12.11",
+    "@gemunion/constants": "0.12.12",
     "@gemunion/nest-js-module-ethers": "6.1.10"
   },
   "devDependencies": {
-    "@gemunion/nest-js-module-secret-manager-aws": "4.0.47",
+    "@gemunion/nest-js-module-secret-manager-aws": "4.0.49",
     "@nestjs/config": "3.2.2",
     "ethers": "6.13.1"
   },
