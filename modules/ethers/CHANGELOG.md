@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.1.12](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@6.1.11...@gemunion/nest-js-module-ethers@6.1.12) (2024-07-06)
+
+### Bug Fixes
+
+- **deps:** update all non-major dependencies ([17caa7a](https://github.com/gemunion/ethers-packages/commit/17caa7a0db0552af20f28bc65e9447df37192c85))
+
 ## [6.1.11](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@6.1.10...@gemunion/nest-js-module-ethers@6.1.11) (2024-06-29)
 
 ### Bug Fixes
