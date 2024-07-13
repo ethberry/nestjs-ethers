@@ -39,7 +39,7 @@
     "ws": "7.4.6"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
   },
   "keywords": [],
   "license": "UNLICENSED",
