@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.1.18](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers-env@6.1.17...@gemunion/nest-js-module-ethers-env@6.1.18) (2024-07-24)
+
+### Bug Fixes
+
+- **deps:** update [@gemunion](https://github.com/gemunion) packages ([a7e33b9](https://github.com/gemunion/ethers-packages/commit/a7e33b9708b8639e1a0681333c910c4aeed6ab6a))
+
 ## [6.1.17](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers-env@6.1.16...@gemunion/nest-js-module-ethers-env@6.1.17) (2024-07-20)
 
 **Note:** Version bump only for package @gemunion/nest-js-module-ethers-env
