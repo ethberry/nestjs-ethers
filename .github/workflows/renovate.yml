@@ -13,6 +13,11 @@ jobs:
     if: ${{github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name,'deps')}}
     runs-on: ubuntu-latest
     steps:
+      # SETUP NODE JS VERSION
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
       # BEGIN INSTALL
       - uses: actions/checkout@v4
         with:
