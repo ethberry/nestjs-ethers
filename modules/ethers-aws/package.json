@@ -21,7 +21,7 @@
   },
   "keywords": [],
   "license": "UNLICENSED",
-  "main": "./dist/index.js",
+  "main": "dist/index.js",
   "name": "@gemunion/nest-js-module-ethers-aws",
   "peerDependencies": {
     "@gemunion/nest-js-module-secret-manager-aws": "^4.0.0",

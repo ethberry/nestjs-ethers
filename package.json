@@ -33,7 +33,6 @@
     "node": ">=22"
   },
   "license": "UNLICENSED",
-  "main": "./dist/index.js",
   "name": "@gemunion/ethers-packages",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
