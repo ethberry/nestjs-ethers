@@ -1,42 +1,12 @@
-import { JsonRpcProvider, Log, Result } from "ethers";
+import { JsonRpcProvider, Log } from "ethers";
 
-// Patch BigNumber
-// https://github.com/GoogleChromeLabs/jsbi/issues/30
-// eslint-disable-next-line no-extend-native
-Object.defineProperty(BigInt.prototype, "toJSON", {
-  value: function () {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return this.toString();
-  },
-  configurable: true,
-  enumerable: false,
-  writable: true,
-});
+import { patchBigInt } from "@gemunion/utils-eth";
 
-export const recursivelyDecodeResult = (result: Result): Record<string, any> => {
-  if (typeof result !== "object") {
-    // Raw primitive value
-    return result;
-  }
-  try {
-    const obj = result.toObject();
-    if (obj._) {
-      throw new Error("Decode as array, not object");
-    }
-    Object.keys(obj).forEach(key => {
-      obj[key] = recursivelyDecodeResult(obj[key]);
-    });
-    return obj;
-  } catch (err) {
-    // Result is array.
-    return result.toArray().map(item => recursivelyDecodeResult(item as Result));
-  }
-};
+patchBigInt();
 
 export const getPastEvents = async (
   provider: JsonRpcProvider,
   address: Array<string>,
-  topics: Array<string | Array<string> | null>,
   fromBlockNumber: number,
   toBlockNumber: number,
   chunkLimit = 0,
@@ -64,13 +34,12 @@ export const getPastEvents = async (
     const logs: Log[] = await provider.send("eth_getLogs", [
       {
         address,
-        topics,
         fromBlock: `0x${chunk.fromBlock.toString(16)}`,
         toBlock: `0x${chunk.toBlock.toString(16)}`,
       },
     ]);
 
-    if (logs) {
+    if (logs?.length) {
       events.push(...logs);
     }
   }

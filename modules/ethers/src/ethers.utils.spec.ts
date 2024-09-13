@@ -1,6 +1,6 @@
 import { Interface } from "ethers";
 
-import { abi } from "./interfaces/abi/ABI.json";
+import { abi } from "./contracts/ABI.json";
 
 describe("Utils", () => {
   it("transform", () => {

@@ -5,5 +5,4 @@ export interface IContractOptions {
   contractAddress: Array<string>;
   contractInterface: Interface;
   eventNames?: Array<string>;
-  topics?: Array<string | Array<string> | null>;
 }

@@ -8,8 +8,11 @@
     "url": "https://github.com/gemunion/ethers-packages/issues"
   },
   "dependencies": {
+    "@gemunion/constants": "0.13.1",
+    "@gemunion/utils": "1.5.0",
+    "@gemunion/utils-eth": "1.1.23",
+    "@golevelup/nestjs-discovery": "4.0.1",
     "@golevelup/nestjs-modules": "0.7.1",
-    "bee-queue": "1.7.1",
     "cron": "3.1.7"
   },
   "description": "Ethers transport for NestJS",
@@ -51,7 +54,7 @@
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.0.0",
     "@nestjs/microservices": "^10.0.0",
-    "@nestjs/schedule": "^3.0.0 || ^4.0.0",
+    "@nestjs/schedule": "^4.0.0",
     "@nestjs/terminus": "^10.0.0",
     "ethers": "^6.0.0",
     "rxjs": "^7.0.0",
@@ -70,10 +73,9 @@
     "prebuild": "rimraf dist/",
     "prepare": "npm run build",
     "preversion": "npm run build && npm run test",
-    "test:real": "jest --config=jest.config.json --detectOpenHandles --runInBand --forceExit --passWithNoTests",
-    "test": "exit 0"
+    "test": "jest --config=jest.config.json --detectOpenHandles --runInBand --forceExit --passWithNoTests"
   },
   "title": "NestJS Ethers module",
   "types": "./dist/index.d.ts",
-  "version": "6.1.20"
+  "version": "7.0.0"
 }

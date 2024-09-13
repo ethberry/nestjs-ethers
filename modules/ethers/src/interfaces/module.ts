@@ -1,7 +1,7 @@
-import { IContractOptions } from "./contract";
-import { IBlockOptions } from "./blockchain";
+import { CronExpression } from "@nestjs/schedule";
 
 export interface IModuleOptions {
-  contract: IContractOptions;
-  block: IBlockOptions;
+  fromBlock: number;
+  debug: boolean;
+  cron?: CronExpression;
 }
