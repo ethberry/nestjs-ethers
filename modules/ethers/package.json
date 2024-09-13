@@ -28,7 +28,7 @@
     "@nestjs/terminus": "10.2.3",
     "@nestjs/testing": "10.4.1",
     "@nomiclabs/hardhat-ethers": "2.2.3",
-    "@types/jest": "29.5.12",
+    "@types/jest": "29.5.13",
     "@types/node": "20.16.5",
     "@types/ws": "7.4.6",
     "dotenv": "16.4.5",
