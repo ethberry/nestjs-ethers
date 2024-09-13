@@ -24,7 +24,6 @@ export class EthersContractService {
   private toBlock: number;
   private cronLock: boolean = false;
   private registry: Array<IContractOptions> = [];
-
   private subject = new Subject<any>();
 
   constructor(
@@ -165,12 +164,15 @@ export class EthersContractService {
     }
   }
 
-  public updateListener(contract: IContractOptions): void {
-    if (this.registry.find(e => e.contractAddress === contract.contractAddress)) {
-      throw Error("Duplicate listeners for contract");
-    }
+  public updateRegistry(contract: IContractOptions): void {
+    const entry = this.registry.find(e => e.contractType === contract.contractType);
 
-    this.registry.push(contract);
+    if (entry) {
+      entry.contractAddress = [...new Set([...entry.contractAddress, ...contract.contractAddress])];
+      entry.eventNames = [...new Set([...entry.eventNames, ...contract.eventNames])];
+    } else {
+      this.registry.push(contract);
+    }
 
     this.loggerService.log(
       `ETH Listener updated: ${contract.contractAddress.join(", ")}`,
@@ -178,15 +180,15 @@ export class EthersContractService {
     );
   }
 
+  public getRegistry(): Array<IContractOptions> {
+    return this.registry;
+  }
+
   public async getLastBlock(): Promise<number> {
     return await this.provider.getBlockNumber().catch(err => {
       this.loggerService.error(JSON.stringify(err, null, "\t"), `${EthersContractService.name}-${this.instanceId}`);
       return this.toBlock;
     });
-  }
-
-  public getLastBlockOption(): number {
-    return this.toBlock - this.latency;
   }
 
   protected async getHandlerByPattern<T extends Array<Record<string, string>>>(

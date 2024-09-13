@@ -67,6 +67,11 @@ interface IERC721TransferEvent {
   tokenId: string;
 }
 
+interface IOwnershipTransferred {
+  previousOwner: string;
+  newOwner: string;
+}
+
 interface IExchangeSwapEvent {
   success: string;
 }
@@ -87,12 +92,21 @@ class TestEthersContractService {
   constructor(private readonly ethersContractService: EthersContractService) {}
 
   public updateListener(contract: IContractOptions): void {
-    return this.ethersContractService.updateListener(contract);
+    return this.ethersContractService.updateRegistry(contract);
+  }
+
+  public getRegistry(): Array<IContractOptions> {
+    return this.ethersContractService.getRegistry();
   }
 
   public async logEvent(
     event: ILogEvent<
-      IERC20ApprovalEvent | IERC20TransferEvent | IERC721ApprovalEvent | IERC721TransferEvent | IExchangeSwapEvent
+      | IERC20ApprovalEvent
+      | IERC20TransferEvent
+      | IERC721ApprovalEvent
+      | IERC721TransferEvent
+      | IOwnershipTransferred
+      | IExchangeSwapEvent
     >,
     ctx: ILogWithIndex,
   ): Promise<void> {
@@ -128,10 +142,18 @@ class TestEthersContractController {
   }
 
   @EventPattern({
+    contractType: ContractType.ERC20_TOKEN,
+    eventName: "OwnershipTransferred",
+  })
+  public logEvent3(@Payload() event: ILogEvent<IOwnershipTransferred>, @Ctx() ctx: ILogWithIndex): Promise<void> {
+    return this.testEthersContractService.logEvent(event, ctx);
+  }
+
+  @EventPattern({
     contractType: ContractType.ERC721_TOKEN,
     eventName: "Approval",
   })
-  public logEvent3(@Payload() event: ILogEvent<IERC721ApprovalEvent>, @Ctx() ctx: ILogWithIndex): Promise<void> {
+  public logEvent4(@Payload() event: ILogEvent<IERC721ApprovalEvent>, @Ctx() ctx: ILogWithIndex): Promise<void> {
     return this.testEthersContractService.logEvent(event, ctx);
   }
 
@@ -139,7 +161,15 @@ class TestEthersContractController {
     contractType: ContractType.ERC721_TOKEN,
     eventName: "Transfer",
   })
-  public logEvent4(@Payload() event: ILogEvent<IERC721TransferEvent>, @Ctx() ctx: ILogWithIndex): Promise<void> {
+  public logEvent5(@Payload() event: ILogEvent<IERC721TransferEvent>, @Ctx() ctx: ILogWithIndex): Promise<void> {
+    return this.testEthersContractService.logEvent(event, ctx);
+  }
+
+  @EventPattern({
+    contractType: ContractType.ERC721_TOKEN,
+    eventName: "OwnershipTransferred",
+  })
+  public logEvent6(@Payload() event: ILogEvent<IOwnershipTransferred>, @Ctx() ctx: ILogWithIndex): Promise<void> {
     return this.testEthersContractService.logEvent(event, ctx);
   }
 
@@ -147,7 +177,7 @@ class TestEthersContractController {
     contractType: ContractType.EXCHANGE,
     eventName: "Swap",
   })
-  public logEvent5(@Payload() event: ILogEvent<IExchangeSwapEvent>, @Ctx() ctx: ILogWithIndex): Promise<void> {
+  public logEvent7(@Payload() event: ILogEvent<IExchangeSwapEvent>, @Ctx() ctx: ILogWithIndex): Promise<void> {
     return this.testEthersContractService.logEvent(event, ctx);
   }
 
@@ -155,7 +185,7 @@ class TestEthersContractController {
     contractType: ContractType.EXCHANGE,
     eventName: "Swap",
   })
-  public logEvent6(@Payload() event: ILogEvent<IExchangeSwapEvent>, @Ctx() ctx: ILogWithIndex): Promise<void> {
+  public logEvent8(@Payload() event: ILogEvent<IExchangeSwapEvent>, @Ctx() ctx: ILogWithIndex): Promise<void> {
     return this.testEthersContractService.logEvent(event, ctx);
   }
 }
@@ -263,13 +293,13 @@ describe("EthersServer", () => {
       contractType: ContractType.ERC20_TOKEN,
       contractAddress: [await priceContract.getAddress()],
       contractInterface: new Interface(Erc20Contract.abi),
-      eventNames: ["Transfer", "Approval"],
+      eventNames: ["Transfer", "Approval", "OwnershipTransferred"],
     });
     testEthersContractService.updateListener({
       contractType: ContractType.ERC721_TOKEN,
       contractAddress: [await itemContract.getAddress()],
       contractInterface: new Interface(Erc721Contract.abi),
-      eventNames: ["Transfer", "Approval"],
+      eventNames: ["Transfer", "Approval", "OwnershipTransferred"],
     });
     testEthersContractService.updateListener({
       contractType: ContractType.EXCHANGE,
@@ -280,6 +310,41 @@ describe("EthersServer", () => {
 
     await delay(10000); // this depends on amount of blocks in blockchain
 
-    expect(logSpyContract).toBeCalledTimes(8);
+    expect(logSpyContract).toBeCalledTimes(10);
+  });
+
+  it("should update listener", () => {
+    testEthersContractService.updateListener({
+      contractType: ContractType.ERC20_TOKEN,
+      contractAddress: ["a"],
+      contractInterface: new Interface(ExchangeContract.abi),
+      eventNames: ["a"],
+    });
+    testEthersContractService.updateListener({
+      contractType: ContractType.ERC20_TOKEN,
+      contractAddress: ["a"],
+      contractInterface: new Interface(ExchangeContract.abi),
+      eventNames: ["a"],
+    });
+    testEthersContractService.updateListener({
+      contractType: ContractType.ERC20_TOKEN,
+      contractAddress: ["b"],
+      contractInterface: new Interface(ExchangeContract.abi),
+      eventNames: ["b"],
+    });
+    testEthersContractService.updateListener({
+      contractType: ContractType.ERC721_TOKEN,
+      contractAddress: ["c"],
+      contractInterface: new Interface(ExchangeContract.abi),
+      eventNames: ["c"],
+    });
+
+    const registry = testEthersContractService.getRegistry();
+
+    expect(registry.length).toEqual(2);
+    expect(registry[0].contractAddress).toEqual(["a", "b"]);
+    expect(registry[0].eventNames).toEqual(["a", "b"]);
+    expect(registry[1].eventNames).toEqual(["c"]);
+    expect(registry[1].eventNames).toEqual(["c"]);
   });
 });

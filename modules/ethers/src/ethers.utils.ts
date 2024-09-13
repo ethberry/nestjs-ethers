@@ -21,7 +21,7 @@ export const getPastEvents = async (
     for (let index = 0; index < count; index++) {
       const fromRangeBlock = startingBlock;
       const toRangeBlock = index === count - 1 ? toBlockNumber : startingBlock + chunkLimit;
-      startingBlock = toRangeBlock + 1;
+      startingBlock = toRangeBlock;
 
       chunks.push({ fromBlock: fromRangeBlock, toBlock: toRangeBlock });
     }
