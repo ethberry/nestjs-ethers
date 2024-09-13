@@ -13,15 +13,12 @@ import { DiscoveredMethodWithMeta, DiscoveryService } from "@golevelup/nestjs-di
 import { recursivelyDecodeResult } from "@gemunion/utils-eth";
 
 import { getPastEvents } from "./ethers.utils";
-import { DEFAULT_LATENCY, ETHERS_RPC, MODULE_OPTIONS_PROVIDER } from "./ethers.constants";
+import { ETHERS_RPC, MODULE_OPTIONS_PROVIDER } from "./ethers.constants";
 import { IContractOptions, ILogEvent, IModuleOptions } from "./interfaces";
 
 @Injectable()
 export class EthersContractService {
   private instanceId: string;
-  private latency: number;
-  private fromBlock: number;
-  private toBlock: number;
   private cronLock: boolean = false;
   private registry: Array<IContractOptions> = [];
   private subject = new Subject<any>();
@@ -54,17 +51,15 @@ export class EthersContractService {
 
   public async init(): Promise<void> {
     this.instanceId = (Math.random() + 1).toString(36).substring(7);
-    this.latency = ~~this.configService.get<number>("LATENCY", DEFAULT_LATENCY);
-    this.fromBlock = this.options.fromBlock;
-    this.toBlock = await this.getLastBlock();
+    this.options.toBlock = await this.getLastBlock();
     // if block time is more than Cron delay
-    if (this.fromBlock > this.toBlock) {
+    if (this.options.fromBlock > this.options.toBlock) {
       this.loggerService.log(
-        `Init getPastEvents@slowBlock No: ${this.toBlock}`,
+        `Init getPastEvents@slowBlock No: ${this.options.toBlock}`,
         `${EthersContractService.name}-${this.instanceId}`,
       );
-      this.toBlock = this.fromBlock;
-      return this.getPastEvents(this.fromBlock, this.toBlock);
+      this.options.toBlock = this.options.fromBlock;
+      return this.getPastEvents(this.options.fromBlock, this.options.toBlock);
     }
     // cron config MUST be bigger than Block Time!
     return this.setCronJob(this.options.cron || CronExpression.EVERY_30_SECONDS);
@@ -87,18 +82,33 @@ export class EthersContractService {
 
   public async listen(): Promise<void> {
     // if block time still more than Cron
-    if (this.fromBlock > this.toBlock - this.latency) {
+    if (this.options.fromBlock > this.options.toBlock - this.options.latency) {
       this.loggerService.log(
-        `getPastEvents@slowBlock No: ${this.toBlock - this.latency}`,
+        `getPastEvents@slowBlock No: ${this.options.toBlock - this.options.latency}`,
         `${EthersContractService.name}-${this.instanceId}`,
       );
-      this.toBlock = this.fromBlock;
-      return this.getPastEvents(this.fromBlock, this.toBlock);
+      this.options.toBlock = this.options.fromBlock;
+      return this.getPastEvents(this.options.fromBlock, this.options.toBlock);
     }
-    return this.getPastEvents(this.fromBlock, this.toBlock - this.latency);
+    return this.getPastEvents(this.options.fromBlock, this.options.toBlock - this.options.latency);
   }
 
   public async getPastEvents(fromBlockNumber: number, toBlockNumber: number): Promise<void> {
+    // don't listen when no addresses are supplied
+    if (!this.registry.length) {
+      return;
+    }
+    await this._getPastEvents(fromBlockNumber, toBlockNumber);
+    if (this.options.fromBlock > this.options.toBlock - this.options.latency) {
+      this.options.fromBlock = this.options.fromBlock + 1;
+      this.options.toBlock = await this.getLastBlock();
+    } else {
+      this.options.fromBlock = this.options.toBlock - this.options.latency + 1;
+      this.options.toBlock = await this.getLastBlock();
+    }
+  }
+
+  public async _getPastEvents(fromBlockNumber: number, toBlockNumber: number): Promise<void> {
     // LAST frontier!
     if (fromBlockNumber > toBlockNumber) {
       this.loggerService.log(
@@ -106,11 +116,6 @@ export class EthersContractService {
         `${EthersContractService.name}-${this.instanceId}`,
       );
       toBlockNumber = fromBlockNumber;
-    }
-
-    // don't listen when no addresses are supplied
-    if (!this.registry.length) {
-      return;
     }
 
     const allAddress = this.registry.reduce<Array<string>>((memo, current) => memo.concat(current.contractAddress), []);
@@ -154,14 +159,6 @@ export class EthersContractService {
         log,
       });
     }
-
-    if (this.toBlock - this.fromBlock <= this.latency) {
-      this.fromBlock = this.fromBlock + 1;
-      this.toBlock = await this.getLastBlock();
-    } else {
-      this.fromBlock = this.toBlock - this.latency + 1;
-      this.toBlock = await this.getLastBlock();
-    }
   }
 
   public updateRegistry(contract: IContractOptions): void {
@@ -180,6 +177,11 @@ export class EthersContractService {
     );
   }
 
+  public async updateRegistryAndReadBlock(contract: IContractOptions, blockNumber: number): Promise<void> {
+    this.updateRegistry(contract);
+    await this._getPastEvents(blockNumber, blockNumber);
+  }
+
   public getRegistry(): Array<IContractOptions> {
     return this.registry;
   }
@@ -187,7 +189,7 @@ export class EthersContractService {
   public async getLastBlock(): Promise<number> {
     return await this.provider.getBlockNumber().catch(err => {
       this.loggerService.error(JSON.stringify(err, null, "\t"), `${EthersContractService.name}-${this.instanceId}`);
-      return this.toBlock;
+      return this.options.toBlock;
     });
   }
 

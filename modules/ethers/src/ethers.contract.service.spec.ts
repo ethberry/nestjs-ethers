@@ -223,9 +223,12 @@ describe("EthersServer", () => {
           imports: [ConfigModule],
           inject: [ConfigService],
           useFactory: async (configService: ConfigService): Promise<IModuleOptions> => {
+            const latency = ~~configService.get<string>("LATENCY", "32");
             const fromBlock = ~~configService.get<string>("STARTING_BLOCK", "0");
             return Promise.resolve({
+              latency,
               fromBlock,
+              toBlock: Number.NaN,
               debug: true,
               cron: CronExpression.EVERY_5_SECONDS,
             });
