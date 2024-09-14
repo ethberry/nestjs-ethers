@@ -12,7 +12,7 @@
     "@gemunion/nest-js-module-ethers": "7.0.3"
   },
   "devDependencies": {
-    "@gemunion/nest-js-module-secret-manager-env": "1.1.46",
+    "@gemunion/nest-js-module-secret-manager-env": "1.1.47",
     "@nestjs/config": "3.2.3",
     "ethers": "6.13.2"
   },
