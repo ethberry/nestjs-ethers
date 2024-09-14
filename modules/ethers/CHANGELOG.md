@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.4](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@7.0.3...@gemunion/nest-js-module-ethers@7.0.4) (2024-09-14)
+
+### Bug Fixes
+
+- block counting logic ([e2a7a38](https://github.com/gemunion/ethers-packages/commit/e2a7a38bc4549ee3224c7de192fc4aa30cb4de9a))
+
 ## [7.0.3](https://github.com/gemunion/ethers-packages/compare/@gemunion/nest-js-module-ethers@7.0.2...@gemunion/nest-js-module-ethers@7.0.3) (2024-09-13)
 
 ### Bug Fixes
