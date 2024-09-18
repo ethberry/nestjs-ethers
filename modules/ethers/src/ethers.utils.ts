@@ -1,12 +1,17 @@
-import { JsonRpcProvider, Log } from "ethers";
+import { JsonRpcProvider, keccak256, Log, toUtf8Bytes } from "ethers";
 
 import { patchBigInt } from "@gemunion/utils-eth";
 
 patchBigInt();
 
+export const keccak256It = function (value: string): string {
+  return keccak256(toUtf8Bytes(value));
+};
+
 export const getPastEvents = async (
   provider: JsonRpcProvider,
   address: Array<string>,
+  allSignatures: Array<string>,
   fromBlockNumber: number,
   toBlockNumber: number,
   chunkLimit = 0,
@@ -34,6 +39,7 @@ export const getPastEvents = async (
     const logs: Log[] = await provider.send("eth_getLogs", [
       {
         address,
+        topics: [allSignatures.map(signature => keccak256It(signature))],
         fromBlock: `0x${chunk.fromBlock.toString(16)}`,
         toBlock: `0x${chunk.toBlock.toString(16)}`,
       },

@@ -296,19 +296,27 @@ describe("EthersServer", () => {
       contractType: ContractType.ERC20_TOKEN,
       contractAddress: [await priceContract.getAddress()],
       contractInterface: new Interface(Erc20Contract.abi),
-      eventNames: ["Transfer", "Approval", "OwnershipTransferred"],
+      eventSignatures: [
+        "Transfer(address,address,uint256)",
+        "Approval(address,address,uint256)",
+        "OwnershipTransferred(address,address)",
+      ],
     });
     testEthersContractService.updateListener({
       contractType: ContractType.ERC721_TOKEN,
       contractAddress: [await itemContract.getAddress()],
       contractInterface: new Interface(Erc721Contract.abi),
-      eventNames: ["Transfer", "Approval", "OwnershipTransferred"],
+      eventSignatures: [
+        "Transfer(address,address,uint256)",
+        "Approval(address,address,uint256)",
+        "OwnershipTransferred(address,address)",
+      ],
     });
     testEthersContractService.updateListener({
       contractType: ContractType.EXCHANGE,
       contractAddress: [await exchangeContract.getAddress()],
       contractInterface: new Interface(ExchangeContract.abi),
-      eventNames: ["Swap"],
+      eventSignatures: ["Swap(tuple(address,address,uint256),tuple(address,address,uint256))"],
     });
 
     await delay(10000); // this depends on amount of blocks in blockchain
@@ -321,33 +329,33 @@ describe("EthersServer", () => {
       contractType: ContractType.ERC20_TOKEN,
       contractAddress: ["a"],
       contractInterface: new Interface(ExchangeContract.abi),
-      eventNames: ["a"],
+      eventSignatures: ["a"],
     });
     testEthersContractService.updateListener({
       contractType: ContractType.ERC20_TOKEN,
       contractAddress: ["a"],
       contractInterface: new Interface(ExchangeContract.abi),
-      eventNames: ["a"],
+      eventSignatures: ["a"],
     });
     testEthersContractService.updateListener({
       contractType: ContractType.ERC20_TOKEN,
       contractAddress: ["b"],
       contractInterface: new Interface(ExchangeContract.abi),
-      eventNames: ["b"],
+      eventSignatures: ["b"],
     });
     testEthersContractService.updateListener({
       contractType: ContractType.ERC721_TOKEN,
       contractAddress: ["c"],
       contractInterface: new Interface(ExchangeContract.abi),
-      eventNames: ["c"],
+      eventSignatures: ["c"],
     });
 
     const registry = testEthersContractService.getRegistry();
 
     expect(registry.length).toEqual(2);
     expect(registry[0].contractAddress).toEqual(["a", "b"]);
-    expect(registry[0].eventNames).toEqual(["a", "b"]);
-    expect(registry[1].eventNames).toEqual(["c"]);
-    expect(registry[1].eventNames).toEqual(["c"]);
+    expect(registry[0].eventSignatures).toEqual(["a", "b"]);
+    expect(registry[1].eventSignatures).toEqual(["c"]);
+    expect(registry[1].eventSignatures).toEqual(["c"]);
   });
 });
