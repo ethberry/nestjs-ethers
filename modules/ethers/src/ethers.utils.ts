@@ -33,13 +33,14 @@ export const getPastEvents = async (
   } else {
     chunks.push({ fromBlock: fromBlockNumber, toBlock: toBlockNumber });
   }
+  const topics = [allSignatures.map(signature => keccak256It(signature))];
 
   const events: Array<Log> = [];
   for (const chunk of chunks) {
     const logs: Log[] = await provider.send("eth_getLogs", [
       {
         address,
-        topics: [allSignatures.map(signature => keccak256It(signature))],
+        topics,
         fromBlock: `0x${chunk.fromBlock.toString(16)}`,
         toBlock: `0x${chunk.toBlock.toString(16)}`,
       },

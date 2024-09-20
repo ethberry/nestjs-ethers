@@ -223,7 +223,7 @@ describe("EthersServer", () => {
           imports: [ConfigModule],
           inject: [ConfigService],
           useFactory: async (configService: ConfigService): Promise<IModuleOptions> => {
-            const latency = ~~configService.get<string>("LATENCY", "32");
+            const latency = ~~configService.get<string>("LATENCY", "1");
             const fromBlock = ~~configService.get<string>("STARTING_BLOCK", "0");
             return Promise.resolve({
               latency,
@@ -316,7 +316,7 @@ describe("EthersServer", () => {
       contractType: ContractType.EXCHANGE,
       contractAddress: [await exchangeContract.getAddress()],
       contractInterface: new Interface(ExchangeContract.abi),
-      eventSignatures: ["Swap(tuple(address,address,uint256),tuple(address,address,uint256))"],
+      eventSignatures: ["Swap(bool)"],
     });
 
     await delay(10000); // this depends on amount of blocks in blockchain
