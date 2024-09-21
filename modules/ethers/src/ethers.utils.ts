@@ -1,12 +1,6 @@
-import { JsonRpcProvider, keccak256, Log, toUtf8Bytes } from "ethers";
+import { JsonRpcProvider, Log } from "ethers";
 
-import { patchBigInt } from "@gemunion/utils-eth";
-
-patchBigInt();
-
-export const keccak256It = function (value: string): string {
-  return keccak256(toUtf8Bytes(value));
-};
+import { keccak256Utf8 } from "@gemunion/utils-eth";
 
 export const getPastEvents = async (
   provider: JsonRpcProvider,
@@ -33,7 +27,7 @@ export const getPastEvents = async (
   } else {
     chunks.push({ fromBlock: fromBlockNumber, toBlock: toBlockNumber });
   }
-  const topics = [allSignatures.map(signature => keccak256It(signature))];
+  const topics = [allSignatures.map(signature => keccak256Utf8(signature))];
 
   const events: Array<Log> = [];
   for (const chunk of chunks) {

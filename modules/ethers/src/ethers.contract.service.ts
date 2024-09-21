@@ -76,6 +76,7 @@ export class EthersContractService {
     if (!this.registry.length) {
       return;
     }
+
     const toBlock = (await this.getLastBlock()) - this.options.latency;
     // waiting for confirmation
     if (this.options.fromBlock > toBlock) {
@@ -88,7 +89,7 @@ export class EthersContractService {
     );
 
     await this.getPastEvents(this.registry, this.options.fromBlock, toBlock);
-    this.options.fromBlock = toBlock;
+    this.options.fromBlock = toBlock + 1;
   }
 
   public async getPastEvents(registry: Array<IContractOptions>, fromBlock: number, toBlock: number): Promise<void> {

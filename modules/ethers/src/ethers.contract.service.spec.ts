@@ -7,7 +7,7 @@ import { BaseContract, ContractFactory, Interface, JsonRpcProvider, Wallet } fro
 import { config } from "dotenv";
 
 import { LicenseModule } from "@gemunion/nest-js-module-license";
-import { delay } from "@gemunion/utils";
+import { waitForConfirmation, patchBigInt } from "@gemunion/utils-eth";
 
 import type { IContractOptions, ILogEvent, ILogWithIndex, IModuleOptions } from "./interfaces";
 import { EthersContractModule } from "./ethers.contract.module";
@@ -83,6 +83,7 @@ export enum ContractType {
 }
 
 config();
+patchBigInt();
 
 const AMOUNT = 10000000n;
 const TOKENID = 1n;
@@ -111,6 +112,7 @@ class TestEthersContractService {
     ctx: ILogWithIndex,
   ): Promise<void> {
     // console.info("event", event.name);
+    // console.info("args", JSON.stringify(event.args));
     // console.info("ctx", ctx);
     // console.info(
     //   parseInt(ctx.blockNumber.toString(), 16),
@@ -200,7 +202,7 @@ class TestEthersContractModule {}
 
 describe("EthersServer", () => {
   // https://github.com/facebook/jest/issues/11543
-  jest.setTimeout(60000);
+  jest.setTimeout(100000);
 
   let logSpyContract: jest.SpyInstance;
 
@@ -319,7 +321,7 @@ describe("EthersServer", () => {
       eventSignatures: ["Swap(bool)"],
     });
 
-    await delay(10000); // this depends on amount of blocks in blockchain
+    await waitForConfirmation(provider, ~~process.env.LATENCY);
 
     expect(logSpyContract).toBeCalledTimes(10);
   });
