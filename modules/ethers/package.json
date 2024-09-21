@@ -10,7 +10,7 @@
   "dependencies": {
     "@gemunion/constants": "0.13.1",
     "@gemunion/utils": "1.5.0",
-    "@gemunion/utils-eth": "1.1.23",
+    "@gemunion/utils-eth": "1.1.24",
     "@golevelup/nestjs-discovery": "4.0.1",
     "@golevelup/nestjs-modules": "0.7.1",
     "cron": "3.1.7"
@@ -18,7 +18,7 @@
   "description": "Ethers transport for NestJS",
   "devDependencies": {
     "@gemunion/eslint-config": "4.0.6",
-    "@gemunion/nest-js-module-license": "4.0.40",
+    "@gemunion/nest-js-module-license": "4.0.41",
     "@nestjs/axios": "3.0.3",
     "@nestjs/common": "10.4.3",
     "@nestjs/config": "3.2.3",
