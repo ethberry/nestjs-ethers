@@ -93,8 +93,9 @@ export class EthersContractService {
 
   public async getPastEvents(registry: Array<IContractOptions>, fromBlock: number, toBlock: number): Promise<void> {
     const allAddress = registry.reduce<Array<string>>((memo, current) => memo.concat(current.contractAddress), []);
+    const allSignatures = registry.reduce<Array<string>>((memo, current) => memo.concat(current.eventSignatures), []);
 
-    const logs = await getPastEvents(this.provider, allAddress, fromBlock, toBlock, 100).catch(e => {
+    const logs = await getPastEvents(this.provider, allAddress, allSignatures, fromBlock, toBlock, 100).catch(e => {
       this.loggerService.error(JSON.stringify(e, null, "\t"), `${EthersContractService.name}-${this.instanceId}`);
       return [];
     });
@@ -140,7 +141,7 @@ export class EthersContractService {
 
     if (entry) {
       entry.contractAddress = [...new Set([...entry.contractAddress, ...contract.contractAddress])];
-      entry.eventNames = [...new Set([...entry.eventNames, ...contract.eventNames])];
+      entry.eventSignatures = [...new Set([...entry.eventSignatures, ...contract.eventSignatures])];
     } else {
       this.registry.push(contract);
     }
