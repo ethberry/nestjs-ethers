@@ -2,7 +2,7 @@
   "author": {
     "email": "trejgun@gmail.com",
     "name": "TrejGun",
-    "url": "https://gemunion.io/"
+    "url": "https://webberry.io/"
   },
   "bugs": {
     "url": "https://github.com/gemunion/ethers-packages/issues"
@@ -26,19 +26,18 @@
     "@nomiclabs/hardhat-ethers": "2.2.3",
     "@types/jest": "29.5.13",
     "@types/node": "20.16.7",
-    "husky": "4.3.8",
-    "@types/ws": "7.4.7",
     "dotenv": "16.4.5",
-    "lint-staged": "15.2.10",
-    "prettier": "3.3.3",
-    "typescript": "5.6.2",
     "ethers": "6.13.2",
+    "husky": "4.3.8",
     "jest": "29.7.0",
     "jest-environment-node": "29.7.0",
+    "lint-staged": "15.2.10",
+    "prettier": "3.3.3",
     "reflect-metadata": "0.2.2",
     "rimraf": "6.0.1",
     "rxjs": "7.8.1",
-    "ts-jest": "29.2.5"
+    "ts-jest": "29.2.5",
+    "typescript": "5.6.2"
   },
   "engines": {
     "node": ">=22"
