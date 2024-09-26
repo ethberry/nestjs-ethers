@@ -59,13 +59,13 @@ jobs:
           docker ps -a  # Показывает все контейнеры
           docker inspect besu | jq '.[0].State'
           docker inspect explorer | jq '.[0].State'
-#      - uses: actions/setup-node@v4
-#        name: Use Node.js ${{ matrix.node-version }}
-#        with:
-#          node-version: ${{ matrix.node-version }}
-#      - name: npm install
-#        run: npm i
-#      - name: check lint
-#        run: npm run lint
-#      - name: npm test
-#        run: npm run test
+      - uses: actions/setup-node@v4
+        name: Use Node.js ${{ matrix.node-version }}
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: npm install
+        run: npm i
+      - name: check lint
+        run: npm run lint
+      - name: npm test
+        run: npm run test
