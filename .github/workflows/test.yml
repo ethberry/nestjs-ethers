@@ -20,7 +20,7 @@ jobs:
         name: Checkout code
       - name: Start Besu service
         run: |
-            docker run -d \
+            docker run --root user -d \
             --name besu \
             -e BESU_GENESIS_FILE=/var/lib/besu/gen-besu.json \
             -e BESU_DATA_PATH=/var/lib/besu \
