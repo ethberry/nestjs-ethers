@@ -48,6 +48,7 @@ jobs:
               -e APP_NODE_URL="http://127.0.0.1:8545" \
               -p 8080:80 \
               alethio/ethereum-lite-explorer
+              sleep 30
       - name: Get besu logs
         run: |
           docker logs besu || true
