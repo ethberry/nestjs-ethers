@@ -68,8 +68,8 @@
     "lint": "eslint . --fix",
     "prebuild": "rimraf dist/",
     "prepare": "npm run build",
-    "preversion": "npm run build && npm run test",
-    "test": "jest --config=jest.config.json --detectOpenHandles --runInBand --forceExit --passWithNoTests"
+    "prettier": "prettier . --write",
+    "test": "jest --detectOpenHandles --runInBand --forceExit"
   },
   "title": "NestJS Ethers module",
   "types": "./dist/index.d.ts",
