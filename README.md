@@ -5,7 +5,7 @@ Ethereum transport routes blockchain events directly to controllers
 ## Installation
 
 ```shell script
-$ npm i --save @gemunion/nestjs-sqs
+$ npm i --save @ethberry/nestjs-ethers
 ```
 
 ### Code quality

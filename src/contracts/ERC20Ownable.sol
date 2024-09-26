@@ -2,7 +2,7 @@
 
 // Author: TrejGun
 // Email: trejgun@gmail.com
-// Website: https://webberry.io/
+// Website: https://ethberry.io/
 
 pragma solidity ^0.8.20;
 

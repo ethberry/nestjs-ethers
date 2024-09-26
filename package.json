@@ -2,10 +2,10 @@
   "author": {
     "email": "trejgun@gmail.com",
     "name": "TrejGun",
-    "url": "https://webberry.io/"
+    "url": "https://ethberry.io/"
   },
   "bugs": {
-    "url": "https://github.com/gemunion/ethers-packages/issues"
+    "url": "https://github.com/ethberry/nestjs-ethers/issues"
   },
   "dependencies": {
     "@golevelup/nestjs-discovery": "4.0.1",
@@ -14,7 +14,7 @@
   },
   "description": "Ethers transport for NestJS",
   "devDependencies": {
-    "@gemunion/eslint-config": "5.0.0",
+    "@ethberry/eslint-config": "5.0.3",
     "@nestjs/axios": "3.0.3",
     "@nestjs/common": "10.4.4",
     "@nestjs/config": "3.2.3",
@@ -45,7 +45,7 @@
   "keywords": [],
   "license": "UNLICENSED",
   "main": "dist/index.js",
-  "name": "@gemunion/nestjs-ethers",
+  "name": "@ethberry/nestjs-ethers",
   "peerDependencies": {
     "@nestjs/axios": "^3.0.0",
     "@nestjs/common": "^10.0.0",
@@ -61,7 +61,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gemunion/ethers-packages.git"
+    "url": "git+https://github.com/ethberry/nestjs-ethers.git"
   },
   "scripts": {
     "build": "tsc",

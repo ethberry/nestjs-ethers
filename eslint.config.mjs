@@ -1,5 +1,5 @@
-import typescriptRules from "@gemunion/eslint-config/presets/ts.mjs";
-import mochaRules from "@gemunion/eslint-config/tests/mocha.mjs";
+import typescriptRules from "@ethberry/eslint-config/presets/ts.mjs";
+import mochaRules from "@ethberry/eslint-config/tests/mocha.mjs";
 
 // DON'T ADD ANY RULES!
 // FIX YOUR SHIT!!!
