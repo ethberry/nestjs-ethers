@@ -34,7 +34,6 @@ jobs:
             -e BESU_RPC_WS_API="ADMIN,ETH,NET,WEB3,MINER,IBFT" \
             -e BESU_MINER_ENABLED="true" \
             -e BESU_MINER_COINBASE=fe3b557e8fb62b89f4916b721be55ceb828dbd73 \
-            -v ${{ github.workspace }}/besu:/var/lib/besu \
             -v ${{ github.workspace }}/gen-besu.json:/var/lib/besu/gen-besu.json \
             -p 8545:8545 \
             -p 8546:8546 \
