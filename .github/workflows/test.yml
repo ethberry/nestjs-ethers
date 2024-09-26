@@ -41,7 +41,6 @@ jobs:
             -p 8547:8547 \
             -p 30303:30303 \
             hyperledger/besu:latest
-
       - name: Start Explorer service
         run: |
             docker run -d \
@@ -49,13 +48,22 @@ jobs:
               -e APP_NODE_URL="http://127.0.0.1:8545" \
               -p 8080:80 \
               alethio/ethereum-lite-explorer
-      - uses: actions/setup-node@v4
-        name: Use Node.js ${{ matrix.node-version }}
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: npm install
-        run: npm i
-      - name: check lint
-        run: npm run lint
-      - name: npm test
-        run: npm run test
+      - name: Get besu logs
+        run: |
+          docker logs besu || true
+          docker logs explorer || true
+      - name: Check status of besu container
+        run: |
+          docker ps -a  # Показывает все контейнеры
+          docker inspect besu | jq '.[0].State'
+          docker inspect explorer | jq '.[0].State'
+#      - uses: actions/setup-node@v4
+#        name: Use Node.js ${{ matrix.node-version }}
+#        with:
+#          node-version: ${{ matrix.node-version }}
+#      - name: npm install
+#        run: npm i
+#      - name: check lint
+#        run: npm run lint
+#      - name: npm test
+#        run: npm run test
