@@ -20,15 +20,19 @@ jobs:
         name: Checkout code
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
       - name: Start Docker Compose
         run: |
-          docker-compose -f ./path/to/your/docker-compose.yml up -d
+          docker-compose -f ./docker-compose.yml up -d
       - name: Wait for services to be ready
         run: |
           sleep 30  # Дайте время сервисам на запуск
       - name: Stop Docker Compose
         run: |
-          docker-compose -f ./path/to/your/docker-compose.yml down
+          docker-compose -f ./docker-compose.yml down
       - uses: actions/setup-node@v4
         name: Use Node.js ${{ matrix.node-version }}
         with:
