@@ -27,9 +27,15 @@ jobs:
       - name: Start Docker Compose
         run: |
           docker-compose -f ./docker-compose.yml up -d
-      - name: Wait for services to be ready
+      - name: Show logs for besu
         run: |
-          sleep 30  # Дайте время сервисам на запуск
+            docker-compose -f ./docker-compose.yml logs besu
+      - name: Wait for besu to be ready
+        run: |
+            until curl -s http://localhost:8545; do
+              echo "Waiting for besu to be ready..."
+              sleep 5
+            done
       - uses: actions/setup-node@v4
         name: Use Node.js ${{ matrix.node-version }}
         with:
