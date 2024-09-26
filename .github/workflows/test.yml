@@ -30,9 +30,6 @@ jobs:
       - name: Wait for services to be ready
         run: |
           sleep 30  # Дайте время сервисам на запуск
-      - name: Stop Docker Compose
-        run: |
-          docker-compose -f ./docker-compose.yml down
       - uses: actions/setup-node@v4
         name: Use Node.js ${{ matrix.node-version }}
         with:
@@ -43,3 +40,6 @@ jobs:
         run: npm run lint
       - name: npm test
         run: npm run test
+      - name: Stop Docker Compose
+        run: |
+          docker-compose -f ./docker-compose.yml down
