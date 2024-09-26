@@ -27,15 +27,17 @@ jobs:
       - name: Start Docker Compose
         run: |
           docker-compose -f ./docker-compose.yml up -d
+          sleep 30
       - name: Show logs for besu
         run: |
             docker-compose -f ./docker-compose.yml logs besu
-      - name: Wait for besu to be ready
+      - name: Get besu logs
         run: |
-            until curl -s http://localhost:8545; do
-              echo "Waiting for besu to be ready..."
-              sleep 5
-            done
+            docker logs besu || true
+      - name: Check status of besu container
+        run: |
+            docker ps -a  # Показывает все контейнеры
+            docker inspect besu | jq '.[0].State'
       - uses: actions/setup-node@v4
         name: Use Node.js ${{ matrix.node-version }}
         with:
