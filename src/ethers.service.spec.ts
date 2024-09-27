@@ -200,7 +200,7 @@ class TestEthersController {
 })
 class TestEthersModule {}
 
-describe("EthersServer", function() {
+describe("EthersServer", function () {
   // https://github.com/facebook/jest/issues/11543
   jest.setTimeout(100000);
 
@@ -208,7 +208,7 @@ describe("EthersServer", function() {
 
   let testEthersContractService: TestEthersService;
 
-  beforeEach(async function() {
+  beforeEach(async function () {
     const module = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({
@@ -223,7 +223,6 @@ describe("EthersServer", function() {
             return Promise.resolve({
               latency,
               fromBlock,
-              toBlock: Number.NaN,
               debug: true,
               cron: CronExpression.EVERY_5_SECONDS,
             });
@@ -239,11 +238,11 @@ describe("EthersServer", function() {
     await module.init();
   });
 
-  afterEach(function() {
+  afterEach(function () {
     logSpyContract.mockClear();
   });
 
-  it("should receive Event", async function() {
+  it("should receive Event", async function () {
     const provider = new JsonRpcProvider(process.env.JSON_RPC_ADDR);
     const wallet = new Wallet(process.env.PRIVATE_KEY, provider);
 
