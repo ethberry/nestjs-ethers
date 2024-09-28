@@ -14,7 +14,5 @@ export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
 
 lerna bootstrap --hoist --ignore-scripts
 lerna run build --stream
+lerna run test --concurrency 1
 
-# lerna run lint --stream
-
-lerna exec -- npm run test

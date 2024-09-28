@@ -40,7 +40,7 @@
     "lerna:version": "lerna version --ignore-scripts",
     "lint": "lerna run lint --stream --parallel",
     "obfuscate": "sh scripts/obfuscate.sh",
-    "prettier": "prettier \"modules/**/*.{ts,tsx}\" \"other/**/*.{ts,tsx}\" \"utils/**/*.{ts,tsx}\" --write",
+    "prettier": "prettier . --write",
     "storybook": "start-storybook -p 6006",
     "test": "sh scripts/test.sh"
   },
