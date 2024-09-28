@@ -313,7 +313,7 @@ describe("EthersServer", function () {
       eventSignatures: ["Swap((address,address,uint256),(address,address,uint256))"],
     });
 
-    await waitForConfirmation(provider, ~~process.env.LATENCY);
+    await waitForConfirmation(provider, ~~process.env.LATENCY + 2);
 
     expect(logSpyContract).toBeCalledTimes(10);
   });
