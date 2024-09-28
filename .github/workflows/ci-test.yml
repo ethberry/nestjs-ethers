@@ -26,18 +26,18 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Add @scope & token to npmrc
         run: |
-          echo "@gemunion:registry=https://npm.pkg.github.com/" >> .npmrc
+          echo "@ethberry:registry=https://npm.pkg.github.com/" >> .npmrc
           echo "//npm.pkg.github.com/:_authToken=$GITHUBTOKEN" >> .npmrc
         env:
           GITHUBTOKEN: ${{ secrets.GITHUBTOKEN }}
 
       - name: Authenticate Registry & Configure Git User
         run: |
-          echo "@gemunion:registry=https://npm.pkg.github.com/" >> .npmrc
+          echo "@ethberry:registry=https://npm.pkg.github.com/" >> .npmrc
           echo "//npm.pkg.github.com/:_authToken=$GITHUBTOKEN" >> .npmrc
           git update-index --assume-unchanged .npmrc
-          npx npm-cli-login -u $GITHUBUSER -p $GITHUBTOKEN -e $GITHUBEMAIL -r https://npm.pkg.github.com -s @gemunion --config-path="./"
-          git config --global user.name '@gemunion'
+          npx npm-cli-login -u $GITHUBUSER -p $GITHUBTOKEN -e $GITHUBEMAIL -r https://npm.pkg.github.com -s @ethberry --config-path="./"
+          git config --global user.name '@ethberry'
           git config --global user.email $GITHUBEMAIL
         env:
           GITHUBTOKEN: ${{ secrets.GITHUBTOKEN }}
@@ -52,7 +52,7 @@ jobs:
       - name: Npm run test
         run: npm run test
         env:
-          GEMUNION_API_KEY: ${{ secrets.GEMUNION_API_KEY }}
+          ETHBERRY_API_KEY: ${{ secrets.ETHBERRY_API_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

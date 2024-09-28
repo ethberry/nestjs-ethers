@@ -1,18 +1,18 @@
 {
   "author": {
-    "email": "trejgun@gemunion.io",
+    "email": "trejgun@gmail.com",
     "name": "TrejGun",
-    "url": "https://gemunion.io/"
+    "url": "https://ethberry.io/"
   },
   "bugs": {
-    "url": "https://github.com/gemunion/ethers-packages/issues"
+    "url": "https://github.com/ethberry/ethers-packages/issues"
   },
   "dependencies": {
-    "@gemunion/constants": "0.13.1",
-    "@gemunion/nest-js-module-ethers": "7.0.4"
+    "@ethberry/constants": "0.13.1",
+    "@ethberry/nestjs-ethers": "8.0.2"
   },
   "devDependencies": {
-    "@gemunion/nest-js-module-secret-manager-aws": "4.0.61",
+    "@ethberry/nest-js-module-secret-manager-aws": "4.0.61",
     "@nestjs/config": "3.2.3",
     "ethers": "6.13.2"
   },
@@ -22,9 +22,9 @@
   "keywords": [],
   "license": "UNLICENSED",
   "main": "dist/index.js",
-  "name": "@gemunion/nest-js-module-ethers-aws",
+  "name": "@ethberry/nest-js-module-ethers-aws",
   "peerDependencies": {
-    "@gemunion/nest-js-module-secret-manager-aws": "^4.0.0",
+    "@ethberry/nest-js-module-secret-manager-aws": "^4.0.0",
     "@nestjs/config": "^3.0.0",
     "ethers": "^6.0.0"
   },
@@ -33,7 +33,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gemunion/ethers-packages"
+    "url": "git+https://github.com/ethberry/ethers-packages.git"
   },
   "scripts": {
     "build": "tsc",

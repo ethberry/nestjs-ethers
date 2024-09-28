@@ -1,8 +1,8 @@
 {
   "author": {
-    "email": "trejgun@gemunion.io",
+    "email": "trejgun@gmail.com",
     "name": "TrejGun",
-    "url": "https://trejgun.github.io/"
+    "url": "https://ethberry.io/"
   },
   "dependencies": {
     "@lerna/legacy-package-management": "8.1.8",
@@ -10,18 +10,7 @@
     "nx": "19.8.0"
   },
   "devDependencies": {
-    "@gemunion/eslint-config": "4.0.6",
-    "@typescript-eslint/eslint-plugin": "8.6.0",
-    "@typescript-eslint/parser": "8.6.0",
-    "eslint": "8.57.1",
-    "eslint-config-prettier": "9.1.0",
-    "eslint-config-standard": "17.1.0",
-    "eslint-import-resolver-typescript": "3.6.3",
-    "eslint-plugin-import": "2.30.0",
-    "eslint-plugin-jest": "27.9.0",
-    "eslint-plugin-n": "16.6.2",
-    "eslint-plugin-prettier": "5.2.1",
-    "eslint-plugin-promise": "6.6.0",
+    "@ethberry/eslint-config": "5.0.3",
     "husky": "4.3.8",
     "javascript-obfuscator": "4.1.1",
     "lint-staged": "15.2.10",
@@ -33,13 +22,13 @@
     "node": ">=22"
   },
   "license": "UNLICENSED",
-  "name": "@gemunion/ethers-packages",
+  "name": "@ethberry/nestjs-packages-eth",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gemunion/ethers-packages"
+    "url": "git+https://github.com/ethberry/ethers-packages.git"
   },
   "scripts": {
     "bootstrap": "lerna bootstrap --concurrency 1 --hoist --ignore-scripts",

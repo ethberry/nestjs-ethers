@@ -1,8 +1,0 @@
-/src
-/node_modules
-/coverage
-/contracts
-/tsconfig.json
-/jest.config.json
-**/*.spec.ts
-
