@@ -3,11 +3,10 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { Test } from "@nestjs/testing";
 import { Ctx, EventPattern, Payload } from "@nestjs/microservices";
 import { CronExpression } from "@nestjs/schedule";
-import { BaseContract, ContractFactory, Interface, JsonRpcProvider, Wallet, Log } from "ethers";
+import { BaseContract, ContractFactory, Interface, JsonRpcProvider, Log, Wallet } from "ethers";
 import { config } from "dotenv";
 
-import { patchBigInt } from "./utils/patch-bigint";
-import { waitForConfirmation } from "./utils/block-await";
+import { patchBigInt, waitForConfirmation } from "./utils";
 import type { IContractOptions, ILogEvent, IModuleOptions } from "./interfaces";
 import { EthersModule } from "./ethers.module";
 import { EthersService } from "./ethers.service";
