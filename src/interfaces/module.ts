@@ -5,4 +5,5 @@ export interface IModuleOptions {
   latency: number;
   debug: boolean;
   cron: CronExpression;
+  chunkSize?: number;
 }

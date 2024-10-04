@@ -223,7 +223,8 @@ describe("EthersServer", function () {
               latency,
               fromBlock,
               debug: true,
-              cron: CronExpression.EVERY_5_SECONDS,
+              chunkSize: 100,
+              cron: CronExpression.EVERY_SECOND,
             });
           },
         }),

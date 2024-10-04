@@ -13,12 +13,13 @@ import { DiscoveredMethodWithMeta, DiscoveryService } from "@golevelup/nestjs-di
 import { getPastEvents } from "./utils/get-past-events";
 import { ETHERS_RPC, MODULE_OPTIONS_PROVIDER } from "./ethers.constants";
 import { IContractOptions, ILogEvent, IModuleOptions } from "./interfaces";
-import { recursivelyDecodeResult } from "./utils/decode-result";
+import { recursivelyDecodeResult } from "./utils";
 
 @Injectable()
 export class EthersService {
   private instanceId: string;
   private cronLock = false;
+  private toBlock = 0;
   private registry: Array<IContractOptions> = [];
   private subject = new Subject<any>();
 
@@ -76,29 +77,36 @@ export class EthersService {
       return;
     }
 
-    const toBlock = (await this.getLastBlock()) - this.options.latency;
+    this.toBlock = (await this.getLastBlock()) - this.options.latency;
     // waiting for confirmation
-    if (this.options.fromBlock > toBlock) {
+    if (this.options.fromBlock > this.toBlock) {
       return;
     }
 
     this.loggerService.log(
-      `getPastEvents No: ${this.options.fromBlock} - ${toBlock}`,
+      `getPastEvents No: ${this.options.fromBlock} - ${this.toBlock}`,
       `${EthersService.name}-${this.instanceId}`,
     );
 
-    await this.getPastEvents(this.registry, this.options.fromBlock, toBlock);
-    this.options.fromBlock = toBlock + 1;
+    await this.getPastEvents(this.registry, this.options.fromBlock, this.toBlock, this.options.chunkSize);
+    this.options.fromBlock = this.toBlock + 1;
   }
 
-  public async getPastEvents(registry: Array<IContractOptions>, fromBlock: number, toBlock: number): Promise<void> {
+  public async getPastEvents(
+    registry: Array<IContractOptions>,
+    fromBlock: number,
+    toBlock: number,
+    chunkSize?: number,
+  ): Promise<void> {
     const allAddress = registry.reduce<Array<string>>((memo, current) => memo.concat(current.contractAddress), []);
     const allSignatures = registry.reduce<Array<string>>((memo, current) => memo.concat(current.eventSignatures), []);
 
-    const logs = await getPastEvents(this.provider, allAddress, allSignatures, fromBlock, toBlock, 100).catch(e => {
-      this.loggerService.error(JSON.stringify(e, null, "\t"), `${EthersService.name}-${this.instanceId}`);
-      return [];
-    });
+    const logs = await getPastEvents(this.provider, allAddress, allSignatures, fromBlock, toBlock, chunkSize).catch(
+      e => {
+        this.loggerService.error(JSON.stringify(e, null, "\t"), `${EthersService.name}-${this.instanceId}`);
+        return [];
+      },
+    );
 
     for (const log of logs) {
       const contract = registry.find(e =>
@@ -213,6 +221,10 @@ export class EthersService {
       });
       return from(["OK"]);
     });
+  }
+
+  public getLastProcessedBlock() {
+    return this.toBlock;
   }
 
   public destroy(): void {

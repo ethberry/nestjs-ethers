@@ -6,18 +6,18 @@ export const getPastEvents = async (
   allSignatures: Array<string>,
   fromBlockNumber: number,
   toBlockNumber: number,
-  chunkLimit = 0,
+  chunkSize = 0,
 ) => {
   const totalBlocks = toBlockNumber - fromBlockNumber;
   const chunks = [];
 
-  if (chunkLimit > 0 && totalBlocks > chunkLimit) {
-    const count = Math.ceil(totalBlocks / chunkLimit);
+  if (chunkSize > 0 && totalBlocks > chunkSize) {
+    const count = Math.ceil(totalBlocks / chunkSize);
     let startingBlock = fromBlockNumber;
 
     for (let index = 0; index < count; index++) {
       const fromRangeBlock = startingBlock;
-      const toRangeBlock = index === count - 1 ? toBlockNumber : startingBlock + chunkLimit;
+      const toRangeBlock = index === count - 1 ? toBlockNumber : startingBlock + chunkSize;
       startingBlock = toRangeBlock;
 
       chunks.push({ fromBlock: fromRangeBlock, toBlock: toRangeBlock });
@@ -25,6 +25,7 @@ export const getPastEvents = async (
   } else {
     chunks.push({ fromBlock: fromBlockNumber, toBlock: toBlockNumber });
   }
+
   const topics = [allSignatures.map(signature => keccak256(toUtf8Bytes(signature)))];
 
   const events: Array<Log> = [];
