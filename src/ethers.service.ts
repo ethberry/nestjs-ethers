@@ -165,11 +165,6 @@ export class EthersService {
     );
   }
 
-  public async updateRegistryAndReadBlock(contract: IContractOptions, blockNumber: number): Promise<void> {
-    this.updateRegistry(contract);
-    await this.getPastEvents([contract], blockNumber, blockNumber);
-  }
-
   public getRegistry(): Array<IContractOptions> {
     return this.registry;
   }

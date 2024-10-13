@@ -93,7 +93,7 @@ const TOKEN_ID = 1n;
 class TestEthersService {
   constructor(private readonly ethersContractService: EthersService) {}
 
-  public updateListener(contract: IContractOptions): void {
+  public updateRegistry(contract: IContractOptions): void {
     return this.ethersContractService.updateRegistry(contract);
   }
 
@@ -286,7 +286,7 @@ describe("EthersServer", function () {
     );
     await tx5.wait();
 
-    testEthersContractService.updateListener({
+    testEthersContractService.updateRegistry({
       contractType: ContractType.ERC20_TOKEN,
       contractAddress: [await priceContract.getAddress()],
       contractInterface: new Interface(Erc20Contract.abi),
@@ -296,7 +296,7 @@ describe("EthersServer", function () {
         "OwnershipTransferred(address,address)",
       ],
     });
-    testEthersContractService.updateListener({
+    testEthersContractService.updateRegistry({
       contractType: ContractType.ERC721_TOKEN,
       contractAddress: [await itemContract.getAddress()],
       contractInterface: new Interface(Erc721Contract.abi),
@@ -306,7 +306,7 @@ describe("EthersServer", function () {
         "OwnershipTransferred(address,address)",
       ],
     });
-    testEthersContractService.updateListener({
+    testEthersContractService.updateRegistry({
       contractType: ContractType.EXCHANGE,
       contractAddress: [await exchangeContract.getAddress()],
       contractInterface: new Interface(ExchangeContract.abi),
