@@ -109,35 +109,43 @@ export class EthersService {
     );
 
     for (const log of logs) {
-      const contract = registry.find(e =>
-        e.contractAddress.map(a => a.toLowerCase()).includes(log.address.toLowerCase()),
-      );
-
-      if (!contract) {
-        continue;
-      }
-
-      const logDescription = contract.contractInterface.parseLog(log);
-
-      // LOG PROBLEMS IF ANY
-      if (!logDescription) {
-        if (this.options.debug) {
-          this.loggerService.log("CAN'T PARSE LOG", `${EthersService.name}-${this.instanceId}`);
-          this.loggerService.log(JSON.stringify(log, null, "\t"), `${EthersService.name}-${this.instanceId}`);
+      for (const entry of registry) {
+        if (!entry.contractAddress.map(a => a.toLowerCase()).includes(log.address.toLowerCase())) {
+          continue;
         }
-        continue;
+
+        const logDescription = entry.contractInterface.parseLog(log);
+
+        // LOG PROBLEMS IF ANY
+        if (!logDescription) {
+          if (this.options.debug) {
+            this.loggerService.log("CAN'T PARSE LOG", `${EthersService.name}-${this.instanceId}`);
+            this.loggerService.log(JSON.stringify(log, null, "\t"), `${EthersService.name}-${this.instanceId}`);
+          }
+          continue;
+        }
+
+        this.loggerService.log(JSON.stringify(logDescription, null, "\t"), `${EthersService.name}-${this.instanceId}`);
+
+        // LogDescription.args are readonly =(
+        // We need to decode ethers.Result to get { key: values }
+        const description = {
+          fragment: logDescription.fragment,
+          name: logDescription.name,
+          signature: logDescription.signature,
+          topic: logDescription.topic,
+          args: recursivelyDecodeResult(logDescription.args),
+        };
+
+        this.subject.next({
+          pattern: {
+            contractType: entry.contractType,
+            eventName: description.name,
+          },
+          description,
+          log,
+        });
       }
-
-      this.loggerService.log(JSON.stringify(logDescription, null, "\t"), `${EthersService.name}-${this.instanceId}`);
-
-      this.subject.next({
-        pattern: {
-          contractType: contract.contractType,
-          eventName: logDescription.name,
-        },
-        description: logDescription,
-        log,
-      });
     }
   }
 
@@ -195,23 +203,13 @@ export class EthersService {
       return Promise.resolve(EMPTY);
     }
 
-    // LogDescription.args are readonly =(
-    // We need to decode ethers.Result to get { key: values }
-    const decoded = {
-      fragment: description.fragment,
-      name: description.name,
-      signature: description.signature,
-      topic: description.topic,
-      args: recursivelyDecodeResult(description.args),
-    };
-
     return Promise.allSettled(
       discoveredMethodsWithMeta.map(discoveredMethodWithMeta => {
         return (
           discoveredMethodWithMeta.discoveredMethod.handler.bind(
             discoveredMethodWithMeta.discoveredMethod.parentClass.instance,
           ) as MessageHandler
-        )(decoded, context);
+        )(description, context);
       }),
     ).then(res => {
       res.forEach(r => {
