@@ -1,4 +1,10 @@
 {
   "baseBranches": ["master"],
-  "extends": ["github>ethberry/renovate-config"]
+  "extends": ["github>ethberry/renovate-config"],
+  "packageRules": [
+    {
+      "matchPackageNames": ["cron"],
+      "allowedVersions": "<=3.1.7"
+    }
+  ]
 }
