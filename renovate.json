@@ -6,7 +6,7 @@
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true
     }
-  ]
+  ],
   "packageRules": [
     {
       "matchPackageNames": ["cron"],
