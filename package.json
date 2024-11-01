@@ -10,7 +10,7 @@
   "dependencies": {
     "@golevelup/nestjs-discovery": "4.0.1",
     "@golevelup/nestjs-modules": "0.7.1",
-    "cron": "3.1.7"
+    "cron": "3.1.8"
   },
   "description": "Ethers transport for NestJS",
   "devDependencies": {
@@ -25,7 +25,7 @@
     "@nestjs/testing": "10.4.6",
     "@nomiclabs/hardhat-ethers": "2.2.3",
     "@types/jest": "29.5.14",
-    "@types/node": "20.17.1",
+    "@types/node": "20.17.5",
     "dotenv": "16.4.5",
     "ethers": "6.13.4",
     "husky": "9.1.6",
