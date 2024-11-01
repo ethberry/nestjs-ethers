@@ -3,6 +3,12 @@
   "extends": ["github>ethberry/renovate-config"],
   "packageRules": [
     {
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    }
+  ]
+  "packageRules": [
+    {
       "matchPackageNames": ["cron"],
       "allowedVersions": "<=3.1.7"
     }
