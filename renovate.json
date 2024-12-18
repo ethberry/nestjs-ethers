@@ -5,12 +5,10 @@
     {
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true
-    }
-  ],
-  "packageRules": [
+    },
     {
       "matchPackageNames": ["cron"],
-      "allowedVersions": "<=3.1.7"
+      "allowedVersions": "<=3.2.1"
     }
   ]
 }
