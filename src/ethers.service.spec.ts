@@ -77,7 +77,7 @@ interface IExchangeSwapEvent {
   price: IExchangePrice;
 }
 
-export enum ContractType {
+enum ContractType {
   EXCHANGE = "EXCHANGE",
   ERC20_TOKEN = "ERC20_TOKEN",
   ERC721_TOKEN = "ERC721_TOKEN",
@@ -315,6 +315,6 @@ describe("EthersServer", function () {
 
     await waitForConfirmation(provider, ~~process.env.LATENCY + 2);
 
-    expect(logSpyContract).toBeCalledTimes(10);
+    expect(logSpyContract).toHaveBeenCalledTimes(10);
   });
 });
