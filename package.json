@@ -1,7 +1,7 @@
 {
   "author": {
-    "email": "trejgun+opensource@gmail.com",
-    "name": "TrejGun",
+    "email": "oleg+opensource@ethberry.io",
+    "name": "Oleg Gun",
     "url": "https://ethberry.io/"
   },
   "bugs": {
@@ -47,12 +47,12 @@
   "main": "dist/index.js",
   "name": "@ethberry/nestjs-ethers",
   "peerDependencies": {
-    "@nestjs/axios": "^3.0.0 || ^4.0.0",
-    "@nestjs/common": "^10.0.0 || ^11.0.0",
-    "@nestjs/config": "^3.0.0 || ^4.0.0",
-    "@nestjs/microservices": "^10.0.0 || ^11.0.0",
-    "@nestjs/schedule": "^4.0.0 || ^5.0.0",
-    "@nestjs/terminus": "^10.0.0 || ^11.0.0",
+    "@nestjs/axios": "^4.0.0",
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/config": "^4.0.0",
+    "@nestjs/microservices": "^11.0.0",
+    "@nestjs/schedule": "^5.0.0",
+    "@nestjs/terminus": "^11.0.0",
     "ethers": "^6.0.0",
     "rxjs": "^7.0.0"
   },
@@ -73,5 +73,5 @@
   },
   "title": "NestJS Ethers module",
   "types": "./dist/index.d.ts",
-  "version": "8.0.5"
+  "version": "9.0.0"
 }
