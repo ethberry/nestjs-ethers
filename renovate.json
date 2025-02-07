@@ -8,7 +8,7 @@
     },
     {
       "matchPackageNames": ["cron"],
-      "allowedVersions": "<=3.2.1"
+      "allowedVersions": "<=3.5.0"
     }
   ]
 }
