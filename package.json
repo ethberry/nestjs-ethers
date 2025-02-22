@@ -21,7 +21,6 @@
     "@nestjs/core": "11.0.10",
     "@nestjs/microservices": "11.0.10",
     "@nestjs/schedule": "5.0.1",
-    "@nestjs/terminus": "11.0.0",
     "@nestjs/testing": "11.0.10",
     "@nomiclabs/hardhat-ethers": "2.2.3",
     "@types/jest": "29.5.14",
@@ -52,7 +51,6 @@
     "@nestjs/config": "^4.0.0",
     "@nestjs/microservices": "^11.0.0",
     "@nestjs/schedule": "^5.0.0",
-    "@nestjs/terminus": "^11.0.0",
     "ethers": "^6.0.0",
     "rxjs": "^7.0.0"
   },
