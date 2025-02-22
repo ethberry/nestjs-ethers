@@ -1,5 +1,4 @@
 import { Inject, Injectable, Logger, LoggerService } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
 import { MessageHandler } from "@nestjs/microservices";
 import { transformPatternToRoute } from "@nestjs/microservices/utils";
 import { PATTERN_METADATA } from "@nestjs/microservices/constants";
@@ -29,7 +28,6 @@ export class EthersService {
     @Inject(ETHERS_RPC)
     protected readonly provider: JsonRpcProvider,
     protected readonly discoveryService: DiscoveryService,
-    protected readonly configService: ConfigService,
     @Inject(MODULE_OPTIONS_PROVIDER)
     protected options: IModuleOptions,
     private schedulerRegistry: SchedulerRegistry,
@@ -170,8 +168,8 @@ export class EthersService {
   }
 
   public async getLastBlock(): Promise<number> {
-    return await this.provider.getBlockNumber().catch(err => {
-      this.loggerService.error(JSON.stringify(err, null, "\t"), `${EthersService.name}-${this.instanceId}`);
+    return await this.provider.getBlockNumber().catch(e => {
+      this.loggerService.error(JSON.stringify(e, null, "\t"), `${EthersService.name}-${this.instanceId}`);
       return 0;
     });
   }

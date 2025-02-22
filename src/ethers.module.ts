@@ -18,17 +18,17 @@ export class EthersModule
   extends createConfigurableDynamicRootModule<EthersModule, IModuleOptions>(MODULE_OPTIONS_PROVIDER)
   implements OnModuleInit, OnModuleDestroy
 {
-  constructor(private readonly ethersContractService: EthersService) {
+  constructor(private readonly ethersService: EthersService) {
     super();
   }
 
   static deferred = (): Promise<DynamicModule> => EthersModule.externallyConfigured(EthersModule, 0);
 
   public onModuleInit(): void {
-    return this.ethersContractService.init();
+    return this.ethersService.init();
   }
 
   public onModuleDestroy(): void {
-    return this.ethersContractService.destroy();
+    return this.ethersService.destroy();
   }
 }
