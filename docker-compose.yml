@@ -5,7 +5,7 @@ services:
     restart: "on-failure"
     image: hyperledger/besu:latest
     environment:
-      BESU_GENESIS_FILE: /var/lib/besu/gen-besu.json
+      BESU_GENESIS_FILE: /var/lib/besu/genesis.json
       BESU_DATA_PATH: /var/lib/besu
       BESU_HOST_ALLOWLIST: "*"
       BESU_RPC_WS_ENABLED: "true"
@@ -19,7 +19,7 @@ services:
       BESU_MINER_COINBASE: fe3b557e8fb62b89f4916b721be55ceb828dbd73
     volumes:
       - ${BASE_PATH}/besu:/var/lib/besu
-      - ${BASE_PATH}/gen-besu.json:/var/lib/besu/gen-besu.json
+      - ${BASE_PATH}/genesis.json:/var/lib/besu/genesis.json
     ports:
       - "8545:8545"
       - "8546:8546"
