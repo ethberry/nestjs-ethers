@@ -16,7 +16,7 @@
   "devDependencies": {
     "@ethberry/eslint-config": "5.0.11",
     "@nestjs/axios": "4.0.1",
-    "@nestjs/common": "11.0.10",
+    "@nestjs/common": "11.0.16",
     "@nestjs/config": "4.0.3",
     "@nestjs/core": "11.1.17",
     "@nestjs/microservices": "11.1.17",
