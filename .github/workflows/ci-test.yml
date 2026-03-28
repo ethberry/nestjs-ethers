@@ -28,24 +28,24 @@ jobs:
             --name besu \
             -u root \
             -e BESU_GENESIS_FILE=/var/lib/besu/genesis.json \
-            -e BESU_DATA_PATH=/var/lib/besu \
+            -e BESU_DATA_PATH=/var/lib/besu/data \
             -e BESU_HOST_ALLOWLIST="*" \
             -e BESU_RPC_WS_ENABLED="true" \
             -e BESU_RPC_WS_HOST="0.0.0.0" \
             -e BESU_RPC_HTTP_HOST="0.0.0.0" \
             -e BESU_RPC_HTTP_ENABLED="true" \
             -e BESU_RPC_HTTP_CORS_ORIGINS="*" \
-            -e BESU_RPC_HTTP_API="ADMIN,ETH,NET,WEB3,MINER,IBFT" \
-            -e BESU_RPC_WS_API="ADMIN,ETH,NET,WEB3,MINER,IBFT" \
-            -e BESU_MINER_ENABLED="true" \
-            -e BESU_MINER_COINBASE=fe3b557e8fb62b89f4916b721be55ceb828dbd73 \
-            -v ${{ github.workspace }}/besu:/var/lib/besu \
+            -e BESU_RPC_HTTP_API="ADMIN,ETH,NET,WEB3,IBFT" \
+            -e BESU_RPC_WS_API="ADMIN,ETH,NET,WEB3,IBFT" \
+            -e BESU_NODE_PRIVATE_KEY_FILE=/var/lib/besu/key \
+            -v ${{ github.workspace }}/besu:/var/lib/besu/data \
             -v ${{ github.workspace }}/genesis.json:/var/lib/besu/genesis.json \
+            -v ${{ github.workspace }}/key:/var/lib/besu/key \
             -p 8545:8545 \
             -p 8546:8546 \
             -p 8547:8547 \
             -p 30303:30303 \
-            hyperledger/besu:latest
+            hyperledger/besu:26.1.0
 
       - name: Start Explorer
         run: |

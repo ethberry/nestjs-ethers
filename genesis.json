@@ -3,18 +3,15 @@
     "chainId": 10000,
     "muirglacierblock": 0,
     "ibft2": {
-      "blockperiodseconds": 10,
-      "epochlength": 30000,
-      "requesttimeoutseconds": 4
-    },
-    "ethash": {
-      "fixeddifficulty": 100
+      "blockperiodseconds": 1,
+      "requesttimeoutseconds": 1,
+      "epochlength": 30000
     },
     "contractSizeLimit": 65536
   },
   "nonce": "0x0",
   "timestamp": "0x58ee40ba",
-  "extraData": "0xf83ea00000000000000000000000000000000000000000000000000000000000000000d5949811ebc35d7b06b3fa8dc5809a1f9c52751e1deb808400000000c0",
+  "extraData": "0xf83ea00000000000000000000000000000000000000000000000000000000000000000d594aaf8105857c1500912d102185e9223d16d4bde17808400000000c0",
   "gasLimit": "0xE0000000",
   "difficulty": "0x10000",
   "mixHash": "0x63746963616c2062797a616e74696e65206661756c7420746f6c6572616e6365",

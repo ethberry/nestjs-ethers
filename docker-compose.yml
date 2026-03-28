@@ -1,27 +1,47 @@
-services:
+version: "3.3"
 
+networks:
+  ethberry:
+    driver: bridge
+
+services:
   besu:
     container_name: besu
     restart: "on-failure"
-    image: hyperledger/besu:latest
+    image: hyperledger/besu:26.2.0
     environment:
       BESU_GENESIS_FILE: /var/lib/besu/genesis.json
-      BESU_DATA_PATH: /var/lib/besu
+      BESU_DATA_PATH: /var/lib/besu/data
       BESU_HOST_ALLOWLIST: "*"
       BESU_RPC_WS_ENABLED: "true"
       BESU_RPC_WS_HOST: 0.0.0.0
       BESU_RPC_HTTP_HOST: 0.0.0.0
       BESU_RPC_HTTP_ENABLED: "true"
       BESU_RPC_HTTP_CORS_ORIGINS: "*"
-      BESU_RPC_HTTP_API: "ADMIN,ETH,NET,WEB3,MINER,IBFT"
-      BESU_RPC_WS_API: "ADMIN,ETH,NET,WEB3,MINER,IBFT"
-      BESU_MINER_ENABLED: "true"
-      BESU_MINER_COINBASE: fe3b557e8fb62b89f4916b721be55ceb828dbd73
+      BESU_RPC_HTTP_API: "ADMIN,ETH,NET,WEB3,IBFT"
+      BESU_RPC_WS_API: "ADMIN,ETH,NET,WEB3,IBFT"
+      BESU_NODE_PRIVATE_KEY_FILE: /var/lib/besu/key
     volumes:
-      - ${BASE_PATH}/besu:/var/lib/besu
+      - ${BASE_PATH}/besu:/var/lib/besu/data
       - ${BASE_PATH}/genesis.json:/var/lib/besu/genesis.json
+      - ${BASE_PATH}/key:/var/lib/besu/key
     ports:
       - "8545:8545"
       - "8546:8546"
       - "8547:8547"
       - "30303:30303"
+    networks:
+      - ethberry
+
+  explorer:
+    container_name: explorer
+    restart: "on-failure"
+    image: alethio/ethereum-lite-explorer
+    environment:
+      APP_NODE_URL: "http://127.0.0.1:8545"
+    ports:
+      - 8080:80
+    depends_on:
+      - besu
+    networks:
+      - ethberry
