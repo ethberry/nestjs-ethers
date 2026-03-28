@@ -5,9 +5,10 @@
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
-    "lib": ["ES2021"],
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "isolatedModules": true,
+    "lib": ["ES2022"],
+    "module": "ES2022",
+    "moduleResolution": "bundler",
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -22,7 +23,7 @@
     "strictFunctionTypes": true,
     "strictNullChecks": true,
     "strictPropertyInitialization": false,
-    "target": "ES2021"
+    "target": "ES2022"
   },
   "exclude": ["node_modules", "./dist"]
 }

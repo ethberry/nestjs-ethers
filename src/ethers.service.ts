@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger, LoggerService } from "@nestjs/common";
+import { Inject, Injectable, Logger, type LoggerService } from "@nestjs/common";
 import { MessageHandler } from "@nestjs/microservices";
 import { transformPatternToRoute } from "@nestjs/microservices/utils";
 import { PATTERN_METADATA } from "@nestjs/microservices/constants";
@@ -11,7 +11,7 @@ import { DiscoveredMethodWithMeta, DiscoveryService } from "@golevelup/nestjs-di
 
 import { getPastEvents } from "./utils/get-past-events";
 import { ETHERS_RPC, MODULE_OPTIONS_PROVIDER } from "./ethers.constants";
-import { IContractOptions, ILogEvent, IModuleOptions } from "./interfaces";
+import type { IContractOptions, ILogEvent, IModuleOptions } from "./interfaces";
 import { recursivelyDecodeResult } from "./utils";
 
 @Injectable()
