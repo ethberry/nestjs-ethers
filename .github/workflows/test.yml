@@ -1,3 +1,4 @@
+# CI runs on Node.js 24.x
 name: CI Test
 
 on:
@@ -8,19 +9,22 @@ on:
   pull_request:
     branches:
       - master
+    types: [opened, synchronize, reopened]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [22.x]
     steps:
-      - uses: actions/checkout@v4
-        name: Checkout code
-      - name: Start Besu service
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Start Besu
         run: |
-            docker run -d \
+          docker run -d \
             --name besu \
             -u root \
             -e BESU_GENESIS_FILE=/var/lib/besu/genesis.json \
@@ -42,30 +46,37 @@ jobs:
             -p 8547:8547 \
             -p 30303:30303 \
             hyperledger/besu:latest
-      - name: Start Explorer service
+
+      - name: Start Explorer
         run: |
-            docker run -d \
-              --name explorer \
-              -e APP_NODE_URL="http://127.0.0.1:8545" \
-              -p 8080:80 \
-              alethio/ethereum-lite-explorer
-              sleep 30
-      - name: Get besu logs
+          docker run -d \
+            --name explorer \
+            -e APP_NODE_URL="http://127.0.0.1:8545" \
+            -p 8080:80 \
+            alethio/ethereum-lite-explorer
+          sleep 30
+
+      - name: Besu / Explorer logs
         run: |
           docker logs besu || true
           docker logs explorer || true
-      - name: Check status of besu container
+
+      - name: Container status
         run: |
-          docker ps -a  # Показывает все контейнеры
+          docker ps -a
           docker inspect besu | jq '.[0].State'
           docker inspect explorer | jq '.[0].State'
-      - uses: actions/setup-node@v4
-        name: Use Node.js ${{ matrix.node-version }}
+
+      - name: Use Node.js 24
+        uses: actions/setup-node@v6
         with:
-          node-version: ${{ matrix.node-version }}
-      - name: npm install
+          node-version: "24.x"
+
+      - name: Install Packages
         run: npm i
-      - name: check lint
+
+      - name: Lint
         run: npm run lint
-      - name: npm test
+
+      - name: Run tests
         run: npm run test
