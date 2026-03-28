@@ -10,7 +10,7 @@
   "dependencies": {
     "@golevelup/nestjs-discovery": "7.0.0",
     "@golevelup/nestjs-modules": "2.0.0",
-    "cron": "3.5.0"
+    "cron": "4.4.0"
   },
   "description": "Ethers transport for NestJS",
   "devDependencies": {
