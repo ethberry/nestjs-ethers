@@ -61,7 +61,9 @@
     "ethers": "^6.0.0",
     "rxjs": "^7.0.0"
   },
+  "private": false,
   "publishConfig": {
+    "access": "public",
     "registry": "https://npm.pkg.github.com/"
   },
   "repository": {
@@ -79,5 +81,5 @@
   "title": "NestJS Ethers module",
   "type": "module",
   "types": "./dist/index.d.ts",
-  "version": "9.0.3"
+  "version": "9.0.4"
 }

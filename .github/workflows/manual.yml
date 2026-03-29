@@ -22,11 +22,8 @@ jobs:
       - name: Build Packages
         run: npm run build
 
-      - name: Authenticate Registry & Configure Git User
+      - name: Authenticate GitHub Packages & Configure Git User
         run: |
-          echo "save-exact=true" > .npmrc
-          echo "package-lock=false" >> .npmrc
-          echo "legacy-peer-deps=true" >> .npmrc
           echo "@ethberry:registry=https://npm.pkg.github.com/" >> .npmrc
           echo "//npm.pkg.github.com/:_authToken=$GITHUBTOKEN" >> .npmrc
           git update-index --assume-unchanged .npmrc
@@ -38,37 +35,43 @@ jobs:
           GITHUBUSER: ${{ secrets.GITHUBUSER }}
           GITHUBEMAIL: ${{ secrets.GITHUBEMAIL }}
 
-      - name: Authenticate check via npm
+      - name: Authenticate GitHub Packages via npm
         run: npm whoami --registry=https://npm.pkg.github.com/
 
       - name: Version by NPM
         run: npm version patch -m "[Manual release] [skip ci] %s"
 
-      - name: Publish by NPM
-        run: npm publish
-        env:
-          GITHUBTOKEN: ${{ secrets.GITHUBTOKEN }}
-
-      - name: Remove File
-        uses: JesseTG/rm@v1.0.3
+      - name: Publish to GitHub Packages
+        uses: JS-DevTools/npm-publish@v4
         with:
-          path: ./.npmrc
+          token: ${{ secrets.GITHUBTOKEN }}
+          registry: "https://npm.pkg.github.com"
+          ignore-scripts: true
 
       - name: Authenticate NPM Registry & Configure Git User
         run: |
-          echo "save-exact=true" > .npmrc
-          echo "package-lock=false" >> .npmrc
-          echo "legacy-peer-deps=true" >> .npmrc
-          git update-index --assume-unchanged .npmrc
           echo "@ethberry:registry=https://registry.npmjs.org/" >> .npmrc
           echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
+          echo "//registry.npmjs.org/:username=${NPM_USER}" >> .npmrc
+          echo "//registry.npmjs.org/:email=${NPM_EMAIL}" >> .npmrc
+          git update-index --assume-unchanged .npmrc
+          git config --global user.name '@ethberry'
+          git config --global user.email $GITHUBEMAIL
         env:
+          NPM_EMAIL: ${{ secrets.NPM_EMAIL }}
+          NPM_USER: ${{ secrets.NPM_USER }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      - name: Authenticate NPM Registry via npm
+        run: npm whoami --registry=https://registry.npmjs.org/
+
       - name: Publish to NPM
-        run: npm publish
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        uses: JS-DevTools/npm-publish@v4
+        with:
+          access: public
+          registry: "https://registry.npmjs.org"
+          token: ${{ secrets.NPM_TOKEN }}
+          ignore-scripts: true
 
       - name: Git push
         run: git push --no-verify && git push --tags --no-verify
