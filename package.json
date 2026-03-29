@@ -81,5 +81,5 @@
   "title": "NestJS Ethers module",
   "type": "module",
   "types": "./dist/index.d.ts",
-  "version": "9.0.4"
+  "version": "9.0.5"
 }
