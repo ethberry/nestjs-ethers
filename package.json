@@ -8,7 +8,7 @@
     "url": "https://github.com/ethberry/nestjs-ethers/issues"
   },
   "dependencies": {
-    "@golevelup/nestjs-discovery": "7.0.1",
+    "@golevelup/nestjs-discovery": "7.0.3",
     "@golevelup/nestjs-modules": "2.0.1",
     "cron": "4.4.0"
   },
