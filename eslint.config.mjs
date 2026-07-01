@@ -6,20 +6,23 @@ import jestRules from "@ethberry/eslint-config/tests/jest.mjs";
 
 export default [
   {
-    ignores: [
-      "**/dist",
-    ]
+    ignores: ["**/dist"],
   },
 
   {
     languageOptions: {
       parserOptions: {
-        project: [
-          "./tsconfig.eslint.json",
-        ],
-        tsconfigRootDir: import.meta.dirname
+        project: ["./tsconfig.eslint.json"],
+        tsconfigRootDir: import.meta.dirname,
       },
-    }
+    },
+    settings: {
+      "import/resolver": {
+        typescript: {
+          project: ["./tsconfig.eslint.json"],
+        },
+      },
+    },
   },
 
   ...typescriptRules,
