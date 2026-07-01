@@ -17,4 +17,3 @@ package.json.lerna_backup
 yarn.lock
 /lerna-debug.log
 /report.*.json
-/package-lock.json
