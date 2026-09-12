@@ -68,7 +68,7 @@ jobs:
           docker inspect explorer | jq '.[0].State'
 
       - name: Use Node.js 24
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: "24.x"
 
