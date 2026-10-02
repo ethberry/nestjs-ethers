@@ -8,8 +8,8 @@
     "url": "https://github.com/ethberry/nestjs-ethers/issues"
   },
   "dependencies": {
-    "@golevelup/nestjs-discovery": "7.0.3",
-    "@golevelup/nestjs-modules": "2.0.1",
+    "@golevelup/nestjs-discovery": "7.1.0",
+    "@golevelup/nestjs-modules": "2.1.0",
     "cron": "4.4.0"
   },
   "description": "Ethers transport for NestJS",
@@ -24,13 +24,13 @@
     "@nestjs/testing": "11.2.6",
     "@nomiclabs/hardhat-ethers": "2.2.3",
     "@types/jest": "30.0.0",
-    "@types/node": "24.13.6",
+    "@types/node": "24.19.1",
     "dotenv": "17.4.2",
     "ethers": "6.17.0",
     "husky": "9.1.7",
     "jest": "30.5.2",
     "jest-environment-node": "30.5.2",
-    "lint-staged": "17.5.1",
+    "lint-staged": "17.6.0",
     "prettier": "3.9.9",
     "reflect-metadata": "0.2.2",
     "rimraf": "6.1.3",
