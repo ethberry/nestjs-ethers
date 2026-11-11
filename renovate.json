@@ -1,4 +1,4 @@
 {
-  "baseBranchPatterns": ["master"],
+  "baseBranchPatterns": ["main"],
   "extends": ["github>ethberry/renovate-config"]
 }
