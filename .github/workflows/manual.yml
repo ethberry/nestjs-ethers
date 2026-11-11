@@ -3,6 +3,15 @@ name: Manual release Publish
 
 on:
   workflow_dispatch:
+    inputs:
+      bump:
+        description: "Version bump (patch, minor or major)"
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+        default: patch
 
 jobs:
   user-publish:
@@ -39,7 +48,12 @@ jobs:
         run: npm run build
 
       - name: Version by NPM
-        run: npm version patch -m "[Manual release] [skip ci] %s"
+
+        run: npm version "$BUMP" -m "[Manual release] [skip ci] %s"
+
+        env:
+
+          BUMP: ${{ inputs.bump }}
 
       - name: Publish to GitHub Packages
         uses: JS-DevTools/npm-publish@v4
