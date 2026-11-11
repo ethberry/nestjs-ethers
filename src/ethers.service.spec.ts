@@ -204,7 +204,7 @@ describe("EthersServer", function () {
   // https://github.com/facebook/jest/issues/11543
   jest.setTimeout(100000);
 
-  let logSpyContract: jest.SpyInstance;
+  let logSpyContract: jest.Spied<any>;
 
   let testEthersContractService: TestEthersService;
 
