@@ -1,8 +1,8 @@
 import { Interface } from "ethers";
 
-import erc721ABI from "../contracts/ERC721Ownable.json";
-import exchangeABI from "../contracts/Exchange.json";
-import { recursivelyDecodeResult } from "./decode-result";
+import erc721ABI from "../contracts/ERC721Ownable.json" with { type: "json" };
+import exchangeABI from "../contracts/Exchange.json" with { type: "json" };
+import { recursivelyDecodeResult } from "./decode-result.js";
 
 describe("Ethers", function () {
   it("parseLog 1", function () {

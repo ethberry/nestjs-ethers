@@ -1,3 +1,3 @@
-export * from "./await-for-confirmation";
-export * from "./decode-result";
-export * from "./patch-bigint";
+export * from "./await-for-confirmation.js";
+export * from "./decode-result.js";
+export * from "./patch-bigint.js";

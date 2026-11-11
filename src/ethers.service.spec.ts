@@ -1,3 +1,4 @@
+import { jest } from "@jest/globals";
 import { Controller, Injectable, Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { Test } from "@nestjs/testing";
@@ -6,14 +7,14 @@ import { CronExpression } from "@nestjs/schedule";
 import { BaseContract, ContractFactory, Interface, JsonRpcProvider, Log, Wallet } from "ethers";
 import { config } from "dotenv";
 
-import { patchBigInt, waitForConfirmation } from "./utils";
-import type { IContractOptions, ILogEvent, IModuleOptions } from "./interfaces";
-import { EthersModule } from "./ethers.module";
-import { EthersService } from "./ethers.service";
+import { patchBigInt, waitForConfirmation } from "./utils/index.js";
+import type { IContractOptions, ILogEvent, IModuleOptions } from "./interfaces/index.js";
+import { EthersModule } from "./ethers.module.js";
+import { EthersService } from "./ethers.service.js";
 
-import Erc20Contract from "./contracts/ERC20Ownable.json";
-import Erc721Contract from "./contracts/ERC721Ownable.json";
-import ExchangeContract from "./contracts/Exchange.json";
+import Erc20Contract from "./contracts/ERC20Ownable.json" with { type: "json" };
+import Erc721Contract from "./contracts/ERC721Ownable.json" with { type: "json" };
+import ExchangeContract from "./contracts/Exchange.json" with { type: "json" };
 
 interface IERC20 extends BaseContract {
   mint: (to: string, amount: bigint) => Promise<any>;

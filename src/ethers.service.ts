@@ -1,7 +1,7 @@
 import { Inject, Injectable, Logger, type LoggerService } from "@nestjs/common";
 import { MessageHandler } from "@nestjs/microservices";
-import { transformPatternToRoute } from "@nestjs/microservices/utils";
-import { PATTERN_METADATA } from "@nestjs/microservices/constants";
+import { transformPatternToRoute } from "@nestjs/microservices/utils/index.js";
+import { PATTERN_METADATA } from "@nestjs/microservices/constants.js";
 import { SchedulerRegistry } from "@nestjs/schedule";
 import { CronJob } from "cron";
 import { EMPTY, from, Observable, Subject } from "rxjs";
@@ -9,10 +9,10 @@ import { mergeAll, mergeMap } from "rxjs/operators";
 import { JsonRpcProvider, Log } from "ethers";
 import { DiscoveredMethodWithMeta, DiscoveryService } from "@golevelup/nestjs-discovery";
 
-import { getPastEvents } from "./utils/get-past-events";
-import { ETHERS_RPC, MODULE_OPTIONS_PROVIDER } from "./ethers.constants";
-import type { IContractOptions, ILogEvent, IModuleOptions } from "./interfaces";
-import { recursivelyDecodeResult } from "./utils";
+import { getPastEvents } from "./utils/get-past-events.js";
+import { ETHERS_RPC, MODULE_OPTIONS_PROVIDER } from "./ethers.constants.js";
+import type { IContractOptions, ILogEvent, IModuleOptions } from "./interfaces/index.js";
+import { recursivelyDecodeResult } from "./utils/index.js";
 
 @Injectable()
 export class EthersService {

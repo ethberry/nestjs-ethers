@@ -2,7 +2,7 @@ import { ConfigService } from "@nestjs/config";
 
 import { JsonRpcProvider, Network } from "ethers";
 
-import { ETHERS_RPC } from "../ethers.constants";
+import { ETHERS_RPC } from "../ethers.constants.js";
 
 export const ethersRpcProvider = {
   provide: ETHERS_RPC,

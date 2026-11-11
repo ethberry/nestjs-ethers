@@ -1,7 +1,7 @@
 import { ConfigService } from "@nestjs/config";
 import { JsonRpcProvider, Wallet } from "ethers";
 
-import { ETHERS_RPC, ETHERS_SIGNER } from "../ethers.constants";
+import { ETHERS_RPC, ETHERS_SIGNER } from "../ethers.constants.js";
 
 // This is just an example for testing purposes.
 // Do not store private keys in public configuration.
