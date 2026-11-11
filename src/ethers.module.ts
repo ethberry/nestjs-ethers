@@ -4,10 +4,10 @@ import { ScheduleModule } from "@nestjs/schedule";
 import { createConfigurableDynamicRootModule } from "@golevelup/nestjs-modules";
 import { DiscoveryModule } from "@golevelup/nestjs-discovery";
 
-import { ethersRpcProvider } from "./providers";
-import { EthersService } from "./ethers.service";
-import { IModuleOptions } from "./interfaces";
-import { MODULE_OPTIONS_PROVIDER } from "./ethers.constants";
+import { ethersRpcProvider } from "./providers/index.js";
+import { EthersService } from "./ethers.service.js";
+import { IModuleOptions } from "./interfaces/index.js";
+import { MODULE_OPTIONS_PROVIDER } from "./ethers.constants.js";
 
 @Module({
   imports: [ConfigModule, DiscoveryModule, ScheduleModule.forRoot()],
