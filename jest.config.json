@@ -18,5 +18,6 @@
       }
     ]
   },
-  "verbose": true
+  "verbose": true,
+  "setupFilesAfterEnv": ["<rootDir>/jest.setup.ts"]
 }
